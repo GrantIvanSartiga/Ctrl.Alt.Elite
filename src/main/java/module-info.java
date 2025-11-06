@@ -16,4 +16,6 @@ module com.ctrlaltelite.ctrlaltelite {
 
     opens com.ctrlaltelite.ctrlaltelite to javafx.fxml;
     exports com.ctrlaltelite.ctrlaltelite;
+    exports com.ctrlaltelite.ctrlaltelite.controllers;
+    opens com.ctrlaltelite.ctrlaltelite.controllers to javafx.fxml;
 }

@@ -1,4 +1,4 @@
-package com.ctrlaltelite.ctrlaltelite;
+package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.*;
@@ -164,6 +164,8 @@ public class CtrlAltEliteController {
         contentSection.setOpacity(0);
         contentSection.setTranslateY(40);
     }
+
+
 
 
 }

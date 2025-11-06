@@ -83,12 +83,26 @@ public class LoginController {
 
     public void createAccountForm(){
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("register.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("register-window.fxml"));
             Stage registerStage = new Stage();
+//            Scene scene = new Scene(fxmlLoader.load(), 600, 470);
+//            registerStage.initStyle(StageStyle.UNDECORATED);
+
             Scene scene = new Scene(fxmlLoader.load(), 600, 470);
-            registerStage.initStyle(StageStyle.UNDECORATED);
+            registerStage.setMinWidth(600);
+            registerStage.setMinHeight(400);
+            registerStage.setResizable(true);
+            registerStage.setMaximized(true);
             registerStage.setScene(scene);
             registerStage.show();
+
+//            Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+//
+//            registerStage.setMinWidth(600);
+//            registerStage.setMinHeight(400);
+//            registerStage.setResizable(true);
+//            registerStage.setMaximized(true);
+//            registerStage.show();
 
 
         } catch (Exception e) {

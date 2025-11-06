@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class CtrlAltEliteController {
+public class UserCtrlAltEliteController {
     public JFXButton profileButton;
     @FXML private Text welcomeText;
     @FXML private ImageView ICON;
@@ -34,7 +34,7 @@ public class CtrlAltEliteController {
 
     @FXML
     public void initialize() {
-        // Hide elements initially
+
         welcomeText.setOpacity(0);
         Text2.setOpacity(0);
         ICON.setOpacity(0);
@@ -73,6 +73,8 @@ public class CtrlAltEliteController {
         scrollPane.vvalueProperty().addListener((obs, oldVal, newVal) -> checkVisibility());
 
         checkVisibility();
+
+        profileButton.setOnAction(event -> LoginUser());
     }
 
     private void checkVisibility() {
@@ -170,13 +172,14 @@ public class CtrlAltEliteController {
         contentSection.setTranslateY(40);
     }
 
+
+
     @FXML
     private void LoginUser(){
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login.fxml"));
             Stage loginStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-            loginStage.initStyle(StageStyle.UNDECORATED);
             loginStage.setScene(scene);
             loginStage.show();
 

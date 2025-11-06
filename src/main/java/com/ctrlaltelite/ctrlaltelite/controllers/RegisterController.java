@@ -1,8 +1,11 @@
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
+import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -33,6 +36,11 @@ public class RegisterController {
     private PasswordField conpassField;
 
 
+    @FXML
+    public void initialize() {
+        cancelButton.setOnAction(event ->cancelButtonOnAction());
+    }
+
     public void registerButtonOnAction(ActionEvent event) {
 
         if (passwordField.getText().equals(conpassField.getText())) {
@@ -45,10 +53,24 @@ public class RegisterController {
 
     }
 
-    public void cancelButtonOnAction(ActionEvent event) {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
-        Platform.exit();
+    public void cancelButtonOnAction() {
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("overview-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+
+            stage.setScene(scene);
+            stage.setTitle("CtrlAltElite");
+            stage.setMinWidth(600);
+            stage.setMinHeight(400);
+            stage.setResizable(true);
+            stage.setMaximized(true);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void registerUser(){

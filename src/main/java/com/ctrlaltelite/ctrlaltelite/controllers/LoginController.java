@@ -1,6 +1,7 @@
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
+import com.ctrlaltelite.ctrlaltelite.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -35,10 +37,25 @@ public class LoginController {
         cancelButton.setOnAction(event ->cancelButtonOnAction());
     }
 
-    public void loginButtonOnAction(ActionEvent event) {
+    public void loginButtonOnAction(ActionEvent event) throws Exception{
 
         if (usernameTextField.getText().isBlank() == false && passwordField.getText().isBlank() == false) {
-            validateLogin();
+            String username = usernameTextField.getText();
+            String password = passwordField.getText();
+
+            if (DatabaseConnection.validateLogin(username, password)) {
+                loginMessageLabel.setText("Login Successful. Welcome back!");
+
+                FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("overview-view.fxml"));
+                Stage loginStage = new Stage();
+                loginStage.initStyle(StageStyle.UNDECORATED);
+                Stage currentStage = (Stage) cancelButton.getScene().getWindow();
+                currentStage.close();
+
+            } else {
+                loginMessageLabel.setText("Login Failed. Invalid email or password.");
+            }
+
         } else {
             loginMessageLabel.setText("Please enter username and password");
         }
@@ -69,45 +86,9 @@ public class LoginController {
         }
     }
 
-    public void validateLogin(){
-//        MongoDatabase db = DatabaseHelper.getInstance().getDatabase();
-//
-//        if (db != null){
-//            loginMessageLabel.setText("Connected to database: " + db.getName() + " with collection of " + db.getCollection("movies").getNamespace());
-//            // loginMessageLabel.setText("Please enter username and password");
-//        }
-
-
-
-
-//        DatabaseConnection connectNow = new DatabaseConnection();
-//        Connection connectDB = connectNow.getConnection();
-//
-//        String verifyLogin = "SELECT count(1) FROM caeusers.useraccounts WHERE username = '"
-//                + usernameTextField.getText() + "' AND password = ' " + passwordField.getText() + "'" ;
-//
-//        try {
-//            Statement statement = connectDB.createStatement();
-//            ResultSet queryResult = statement.executeQuery(verifyLogin);
-//
-//            while (queryResult.next()) {
-//                if (queryResult.getInt(1) == 1) {
-//                    loginMessageLabel.setText("Login successful");
-//                    createAccountForm();
-//                } else {
-//                    loginMessageLabel.setText("Login failed");
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            e.getCause();
-//        }
-
-    }
     public void createAccountForm(){
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("register.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("register-window.fxml"));
             Stage registerStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 600, 470);
             registerStage.setScene(scene);

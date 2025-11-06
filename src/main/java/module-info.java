@@ -14,6 +14,10 @@ module com.ctrlaltelite.ctrlaltelite {
     requires com.jfoenix;
     requires javafx.graphics;
     requires javafx.base;
+    requires org.mongodb.driver.sync.client;
+    requires org.mongodb.bson;
+    requires org.mongodb.driver.core;
+    requires java.management;
 
     opens com.ctrlaltelite.ctrlaltelite to javafx.fxml;
     exports com.ctrlaltelite.ctrlaltelite;

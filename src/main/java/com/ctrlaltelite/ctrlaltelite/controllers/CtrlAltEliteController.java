@@ -17,24 +17,35 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class CtrlAltEliteController {
-    public JFXButton profileButton;
-    @FXML private Text welcomeText;
-    @FXML private ImageView ICON;
-    @FXML private Pane Logo;
-    @FXML private Text Text2;
-    @FXML private HBox SearchIcon;
-    @FXML private HBox SearchAndButtons;
 
-    @FXML private ScrollPane scrollPane;
-    @FXML private AnchorPane heroSection;
-    @FXML private AnchorPane contentSection;
+
+    @FXML
+    private JFXButton profileButton;
+    @FXML
+    private Text welcomeText;
+    @FXML
+    private ImageView ICON;
+    @FXML
+    private Pane Logo;
+    @FXML
+    private Text Text2;
+    @FXML
+    private HBox SearchIcon;
+    @FXML
+    private HBox SearchAndButtons;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private AnchorPane heroSection;
+    @FXML
+    private AnchorPane contentSection;
 
     private boolean heroVisible = false;
     private boolean contentVisible = false;
 
     @FXML
     public void initialize() {
-        // Hide elements initially
+
         welcomeText.setOpacity(0);
         Text2.setOpacity(0);
         ICON.setOpacity(0);
@@ -71,6 +82,10 @@ public class CtrlAltEliteController {
         buttonsAnim.play();
 
         scrollPane.vvalueProperty().addListener((obs, oldVal, newVal) -> checkVisibility());
+
+
+        profileButton.setOnAction(actionEvent -> LoginUser());
+
 
         checkVisibility();
     }
@@ -174,23 +189,26 @@ public class CtrlAltEliteController {
     private void LoginUser(){
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
-            Stage loginStage = new Stage();
-//            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-//            loginStage.initStyle(StageStyle.UNDECORATED);
 
+            Stage loginStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+
+            loginStage.setScene(scene);
+            loginStage.setTitle("Login");
             loginStage.setMinWidth(600);
             loginStage.setMinHeight(400);
             loginStage.setResizable(true);
             loginStage.setMaximized(true);
+
             loginStage.show();
 
-            Stage currentStage = (Stage) profileButton.getScene().getWindow();
-            currentStage.close();
+            ((Stage) profileButton.getScene().getWindow()).close();
+
+
 
         } catch (Exception e) {
+            System.err.println("ERROR loading login window:");
             e.printStackTrace();
-            e.getCause();
         }
     }
 

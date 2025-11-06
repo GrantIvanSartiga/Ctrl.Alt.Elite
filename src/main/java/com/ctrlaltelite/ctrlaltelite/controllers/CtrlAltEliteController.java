@@ -1,14 +1,19 @@
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
+import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class CtrlAltEliteController {
@@ -165,7 +170,24 @@ public class CtrlAltEliteController {
         contentSection.setTranslateY(40);
     }
 
+    @FXML
+    private void LoginUser(){
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login.fxml"));
+            Stage loginStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
+            loginStage.initStyle(StageStyle.UNDECORATED);
+            loginStage.setScene(scene);
+            loginStage.show();
 
+            Stage currentStage = (Stage) profileButton.getScene().getWindow();
+            currentStage.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
 
 
 }

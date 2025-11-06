@@ -43,7 +43,7 @@
                 <JFXButton styleClass="nav-button" text="Categories"/>
                 <JFXButton styleClass="nav-button" text="Home"/>
                 <JFXButton styleClass="nav-button" text="Library"/>
-                <JFXButton fx:id="profileButton" styleClass="icon-button">
+                <JFXButton fx:id="profileButton" styleClass="icon-button" onAction="#LoginUser" >
                     <graphic>
                         <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true">
                             <Image url="@images/ProfileIcon.png"/>

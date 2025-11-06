@@ -135,7 +135,7 @@
                                         </InnerShadow>
                                     </effect>
                                 </PasswordField>
-                                <Button fx:id="cancelButton" layoutX="202.0" layoutY="290.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="26.0" prefWidth="69.0" style="-fx-background-color: #7D8D86;" text="CANCEL" textFill="WHITE">
+                                <Button fx:id="cancelButton" layoutX="202.0" layoutY="290.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="69.0" style="-fx-background-color: #7D8D86;" text="CANCEL" textFill="WHITE">
                                     <font>
                                         <Font name="Bison Bold" size="15.0" />
                                     </font>

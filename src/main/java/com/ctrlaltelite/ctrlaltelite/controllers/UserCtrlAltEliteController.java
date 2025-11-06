@@ -2,7 +2,9 @@ package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
 import com.jfoenix.controls.JFXButton;
-import javafx.animation.*;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,12 +15,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class CtrlAltEliteController {
-
-
+public class UserCtrlAltEliteController {
     @FXML
     private JFXButton profileButton;
     @FXML
@@ -211,6 +210,4 @@ public class CtrlAltEliteController {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -1,7 +1,6 @@
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 public class RegisterController {
 
@@ -67,6 +64,7 @@ public class RegisterController {
             stage.setMinHeight(400);
             stage.setResizable(true);
             stage.setMaximized(true);
+            stage.show();
 
         } catch (IOException e) {
             e.printStackTrace();

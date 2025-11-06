@@ -3,7 +3,6 @@ package com.ctrlaltelite.ctrlaltelite.controllers;
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,7 +10,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -31,7 +29,11 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
-
+    @FXML
+    public void initialize() {
+        registerButton.setOnAction(event -> createAccountForm());
+        cancelButton.setOnAction(event ->cancelButtonOnAction());
+    }
 
     public void loginButtonOnAction(ActionEvent event) {
 
@@ -45,11 +47,12 @@ public class LoginController {
 
     public void cancelButtonOnAction() {
         try {
-
             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("overview-view.fxml"));
+
+            Stage stage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 900, 600);
 
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
+
 
             stage.setScene(scene);
             stage.setTitle("CtrlAltElite");
@@ -57,6 +60,9 @@ public class LoginController {
             stage.setMinHeight(400);
             stage.setResizable(true);
             stage.setMaximized(true);
+            stage.show();
+
+            ((Stage) cancelButton.getScene().getWindow()).close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,11 +104,6 @@ public class LoginController {
 //            e.getCause();
 //        }
 
-    }
-    @FXML
-    public void initialize() {
-        registerButton.setOnAction(event -> createAccountForm());
-        cancelButton.setOnAction(event ->cancelButtonOnAction());
     }
     public void createAccountForm(){
         try{

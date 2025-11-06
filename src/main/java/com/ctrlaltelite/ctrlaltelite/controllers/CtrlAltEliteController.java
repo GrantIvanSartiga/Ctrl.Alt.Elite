@@ -173,11 +173,16 @@ public class CtrlAltEliteController {
     @FXML
     private void LoginUser(){
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
             Stage loginStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-            loginStage.initStyle(StageStyle.UNDECORATED);
-            loginStage.setScene(scene);
+//            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
+//            loginStage.initStyle(StageStyle.UNDECORATED);
+
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            loginStage.setMinWidth(600);
+            loginStage.setMinHeight(400);
+            loginStage.setResizable(true);
+            loginStage.setMaximized(true);
             loginStage.show();
 
             Stage currentStage = (Stage) profileButton.getScene().getWindow();

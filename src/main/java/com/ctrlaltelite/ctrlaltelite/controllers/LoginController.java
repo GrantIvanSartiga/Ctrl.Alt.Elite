@@ -1,9 +1,6 @@
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
-import javafx.animation.FadeTransition;
-import javafx.animation.ParallelTransition;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,10 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
-import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -33,45 +28,11 @@ public class LoginController {
     private TextField usernameTextField;
     @FXML
     private PasswordField passwordField;
-    @FXML
-    private BorderPane LoginUI;
 
     @FXML
     public void initialize() {
         registerButton.setOnAction(event -> createAccountForm());
         cancelButton.setOnAction(event ->cancelButtonOnAction());
-
-        FadeTransition fadeLoginUI = new FadeTransition(Duration.seconds(1), LoginUI);
-        fadeLoginUI.setFromValue(0);
-        fadeLoginUI.setToValue(1);
-
-        TranslateTransition slideLoginUI = new TranslateTransition(Duration.seconds(1), LoginUI);
-        slideLoginUI.setFromY(80);
-        slideLoginUI.setToY(0);
-
-        FadeTransition fadeUserTxtField = new FadeTransition(Duration.seconds(3), usernameTextField);
-        fadeUserTxtField.setFromValue(0);
-        fadeUserTxtField.setToValue(1);
-
-        TranslateTransition slideUserTxtField = new TranslateTransition(new Duration(3),usernameTextField);
-        slideUserTxtField.setFromY(20);
-        slideUserTxtField.setToY(0);
-
-        FadeTransition fadePassField = new FadeTransition(Duration.seconds(3), passwordField);
-        fadePassField.setFromValue(0);
-        fadePassField.setToValue(1);
-
-        TranslateTransition slidePassField = new TranslateTransition(new Duration(3),passwordField);
-        slidePassField.setFromY(20);
-        slidePassField.setToY(0);
-
-        ParallelTransition PassFieldAnim = new ParallelTransition(slidePassField, fadePassField);
-        ParallelTransition LoginUIAnim = new ParallelTransition(slideLoginUI, fadeLoginUI);
-        ParallelTransition UserTxtFieldAnim = new ParallelTransition(slideUserTxtField, fadeUserTxtField);
-
-        PassFieldAnim.play();
-        UserTxtFieldAnim.play();
-        LoginUIAnim.play();
     }
 
     public void loginButtonOnAction(ActionEvent event) {

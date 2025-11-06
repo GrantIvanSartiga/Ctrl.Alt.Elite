@@ -59,6 +59,11 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    implementation(platform("org.mongodb:mongodb-driver-bom:5.6.1"))
+    implementation("org.mongodb:mongodb-driver-sync")
+    implementation("org.mongodb:bson:5.2.0")
+
 }
 
 tasks.withType<Test> {

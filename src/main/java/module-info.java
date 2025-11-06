@@ -14,6 +14,7 @@ module com.ctrlaltelite.ctrlaltelite {
     requires com.jfoenix;
     requires javafx.graphics;
     requires javafx.base;
+    requires com.ctrlaltelite.ctrlaltelite;
 
     opens com.ctrlaltelite.ctrlaltelite to javafx.fxml;
     exports com.ctrlaltelite.ctrlaltelite;

@@ -58,7 +58,7 @@
          <VBox alignment="CENTER" prefHeight="548.0" prefWidth="900.0" style="-fx-background-image: url('/com/ctrlaltelite/ctrlaltelite/images/Background.png'); -fx-background-size: cover; -fx-background-position: center;" VBox.vgrow="ALWAYS">
             <children>
 
-                         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0">
+                <BorderPane fx:id="LoginUI" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0">
                     <left>
                         <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: #112250;" BorderPane.alignment="CENTER">
                             <children>

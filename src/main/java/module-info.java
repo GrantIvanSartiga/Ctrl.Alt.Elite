@@ -12,7 +12,7 @@ module com.ctrlaltelite.ctrlaltelite {
     requires com.almasb.fxgl.all;
 
     requires com.jfoenix;
-
+    requires javafx.graphics;
 
     opens com.ctrlaltelite.ctrlaltelite to javafx.fxml;
     exports com.ctrlaltelite.ctrlaltelite;

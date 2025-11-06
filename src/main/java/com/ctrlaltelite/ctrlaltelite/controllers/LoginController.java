@@ -13,11 +13,15 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.stage.StageStyle;
 
+import java.io.IOException;
+
 
 public class LoginController {
 
     @FXML
     private Button cancelButton;
+    @FXML
+    private Button registerButton;
     @FXML
     private Button loginButton;
     @FXML
@@ -39,9 +43,24 @@ public class LoginController {
 
     }
 
-    public void cancelButtonOnAction(ActionEvent event) {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
+    public void cancelButtonOnAction() {
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("overview-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+
+            stage.setScene(scene);
+            stage.setTitle("CtrlAltElite");
+            stage.setMinWidth(600);
+            stage.setMinHeight(400);
+            stage.setResizable(true);
+            stage.setMaximized(true);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void validateLogin(){
@@ -80,29 +99,18 @@ public class LoginController {
 //        }
 
     }
-
+    @FXML
+    public void initialize() {
+        registerButton.setOnAction(event -> createAccountForm());
+        cancelButton.setOnAction(event ->cancelButtonOnAction());
+    }
     public void createAccountForm(){
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("register-window.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("register.fxml"));
             Stage registerStage = new Stage();
-//            Scene scene = new Scene(fxmlLoader.load(), 600, 470);
-//            registerStage.initStyle(StageStyle.UNDECORATED);
-
             Scene scene = new Scene(fxmlLoader.load(), 600, 470);
-            registerStage.setMinWidth(600);
-            registerStage.setMinHeight(400);
-            registerStage.setResizable(true);
-            registerStage.setMaximized(true);
             registerStage.setScene(scene);
             registerStage.show();
-
-//            Scene scene = new Scene(fxmlLoader.load(), 900, 600);
-//
-//            registerStage.setMinWidth(600);
-//            registerStage.setMinHeight(400);
-//            registerStage.setResizable(true);
-//            registerStage.setMaximized(true);
-//            registerStage.show();
 
 
         } catch (Exception e) {

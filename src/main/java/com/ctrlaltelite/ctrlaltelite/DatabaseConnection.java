@@ -62,4 +62,8 @@ public class DatabaseConnection {
         }
         return sb.toString();
     }
+
+    public static MongoCollection<Document> getCollection() {
+        return collection;
+    }
 }

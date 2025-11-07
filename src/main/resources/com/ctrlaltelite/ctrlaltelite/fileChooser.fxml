@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="675.0" prefWidth="864.0" style="-fx-background-color: #3C507D;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ctrlaltelite.ctrlaltelite.controllers.FileChooserController">
+   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+         <HBox alignment="CENTER" maxHeight="675" maxWidth="864" prefHeight="675.0" prefWidth="864.0" style="-fx-background-color: #F5F0E9;">
+            <children>
+               <VBox alignment="CENTER" prefHeight="675.0" prefWidth="565.0">
+                  <children>
+                     <VBox fx:id="dragDropArea" prefHeight="276.0" prefWidth="459.0" />
+                  
+                      <Button fx:id="chooseFileButton" onAction="#chooseFile" styleClass="button" text="Open a file" />
+                  </children>
+               </VBox>
+               <VBox fx:id="uploadListContainer" prefHeight="675.0" prefWidth="709.0" />
+            </children>
+         </HBox>
+      </children>
+   </VBox>
+
+
+</AnchorPane>

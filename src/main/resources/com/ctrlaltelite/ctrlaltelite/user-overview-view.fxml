@@ -37,7 +37,7 @@
                 <TextField prefWidth="200.0" promptText="Search..." styleClass="search-field" />
                 <JFXButton styleClass="nav-button" text="Categories" />
                 <JFXButton styleClass="nav-button" text="Home" />
-                <JFXButton onAction="#openLibrary" styleClass="nav-button" text="Library" />
+                <JFXButton fx:id= "libraryButton" onAction="#openLibrary" styleClass="nav-button" text="Library" />
                 <JFXButton fx:id="profileButton" styleClass="icon-button">
                     <graphic>
                         <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true">

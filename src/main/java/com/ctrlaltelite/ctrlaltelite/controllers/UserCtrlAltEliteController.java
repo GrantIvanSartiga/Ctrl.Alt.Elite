@@ -39,6 +39,8 @@ public class UserCtrlAltEliteController {
     @FXML
     private JFXButton profileButton;
     @FXML
+    private JFXButton libraryButton;
+    @FXML
     private Text welcomeText;
     @FXML
     private ImageView ICON;
@@ -297,6 +299,9 @@ public class UserCtrlAltEliteController {
             libraryStage.setResizable(true);
             libraryStage.setMaximized(true);
             libraryStage.show();
+
+
+            ((Stage) libraryButton.getScene().getWindow()).close();
 
         } catch (IOException e) {
             e.printStackTrace();

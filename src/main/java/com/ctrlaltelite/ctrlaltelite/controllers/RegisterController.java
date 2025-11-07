@@ -85,19 +85,21 @@ public class RegisterController {
 
     public void cancelButtonOnAction() {
         try {
-
             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 900, 600);
 
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            Stage loginStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
 
-            stage.setScene(scene);
-            stage.setTitle("CtrlAltElite");
-            stage.setMinWidth(600);
-            stage.setMinHeight(400);
-            stage.setResizable(true);
-            stage.setMaximized(true);
-            stage.show();
+            loginStage.setScene(scene);
+            loginStage.setTitle("Login");
+            loginStage.setMinWidth(600);
+            loginStage.setMinHeight(400);
+            loginStage.setResizable(true);
+            loginStage.setMaximized(true);
+
+            loginStage.show();
+
+            ((Stage) cancelButton.getScene().getWindow()).close();
 
         } catch (IOException e) {
             e.printStackTrace();

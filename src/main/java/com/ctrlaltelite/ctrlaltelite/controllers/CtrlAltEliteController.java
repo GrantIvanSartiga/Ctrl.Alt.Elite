@@ -209,8 +209,6 @@ public class CtrlAltEliteController {
 
             ((Stage) profileButton.getScene().getWindow()).close();
 
-
-
         } catch (Exception e) {
             System.err.println("ERROR loading login window:");
             e.printStackTrace();

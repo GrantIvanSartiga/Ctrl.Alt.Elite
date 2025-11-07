@@ -128,7 +128,7 @@ public class LoginController {
             adminStage.setMaximized(true);
             adminStage.show();
 
-            // Close login window
+
             ((Stage) loginButton.getScene().getWindow()).close();
 
         } catch (IOException e) {
@@ -139,13 +139,21 @@ public class LoginController {
 
     public void createAccountForm(){
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("register-window.fxml"));
+             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("register-window.fxml"));
+
             Stage registerStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 600, 470);
-            registerStage.initStyle(StageStyle.UNDECORATED);
+            Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+
             registerStage.setScene(scene);
+            registerStage.setTitle("CtrlAltElite");
+            registerStage.setMinWidth(600);
+            registerStage.setMinHeight(400);
+            registerStage.setResizable(true);
+            registerStage.setMaximized(true);
             registerStage.show();
 
+
+            ((Stage) registerButton.getScene().getWindow()).close();
 
         } catch (Exception e) {
             e.printStackTrace();

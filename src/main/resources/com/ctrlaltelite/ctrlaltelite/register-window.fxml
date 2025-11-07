@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
@@ -8,187 +10,220 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ctrlaltelite.ctrlaltelite.controllers.RegisterController">
-    <left>
-        <AnchorPane prefHeight="455.0" prefWidth="240.0" style="-fx-background-color: #112250;" BorderPane.alignment="CENTER">
-            <children>
-                <ImageView fitHeight="475.0" fitWidth="240.0" opacity="0.23" pickOnBounds="true">
-                    <image>
-                        <Image url="@img/table.jpg" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="110.0" fitWidth="112.0" layoutX="65.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@img/book stack.png" />
-                    </image>
-                </ImageView>
-                <Label layoutX="59.0" layoutY="255.0" text="CTR.ALT.ELITE" textFill="#f5f0e9">
-                    <font>
-                        <Font name="Bison Bold" size="29.0" />
-                    </font>
-                </Label>
-                <Label layoutX="59.0" layoutY="300.0" text="Y O U R  S T U D Y  S T A S H" textFill="#f5f0e9">
-                    <font>
-                        <Font name="Bison Bold" size="15.0" />
-                    </font>
-                </Label>
-                <Line endX="100.0" layoutX="120.0" layoutY="294.0" startX="-100.0" stroke="#f5f0e9" />
-                <Label layoutX="69.0" layoutY="416.0" text="cre_studystash@gmail.com" textFill="#f5f0e9">
-                    <font>
-                        <Font name="Bison Bold" size="10.0" />
-                    </font>
-                </Label>
-            </children>
-        </AnchorPane>
-    </left>
-    <right>
-        <AnchorPane prefHeight="470.0" prefWidth="360.0" style="-fx-background-color: #D9CBC2;" BorderPane.alignment="CENTER">
-            <children>
-                <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="157.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@img/book user.png" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="18.0" fitWidth="15.0" layoutX="201.0" layoutY="59.0" opacity="0.79" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@img/add.png" />
-                    </image>
-                </ImageView>
-                <Label layoutX="91.0" layoutY="74.0" prefHeight="27.0" prefWidth="180.0" text="Create new Account" textFill="#3c507d">
-                    <font>
-                        <Font name="Bison Bold" size="25.0" />
-                    </font>
-                </Label>
-                <Label layoutX="32.0" layoutY="125.0" text="Firstname" textFill="#3c507d">
-                    <font>
-                        <Font name="Bison Bold" size="13.0" />
-                    </font>
-                </Label>
-                <Label layoutX="30.0" layoutY="172.0" text="Lastname" textFill="#3c507d">
-                    <font>
-                        <Font name="Bison Bold" size="13.0" />
-                    </font>
-                </Label>
-                <Label layoutX="30.0" layoutY="264.0" text="Username" textFill="#3c507d">
-                    <font>
-                        <Font name="Bison Bold" size="13.0" />
-                    </font>
-                </Label>
-                <Label layoutX="29.0" layoutY="311.0" text="Password" textFill="#3c507d">
-                    <font>
-                        <Font name="Bison Bold" size="13.0" />
-                    </font>
-                </Label>
-                <Label layoutX="32.0" layoutY="357.0" text="Confirm password" textFill="#3c507d">
-                    <font>
-                        <Font name="Bison Bold" size="13.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="firstnameField" layoutX="32.0" layoutY="142.0" prefHeight="28.0" prefWidth="296.0" promptText="firstname">
-                    <font>
-                        <Font name="Alte Haas Grotesk" size="12.0" />
-                    </font>
-                    <effect>
-                        <InnerShadow>
-                            <color>
-                                <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
-                            </color>
-                        </InnerShadow>
-                    </effect>
-                </TextField>
-                <TextField fx:id="lastnameField" layoutX="32.0" layoutY="190.0" prefHeight="28.0" prefWidth="296.0" promptText="lastname">
-                    <font>
-                        <Font name="Alte Haas Grotesk" size="12.0" />
-                    </font>
-                    <effect>
-                        <InnerShadow>
-                            <color>
-                                <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
-                            </color>
-                        </InnerShadow>
-                    </effect>
-                </TextField>
-                <TextField fx:id="usernameField" layoutX="31.0" layoutY="282.0" prefHeight="28.0" prefWidth="296.0" promptText="username">
-                    <font>
-                        <Font name="Alte Haas Grotesk" size="12.0" />
-                    </font>
-                    <effect>
-                        <InnerShadow>
-                            <color>
-                                <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
-                            </color>
-                        </InnerShadow>
-                    </effect>
-                </TextField>
-                <PasswordField fx:id="conpassField" layoutX="33.0" layoutY="376.0" prefHeight="28.0" prefWidth="296.0" promptText="confirm password">
-                    <effect>
-                        <InnerShadow>
-                            <color>
-                                <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
-                            </color>
-                        </InnerShadow>
-                    </effect>
-                    <font>
-                        <Font name="Alte Haas Grotesk" size="12.0" />
-                    </font>
-                </PasswordField>
-                <PasswordField fx:id="passwordField" layoutX="31.0" layoutY="329.0" prefHeight="28.0" prefWidth="296.0" promptText="password">
-                    <effect>
-                        <InnerShadow>
-                            <color>
-                                <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
-                            </color>
-                        </InnerShadow>
-                    </effect>
-                    <font>
-                        <Font name="Alte Haas Grotesk" size="12.0" />
-                    </font>
-                </PasswordField>
-                <Button fx:id="cancelButton" layoutX="238.0" layoutY="419.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="26.0" prefWidth="91.0" style="-fx-background-color: #7D8D86;" text="Cancel" textFill="#f5f0e9">
-                    <font>
-                        <Font name="Bison Bold" size="15.0" />
-                    </font>
-                </Button>
-                <Button fx:id="registerButton" layoutX="32.0" layoutY="419.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="26.0" prefWidth="200.0" style="-fx-background-color: #112250;" text="Register" textFill="#f5f0e9">
-                    <font>
-                        <Font name="Bison Bold" size="15.0" />
-                    </font>
-                    <effect>
-                        <DropShadow>
-                            <color>
-                                <Color red="0.23529411852359772" green="0.3137255012989044" blue="0.4901960790157318" />
-                            </color>
-                        </DropShadow>
-                    </effect>
-                </Button>
-                <Label fx:id="registerMessageLabel" alignment="CENTER" layoutX="31.0" layoutY="106.0" prefHeight="18.0" prefWidth="295.0" textFill="#f42303">
-                    <font>
-                        <Font name="Alte Haas Grotesk Bold" size="10.0" />
-                    </font>
-                </Label>
-                <Label fx:id="conpassMessageLabel" layoutX="118.0" layoutY="356.0" prefHeight="18.0" prefWidth="122.0" textFill="#ff1100">
-                    <font>
-                        <Font name="Alte Haas Grotesk" size="9.0" />
-                    </font>
-                </Label>
-                <Label fx:id="emailLabel" layoutX="30.0" layoutY="218.0" text="email" textFill="#3c507d">
-                    <font>
-                        <Font name="Bison Bold" size="13.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="emailField" layoutX="31.0" layoutY="235.0" prefHeight="28.0" prefWidth="296.0" promptText="email">
-                    <font>
-                        <Font name="Alte Haas Grotesk" size="12.0" />
-                    </font>
-                    <effect>
-                        <InnerShadow>
-                            <color>
-                                <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
-                            </color>
-                        </InnerShadow>
-                    </effect>
-                </TextField>
-            </children>
-        </AnchorPane>
-    </right>
-</BorderPane>
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #F5F0E9;" stylesheets="@CtrlAltEliteStyles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ctrlaltelite.ctrlaltelite.controllers.RegisterController">
+
+    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <children>
+
+            <!-- HEADER -->
+            <HBox prefHeight="62.0" spacing="20" style="-fx-background-color: #f5f0e9;">
+                <padding>
+                    <Insets left="10" right="10" />
+                </padding>
+
+                <!-- LOGO -->
+                <AnchorPane fx:id="Logo" prefHeight="62.0" prefWidth="300.0">
+                    <ImageView fitHeight="96.0" fitWidth="104.0" layoutX="7.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
+                        <Image url="@images/Logo.png" />
+                    </ImageView>
+                    <Text fill="#112250" layoutX="124.0" layoutY="41.0" text="CTRL.ALT.ELITE" wrappingWidth="168.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="11.0">
+                        <font>
+                            <Font name="Bison Bold" size="30.0" />
+                        </font>
+                    </Text>
+                </AnchorPane>
+
+                <!-- SEARCH AND BUTTONS -->
+                <HBox fx:id="SearchAndButtons" alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <TextField prefWidth="200.0" promptText="Search..." styleClass="search-field" />
+                    <JFXButton styleClass="nav-button" text="Categories" />
+                    <JFXButton fx:id="HomeButton" styleClass="nav-button" text="Home" />
+                    <JFXButton styleClass="nav-button" text="Library" />
+                    <JFXButton fx:id="profileButton" styleClass="icon-button">
+                        <graphic>
+                            <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true">
+                                <Image url="@images/ProfileIcon.png" />
+                            </ImageView>
+                        </graphic>
+                    </JFXButton>
+                </HBox>
+            </HBox>
+
+            <!-- MAIN BACKGROUND AND FORM -->
+            <VBox alignment="CENTER" prefHeight="548.0" prefWidth="900.0" style="-fx-background-image: url('/com/ctrlaltelite/ctrlaltelite/images/Background.png');                          -fx-background-size: cover; -fx-background-position: center;" VBox.vgrow="ALWAYS">
+                <children>
+
+
+                    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="600.0">
+                        <left>
+                            <AnchorPane prefHeight="455.0" prefWidth="240.0" style="-fx-background-color: #112250; -fx-background-radius: 15;" BorderPane.alignment="CENTER">
+                                <children>
+                                    <ImageView fitHeight="475.0" fitWidth="240.0" opacity="0.23" pickOnBounds="true">
+                                        <image>
+                                            <Image url="@img/table.jpg" />
+                                        </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="110.0" fitWidth="112.0" layoutX="65.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@img/book stack.png" />
+                                        </image>
+                                    </ImageView>
+                                    <Label layoutX="59.0" layoutY="255.0" text="CTR.ALT.ELITE" textFill="#f5f0e9">
+                                        <font>
+                                            <Font name="Bison Bold" size="29.0" />
+                                        </font>
+                                    </Label>
+                                    <Label layoutX="59.0" layoutY="300.0" text="Y O U R  S T U D Y  S T A S H" textFill="#f5f0e9">
+                                        <font>
+                                            <Font name="Bison Bold" size="15.0" />
+                                        </font>
+                                    </Label>
+                                    <Line endX="100.0" layoutX="120.0" layoutY="294.0" startX="-100.0" stroke="#f5f0e9" />
+                                    <Label layoutX="69.0" layoutY="416.0" text="cre_studystash@gmail.com" textFill="#f5f0e9">
+                                        <font>
+                                            <Font name="Bison Bold" size="10.0" />
+                                        </font>
+                                    </Label>
+                                </children>
+                            </AnchorPane>
+                        </left>
+                        <center>
+                            <AnchorPane prefHeight="470.0" prefWidth="360.0" style="-fx-background-color: #F5F0E9; -fx-background-radius: 15;" BorderPane.alignment="CENTER">
+                                <children>
+                                    <ImageView fitHeight="61.0" fitWidth="63.0" layoutX="152.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@img/book user.png" />
+                                        </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="18.0" fitWidth="15.0" layoutX="206.0" layoutY="77.0" opacity="0.79" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@img/add.png" />
+                                        </image>
+                                    </ImageView>
+                                    <Label layoutX="97.0" layoutY="92.0" text="Create new Account" textFill="#3c507d">
+                                        <font>
+                                            <Font name="Bison Bold" size="25.0" />
+                                        </font>
+                                    </Label>
+                                    <Label layoutX="32.0" layoutY="131.0" text="Firstname" textFill="#3c507d">
+                                        <font>
+                                            <Font name="Bison Bold" size="13.0" />
+                                        </font>
+                                    </Label>
+                                    <Label layoutX="30.0" layoutY="183.0" text="Lastname" textFill="#3c507d">
+                                        <font>
+                                            <Font name="Bison Bold" size="13.0" />
+                                        </font>
+                                    </Label>
+                                    <Label layoutX="32.0" layoutY="235.0" text="Username" textFill="#3c507d">
+                                        <font>
+                                            <Font name="Bison Bold" size="13.0" />
+                                        </font>
+                                    </Label>
+                                    <Label layoutX="30.0" layoutY="285.0" text="Password" textFill="#3c507d">
+                                        <font>
+                                            <Font name="Bison Bold" size="13.0" />
+                                        </font>
+                                    </Label>
+                                    <Label layoutX="29.0" layoutY="337.0" text="Confirm password" textFill="#3c507d">
+                                        <font>
+                                            <Font name="Bison Bold" size="13.0" />
+                                        </font>
+                                    </Label>
+                                    <TextField fx:id="firstnameField" layoutX="32.0" layoutY="149.0" prefHeight="28.0" prefWidth="296.0" promptText="firstname">
+                                        <font>
+                                            <Font name="Alte Haas Grotesk" size="12.0" />
+                                        </font>
+                                        <effect>
+                                            <InnerShadow>
+                                                <color>
+                                                    <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
+                                                </color>
+                                            </InnerShadow>
+                                        </effect>
+                                    </TextField>
+                                    <TextField fx:id="lastnameField" layoutX="32.0" layoutY="201.0" prefHeight="28.0" prefWidth="296.0" promptText="lastname">
+                                        <font>
+                                            <Font name="Alte Haas Grotesk" size="12.0" />
+                                        </font>
+                                        <effect>
+                                            <InnerShadow>
+                                                <color>
+                                                    <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
+                                                </color>
+                                            </InnerShadow>
+                                        </effect>
+                                    </TextField>
+                                    <TextField fx:id="usernameField" layoutX="32.0" layoutY="252.0" prefHeight="28.0" prefWidth="296.0" promptText="username">
+                                        <font>
+                                            <Font name="Alte Haas Grotesk" size="12.0" />
+                                        </font>
+                                        <effect>
+                                            <InnerShadow>
+                                                <color>
+                                                    <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
+                                                </color>
+                                            </InnerShadow>
+                                        </effect>
+                                    </TextField>
+                                    <PasswordField fx:id="conpassField" layoutX="32.0" layoutY="358.0" prefHeight="28.0" prefWidth="296.0" promptText="confirm password">
+                                        <effect>
+                                            <InnerShadow>
+                                                <color>
+                                                    <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
+                                                </color>
+                                            </InnerShadow>
+                                        </effect>
+                                        <font>
+                                            <Font name="Alte Haas Grotesk" size="12.0" />
+                                        </font>
+                                    </PasswordField>
+                                    <PasswordField fx:id="passwordField" layoutX="32.0" layoutY="305.0" prefHeight="28.0" prefWidth="296.0" promptText="password">
+                                        <effect>
+                                            <InnerShadow>
+                                                <color>
+                                                    <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
+                                                </color>
+                                            </InnerShadow>
+                                        </effect>
+                                        <font>
+                                            <Font name="Alte Haas Grotesk" size="12.0" />
+                                        </font>
+                                    </PasswordField>
+                                    <Button fx:id="cancelButton" layoutX="237.0" layoutY="414.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="26.0" prefWidth="91.0" style="-fx-background-color: #7D8D86;" text="Cancel" textFill="#f5f0e9">
+                                        <font>
+                                            <Font name="Bison Bold" size="15.0" />
+                                        </font>
+                                    </Button>
+                                    <Button fx:id="registerButton" layoutX="32.0" layoutY="414.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="26.0" prefWidth="200.0" style="-fx-background-color: #112250;" text="Register" textFill="#f5f0e9">
+                                        <font>
+                                            <Font name="Bison Bold" size="15.0" />
+                                        </font>
+                                        <effect>
+                                            <DropShadow>
+                                                <color>
+                                                    <Color red="0.23529411852359772" green="0.3137255012989044" blue="0.4901960790157318" />
+                                                </color>
+                                            </DropShadow>
+                                        </effect>
+                                    </Button>
+                                    <Label fx:id="registerMessageLabel" alignment="CENTER" layoutX="32.0" layoutY="391.0" prefHeight="18.0" prefWidth="295.0" textFill="#112250">
+                                        <font>
+                                            <Font name="Alte Haas Grotesk" size="10.0" />
+                                        </font>
+                                    </Label>
+                                    <Label fx:id="conpassMessageLabel" layoutX="116.0" layoutY="336.0" prefHeight="18.0" prefWidth="122.0" textFill="#ff1100">
+                                        <font>
+                                            <Font name="Alte Haas Grotesk" size="9.0" />
+                                        </font>
+                                    </Label>
+                                </children>
+                            </AnchorPane>
+                        </center>
+                    </BorderPane>
+
+                </children>
+            </VBox>
+        </children>
+    </VBox>
+</AnchorPane>

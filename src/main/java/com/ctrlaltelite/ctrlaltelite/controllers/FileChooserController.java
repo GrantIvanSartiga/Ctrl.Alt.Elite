@@ -61,17 +61,21 @@ public class FileChooserController {
     }
 
     private void setupDragAndDrop() {
-        dragDropArea.setOnDragOver(event -> handleDragOver(event));
-        dragDropArea.setOnDragDropped(event -> handleDragDropped(event));
+        dragDropArea.setOnDragOver(this::handleDragOver);
+        dragDropArea.setOnDragDropped(this::handleDragDropped);
         dragDropArea.setOnDragExited(event -> {
-            dragDropArea.setStyle("-fx-border-color: #cccccc; -fx-border-width: 2; -fx-border-style: dashed; -fx-border-radius: 10; -fx-background-color: white; -fx-background-radius: 10;");
+            dragDropArea.getStyleClass().removeAll("drag-area-hover", "drag-area-exit");
+            dragDropArea.getStyleClass().add("drag-area-exit");
         });
     }
 
     private void handleDragOver(DragEvent event) {
         if (event.getDragboard().hasFiles()) {
             event.acceptTransferModes(TransferMode.COPY);
-            dragDropArea.setStyle("-fx-border-color: #4CAF50; -fx-border-width: 3; -fx-border-style: dashed; -fx-border-radius: 10; -fx-background-color: #e8f5e9; -fx-background-radius: 10;");
+            dragDropArea.getStyleClass().removeAll("drag-area-default", "drag-area-exit");
+            if (!dragDropArea.getStyleClass().contains("drag-area-hover")) {
+                dragDropArea.getStyleClass().add("drag-area-hover");
+            }
         }
         event.consume();
     }
@@ -82,15 +86,16 @@ public class FileChooserController {
 
         if (db.hasFiles()) {
             success = true;
-            List<File> files = db.getFiles();
-            for (File file : files) {
+            for (File file : db.getFiles()) {
                 uploadFile(file);
             }
         }
 
         event.setDropCompleted(success);
         event.consume();
-        dragDropArea.setStyle("-fx-border-color: #cccccc; -fx-border-width: 2; -fx-border-style: dashed; -fx-border-radius: 10; -fx-background-color: white; -fx-background-radius: 10;");
+
+        dragDropArea.getStyleClass().removeAll("drag-area-hover");
+        dragDropArea.getStyleClass().add("drag-area-exit");
     }
 
     private void uploadFile(File file) {

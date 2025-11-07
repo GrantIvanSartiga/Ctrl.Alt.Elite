@@ -221,7 +221,7 @@ public class UserCtrlAltEliteController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("fileChooser.fxml"));
             Stage stage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Scene scene = new Scene(fxmlLoader.load(), 800, 700);
             stage.setTitle("FileChooser");
             stage.setScene(scene);
             stage.setResizable(true);

@@ -8,6 +8,7 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -16,6 +17,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.IOException;
 
 public class UserCtrlAltEliteController {
     @FXML
@@ -186,6 +189,7 @@ public class UserCtrlAltEliteController {
 
     @FXML
     private void LoginUser(){
+
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
 
@@ -210,4 +214,46 @@ public class UserCtrlAltEliteController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void openLibrary() {
+        // Check if user is logged in before accessing the Library
+        if (!UserManager.isLoggedIn()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Access Denied");
+            alert.setHeaderText("Please log in first");
+            alert.setContentText("You must be logged in to access the Library.");
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            // Load the Library FXML
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("library.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+
+            // Create a new stage for the Library window
+            Stage libraryStage = new Stage();
+            libraryStage.setScene(scene);
+            libraryStage.setTitle("Ctrl+Alt+Elite - Library");
+            libraryStage.setMinWidth(600);
+            libraryStage.setMinHeight(400);
+            libraryStage.setResizable(true);
+            libraryStage.setMaximized(true);
+            libraryStage.show();
+
+//            // Close the current window (e.g., Overview)
+//            Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+//            currentStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error");
+            errorAlert.setHeaderText("Failed to open Library");
+            errorAlert.setContentText("An unexpected error occurred while loading the Library.");
+            errorAlert.showAndWait();
+        }
+    }
+
 }

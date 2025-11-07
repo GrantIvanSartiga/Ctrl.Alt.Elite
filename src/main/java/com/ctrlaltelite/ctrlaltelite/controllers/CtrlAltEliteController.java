@@ -9,6 +9,7 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -18,6 +19,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.IOException;
 
 public class CtrlAltEliteController {
     @FXML
@@ -215,6 +218,21 @@ public class CtrlAltEliteController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void openLibrary() {
+        // Check if user is logged in before accessing the Library
+        if (!UserManager.isLoggedIn()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Access Denied");
+            alert.setHeaderText("Please log in first");
+            alert.setContentText("You must be logged in to access the Library.");
+            alert.showAndWait();
+            return;
+        }
+
+    }
+
 
 
 }

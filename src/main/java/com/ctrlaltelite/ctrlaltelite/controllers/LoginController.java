@@ -47,7 +47,7 @@ public class LoginController {
 
     public void cancelButtonOnAction() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("overview-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("user-overview-view.fxml"));
 
             Stage stage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 900, 600);

@@ -1,7 +1,5 @@
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
 import com.ctrlaltelite.ctrlaltelite.FilesDatabaseConnection;
 import com.ctrlaltelite.ctrlaltelite.util.UserManager;
@@ -33,8 +31,6 @@ import org.bson.Document;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class UserCtrlAltEliteController {
@@ -66,17 +62,12 @@ public class UserCtrlAltEliteController {
     private Button fileUploadButton;
     @FXML
     private VBox fileListContainer;
-    @FXML
-    private TextField searchField;
 
     private boolean heroVisible = false;
     private boolean contentVisible = false;
-    private List<Document> allFiles = new ArrayList<>();
-    private List<Document> filteredFiles = new ArrayList<>();
 
     @FXML
     public void initialize() {
-        System.out.println("=== UserCtrlAltEliteController Initializing ===");
 
         try {
             var resource = this.getClass().getResource("/com/ctrlaltelite/ctrlaltelite/CtrlAltElite.css");
@@ -135,7 +126,6 @@ public class UserCtrlAltEliteController {
         // Button actions
         profileButton.setOnAction(actionEvent -> LoginUser());
         fileUploadButton.setOnAction(actionEvent -> openFileUpload());
-        libraryButton.setOnAction(actionEvent -> openLibrary());
 
         checkVisibility();
 
@@ -152,6 +142,7 @@ public class UserCtrlAltEliteController {
             fileListContainer.setPadding(new Insets(30));
             fileListContainer.setVisible(true);
             fileListContainer.setManaged(true);
+
             System.out.println("File list container initialized successfully");
         } else {
             System.err.println("WARNING: fileListContainer is null! Check FXML fx:id binding.");
@@ -164,39 +155,7 @@ public class UserCtrlAltEliteController {
             contentSection.setManaged(true);
         }
 
-// Setup search field BEFORE loading files
-        if (searchField != null) {
-            // This makes the search run when you press "Enter"
-            searchField.setOnAction(event -> performSearch());
-            searchField.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
-            System.out.println("Search field 'Enter' key listener added");
-        } else {
-            System.err.println("WARNING: searchField is null!");
-        }
 
-        // This makes the search run when you click the magnifying glass icon
-        if (SearchIcon != null) {
-            SearchIcon.setOnMouseClicked(event -> performSearch());
-            // Optional: Add a hover effect to show it's clickable
-            SearchIcon.setStyle("-fx-cursor: hand;");
-            System.out.println("Search icon click listener added");
-        } else {
-            System.err.println("WARNING: SearchIcon is null!");
-        }
-
-        if (searchField != null) {
-            // Runs search when you press "Enter"
-            searchField.setOnAction(event -> performSearch());
-            searchField.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
-        }
-
-        if (SearchIcon != null) {
-            // Runs search when you click the HBox (the magnifying glass area)
-            SearchIcon.setOnMouseClicked(event -> performSearch());
-            SearchIcon.setStyle("-fx-cursor: hand;");
-        }
-
-        // Load files after everything is set up
         loadUserFiles();
     }
 
@@ -385,6 +344,7 @@ public class UserCtrlAltEliteController {
             return;
         }
 
+        // Make sure containers are visible
         fileListContainer.setVisible(true);
         fileListContainer.setManaged(true);
 
@@ -405,15 +365,14 @@ public class UserCtrlAltEliteController {
                 try {
                     FindIterable<Document> files = FilesDatabaseConnection.getAllFiles();
 
-                    allFiles.clear();
-                    List<HBox> fileCards = new ArrayList<>();
+                    // Process files OUTSIDE Platform.runLater to avoid iterator issues
+                    java.util.List<HBox> fileCards = new java.util.ArrayList<>();
                     int fileCount = 0;
 
                     for (Document fileDoc : files) {
                         System.out.println("Processing file: " + fileDoc.getString("filename") +
                                 " by " + fileDoc.getString("email"));
                         try {
-                            allFiles.add(fileDoc);
                             HBox fileCard = createModernFileCard(fileDoc);
                             fileCards.add(fileCard);
                             fileCount++;
@@ -423,13 +382,10 @@ public class UserCtrlAltEliteController {
                         }
                     }
 
-                    // Initialize filtered files with all files
-                    filteredFiles.clear();
-                    filteredFiles.addAll(allFiles);
-
                     final int totalFiles = fileCount;
                     System.out.println("Total marketplace files loaded: " + totalFiles);
 
+                    // Update UI on JavaFX thread
                     Platform.runLater(() -> {
                         fileListContainer.getChildren().clear();
 
@@ -439,6 +395,7 @@ public class UserCtrlAltEliteController {
                             fileListContainer.getChildren().addAll(fileCards);
                         }
 
+                        // Force layout refresh
                         fileListContainer.requestLayout();
                     });
 
@@ -471,9 +428,11 @@ public class UserCtrlAltEliteController {
     }
 
     private HBox createModernFileCard(Document fileDoc) {
+        // Main card container - horizontal layout
         HBox card = new HBox(20);
-        card.getStyleClass().add("file-card");
+        card.getStyleClass().add("file-card");;
 
+        // Extract data from document
         String filename = fileDoc.getString("filename");
         String title = fileDoc.getString("title");
         String description = fileDoc.getString("description");
@@ -493,9 +452,11 @@ public class UserCtrlAltEliteController {
         String sellerEmail = fileDoc.getString("email");
         String fileId = fileDoc.getObjectId("_id").toString();
 
+
         VBox coverBox = new VBox(5);
         coverBox.getStyleClass().add("file-card-cover");
         coverBox.setPadding(new Insets(15));
+
 
         ImageView pdfIcon = new ImageView();
         try {
@@ -504,8 +465,9 @@ public class UserCtrlAltEliteController {
             pdfIcon.setFitHeight(100);
             pdfIcon.setPreserveRatio(true);
         } catch (Exception e) {
+
             Label fallbackIcon = new Label("📄");
-            fallbackIcon.getStyleClass().add("pdf-icon");
+            fallbackIcon.getStyleClass().add("pdf-icon");;
             coverBox.getChildren().add(fallbackIcon);
         }
 
@@ -517,9 +479,11 @@ public class UserCtrlAltEliteController {
         pdfLabel.getStyleClass().add("pdf-label");
         coverBox.getChildren().add(pdfLabel);
 
+
         VBox detailsBox = new VBox(12);
         detailsBox.setAlignment(Pos.TOP_LEFT);
         HBox.setHgrow(detailsBox, Priority.ALWAYS);
+
 
         VBox titleBox = new VBox(3);
         Label titleLabel = new Label(title != null && !title.isEmpty() ? title : "Untitled Document");
@@ -530,11 +494,15 @@ public class UserCtrlAltEliteController {
 
         titleBox.getChildren().addAll(titleLabel, filenameLabel);
 
+
         Label descriptionLabel = new Label(description != null && !description.isEmpty() ? description : "No description available");
         descriptionLabel.getStyleClass().add("file-description");
+        //descriptionLabel.setMaxWidth(450);
+
 
         HBox infoRow = new HBox(20);
         infoRow.setAlignment(Pos.CENTER_LEFT);
+
 
         HBox sellerInfo = new HBox(8);
         sellerInfo.setAlignment(Pos.CENTER_LEFT);
@@ -543,7 +511,9 @@ public class UserCtrlAltEliteController {
         String sellerName = sellerEmail != null ? sellerEmail.split("@")[0] : "Unknown";
         Label sellerText = new Label("By: " + sellerName);
         sellerText.getStyleClass().add("info-label");
+
         sellerInfo.getChildren().addAll(sellerIcon, sellerText);
+
 
         HBox sizeInfo = new HBox(8);
         sizeInfo.setAlignment(Pos.CENTER_LEFT);
@@ -552,6 +522,7 @@ public class UserCtrlAltEliteController {
         Label sizeText = new Label(formatFileSize(fileSize != null ? fileSize : 0));
         sizeText.getStyleClass().add("info-label");
         sizeInfo.getChildren().addAll(sizeIcon, sizeText);
+
 
         HBox dateInfo = new HBox(8);
         dateInfo.setAlignment(Pos.CENTER_LEFT);
@@ -563,10 +534,12 @@ public class UserCtrlAltEliteController {
 
         infoRow.getChildren().addAll(sellerInfo, sizeInfo, dateInfo);
 
+
         HBox bottomRow = new HBox(15);
         bottomRow.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(bottomRow, Priority.ALWAYS);
 
+        // Price display
         VBox priceBox = new VBox(2);
         priceBox.setAlignment(Pos.CENTER_LEFT);
         Label priceLabel = new Label("Price");
@@ -575,9 +548,11 @@ public class UserCtrlAltEliteController {
         priceValue.getStyleClass().add("price-value");
         priceBox.getChildren().addAll(priceLabel, priceValue);
 
+        // Spacer
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
+        // Action buttons
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -588,10 +563,12 @@ public class UserCtrlAltEliteController {
         Button buyButton = new Button("Buy Now");
         buyButton.getStyleClass().add("buy-button");
 
+
         String currentUser = UserManager.getCurrentUser();
         if (currentUser != null && currentUser.equals(sellerEmail)) {
             buyButton.setText("Your File");
             buyButton.setDisable(true);
+
         } else {
             buyButton.setOnAction(e -> purchaseFile(fileDoc));
         }
@@ -599,8 +576,10 @@ public class UserCtrlAltEliteController {
         buttonBox.getChildren().addAll(viewButton, buyButton);
         bottomRow.getChildren().addAll(priceBox, spacer, buttonBox);
 
+        // Add all to details box
         detailsBox.getChildren().addAll(titleBox, descriptionLabel, infoRow, bottomRow);
 
+        // Add cover and details to card
         card.getChildren().addAll(coverBox, detailsBox);
 
         return card;
@@ -619,7 +598,7 @@ public class UserCtrlAltEliteController {
         alert.setContentText(
                 "Filename: " + filename + "\n" +
                         "Description: " + (description != null ? description : "No description") + "\n" +
-                        "Price: Php" + String.format("%.2f", price != null ? price : 0.0) + "\n" +
+                        "Price: $" + String.format("%.2f", price != null ? price : 0.0) + "\n" +
                         "File ID: " + fileId
         );
 
@@ -636,6 +615,7 @@ public class UserCtrlAltEliteController {
 
     private void openPDFViewer(String fileId, String filename) {
         System.out.println("Opening PDF viewer for: " + filename + " (ID: " + fileId + ")");
+        // TODO: Implement PDF viewer
         Alert info = new Alert(Alert.AlertType.INFORMATION);
         info.setTitle("PDF Viewer");
         info.setHeaderText("Opening: " + filename);
@@ -647,6 +627,7 @@ public class UserCtrlAltEliteController {
         String title = fileDoc.getString("title");
         Double price = fileDoc.getDouble("price");
 
+        // Create custom dialog (Stage)
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("Purchase Confirmation");
@@ -657,6 +638,7 @@ public class UserCtrlAltEliteController {
         coverBox.getStyleClass().add("file-card-cover");
         coverBox.setPadding(new Insets(15));
 
+
         ImageView pdfIcon = new ImageView();
         try {
             pdfIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/ctrlaltelite/ctrlaltelite/images/ICON.png"))));
@@ -664,8 +646,9 @@ public class UserCtrlAltEliteController {
             pdfIcon.setFitHeight(100);
             pdfIcon.setPreserveRatio(true);
         } catch (Exception e) {
+
             Label fallbackIcon = new Label("📄");
-            fallbackIcon.getStyleClass().add("pdf-icon");
+            fallbackIcon.getStyleClass().add("pdf-icon");;
             coverBox.getChildren().add(fallbackIcon);
         }
 
@@ -676,6 +659,8 @@ public class UserCtrlAltEliteController {
         Label pdfLabel = new Label("PDF");
         pdfLabel.getStyleClass().add("pdf-label");
         coverBox.getChildren().add(pdfLabel);
+
+
 
         Label header = new Label("Purchase: " + (title != null ? title : "Untitled Document"));
         header.getStyleClass().add("purchase-header");
@@ -699,6 +684,7 @@ public class UserCtrlAltEliteController {
 
         cancelBtn.setOnAction(e -> dialog.close());
 
+        // Layout
         HBox buttonBox = new HBox(confirmBtn, cancelBtn);
         buttonBox.getStyleClass().add("dialog-button-box");
 
@@ -724,6 +710,7 @@ public class UserCtrlAltEliteController {
 
         dialog.setScene(scene);
 
+        // Optional fade-in animation
         FadeTransition fade = new FadeTransition(Duration.millis(300), layout);
         fade.setFromValue(0);
         fade.setToValue(1);
@@ -734,6 +721,7 @@ public class UserCtrlAltEliteController {
 
     private void processPurchase(Document fileDoc) {
         System.out.println("Processing purchase for: " + fileDoc.getString("filename"));
+        // TODO: Implement payment processing
 
         Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
         successAlert.setTitle("Purchase Successful");
@@ -770,79 +758,6 @@ public class UserCtrlAltEliteController {
 
     public void refreshFiles() {
         loadUserFiles();
-    }
-
-// In UserCtrlAltEliteController.java:
-
-    @FXML
-    private void performSearch() {
-        // *** Added null check for safety! ***
-        String searchText = searchField.getText() != null ? searchField.getText().toLowerCase().trim() : "";
-
-        if (searchText.isEmpty()) {
-            filteredFiles.clear();
-            filteredFiles.addAll(allFiles);
-        } else {
-            filteredFiles.clear();
-            for (Document file : allFiles) {
-                // *** Added null-safe checks for database fields! ***
-                String filename = file.getString("filename") != null ? file.getString("filename").toLowerCase() : "";
-                String title = file.getString("title") != null ? file.getString("title").toLowerCase() : "";
-                String description = file.getString("description") != null ? file.getString("description").toLowerCase() : "";
-
-                if (filename.contains(searchText) || title.contains(searchText) || description.contains(searchText)) {
-                    filteredFiles.add(file);
-                }
-            }
-        }
-
-        updateFileListDisplay();
-
-        // *** Added auto-scroll to show results! ***
-        if (!searchText.isEmpty() && scrollPane != null && contentSection != null) {
-            Platform.runLater(() -> {
-                // ... (smooth scrolling logic from previous response) ...
-                double contentHeight = scrollPane.getContent().getBoundsInLocal().getHeight();
-                double viewportHeight = scrollPane.getViewportBounds().getHeight();
-                double contentY = contentSection.getBoundsInParent().getMinY();
-                double maxV = Math.max(0, contentHeight - viewportHeight);
-
-                if (maxV > 0) {
-                    double targetV = Math.min(1.0, contentY / maxV);
-                    javafx.animation.KeyValue kv = new javafx.animation.KeyValue(scrollPane.vvalueProperty(), targetV);
-                    javafx.animation.KeyFrame kf = new javafx.animation.KeyFrame(Duration.millis(500), kv);
-                    javafx.animation.Timeline timeline = new javafx.animation.Timeline(kf);
-                    timeline.play();
-                }
-            });
-        }
-    }
-
-    /**
-     * Update the file list display with current filtered files
-     */
-    private void updateFileListDisplay() {
-        Platform.runLater(() -> {
-            fileListContainer.getChildren().clear();
-
-            if (filteredFiles.isEmpty()) {
-                showNoFilesMessage("No files match your search.");
-            } else {
-                List<HBox> fileCards = new ArrayList<>();
-                for (Document fileDoc : filteredFiles) {
-                    try {
-                        HBox fileCard = createModernFileCard(fileDoc);
-                        fileCards.add(fileCard);
-                    } catch (Exception e) {
-                        System.err.println("Error creating card for file: " + fileDoc.getString("filename"));
-                        e.printStackTrace();
-                    }
-                }
-                fileListContainer.getChildren().addAll(fileCards);
-            }
-
-            fileListContainer.requestLayout();
-        });
     }
 
 

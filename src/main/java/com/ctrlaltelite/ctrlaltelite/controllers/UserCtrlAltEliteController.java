@@ -2,6 +2,7 @@ package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
 import com.ctrlaltelite.ctrlaltelite.FilesDatabaseConnection;
+import com.ctrlaltelite.ctrlaltelite.util.CustomAlert;
 import com.ctrlaltelite.ctrlaltelite.util.UserManager;
 import com.jfoenix.controls.JFXButton;
 import com.mongodb.client.FindIterable;
@@ -760,5 +761,27 @@ public class UserCtrlAltEliteController {
         loadUserFiles();
     }
 
+    public void logoutUser(javafx.event.ActionEvent event) {
+        Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        CustomAlert.showConfirmation(currentStage,
+                "Logout Confirmation",
+                "Are you sure you want to log out?",
+                "You will be redirected to the homepage.",
+                confirmed -> {
+                    if (confirmed) {
+                        currentStage.close();
 
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ctrlaltelite/ctrlaltelite/overview-view.fxml"));
+                            Stage stage = new Stage();
+                            stage.setTitle("Ctrl.Alt.Elite");
+                            stage.setScene(new Scene(loader.load()));
+                            stage.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            CustomAlert.showError(null, "Error", "Cannot load homepage", e.getMessage());
+                        }
+                    }
+                });
+    }
 }

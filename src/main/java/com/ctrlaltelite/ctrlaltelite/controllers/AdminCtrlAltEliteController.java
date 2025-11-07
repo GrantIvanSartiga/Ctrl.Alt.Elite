@@ -1,14 +1,20 @@
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
+import com.ctrlaltelite.ctrlaltelite.DatabaseConnection;
 import com.jfoenix.controls.JFXButton;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -16,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.bson.Document;
 
 public class AdminCtrlAltEliteController {
     @FXML
@@ -42,8 +49,20 @@ public class AdminCtrlAltEliteController {
     private boolean heroVisible = false;
     private boolean contentVisible = false;
 
+    @FXML private TableView<User> userTable;
+    @FXML private TableColumn<User, String> idColumn;
+    @FXML private TableColumn<User, String> nameColumn;
+    @FXML private TableColumn<User, String> emailColumn;
+
+
     @FXML
     public void initialize() {
+
+        UserIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        UserNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        UserEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+        loadUsers();
 
         welcomeText.setOpacity(0);
         Text2.setOpacity(0);
@@ -183,31 +202,22 @@ public class AdminCtrlAltEliteController {
         contentSection.setOpacity(0);
         contentSection.setTranslateY(40);
     }
+    private void loadUsers() {
+        MongoCollection<Document> collection = DatabaseConnection.getCollection();
 
-    @FXML
-    private void LoginUser(){
-        try{
-            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
+        ObservableList<UserManager.User> users = FXCollections.observableArrayList();
+        FindIterable<Document> documents = collection.find();
 
-            Stage loginStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        for (Document doc : documents) {
+            String id = doc.getObjectId("_id").toString();
+            String firstName = doc.getString("first_name");
+            String lastName = doc.getString("last_name");
+            String email = doc.getString("email");
 
-            loginStage.setScene(scene);
-            loginStage.setTitle("Login");
-            loginStage.setMinWidth(600);
-            loginStage.setMinHeight(400);
-            loginStage.setResizable(true);
-            loginStage.setMaximized(true);
-
-            loginStage.show();
-
-            ((Stage) profileButton.getScene().getWindow()).close();
-
-
-
-        } catch (Exception e) {
-            System.err.println("ERROR loading login window:");
-            e.printStackTrace();
+            String fullName = firstName + " " + lastName;
+            users.add(new UserManager.User(id, fullName, email));
         }
+
+        userTable.setItems(userList);
     }
 }

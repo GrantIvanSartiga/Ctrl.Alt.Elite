@@ -40,9 +40,6 @@ public class LoginController {
     @FXML
     private TextField emailTextField;
 
-    private static final String ADMIN_USERNAME = "admin";
-    private static final String ADMIN_PASSWORD = "admin123";
-
     @FXML
     public void initialize() {
         registerButton.setOnAction(event -> createAccountForm());
@@ -56,6 +53,15 @@ public class LoginController {
         if (emailTextField.getText().isBlank() == false && passwordField.getText().isBlank() == false) {
             String email = emailTextField.getText();
             String password = passwordField.getText();
+
+            if (emailTextField.getText().equals("admin") && passwordField.getText().equals("admin123")) {
+                loginMessageLabel.setText("Admin login successful!");
+                openAdminPage();
+            }
+
+            else {
+                loginMessageLabel.setText("Invalid username or password");
+            }
 
             if (DatabaseConnection.validateLogin(email, password)) {
                 loginMessageLabel.setText("Login Successful. Welcome back!");
@@ -84,22 +90,6 @@ public class LoginController {
 
     }
 
-
-    public void validateLogin() {
-        String enteredUsername = usernameTextField.getText();
-        String enteredPassword = passwordField.getText();
-
-        // Check if admin credentials
-        if (enteredUsername.equals(ADMIN_USERNAME) && enteredPassword.equals(ADMIN_PASSWORD)) {
-            loginMessageLabel.setText("Admin login successful!");
-            openAdminPage();
-        }
-        // TODO: Add regular user authentication here when database is ready
-        else {
-            loginMessageLabel.setText("Invalid username or password");
-        }
-
-    }
         public void cancelButtonOnAction (){
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();

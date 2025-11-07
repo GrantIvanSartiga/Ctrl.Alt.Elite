@@ -17,109 +17,108 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #F5F0E9;" stylesheets="@CtrlAltEliteStyles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ctrlaltelite.ctrlaltelite.controllers.LibraryController">
 
-     <!-- HEADER -->
+    <!-- HEADER -->
 
-     <HBox prefHeight="62.0" spacing="20" style="-fx-background-color: #f5f0e9;">
-         <padding>
-             <Insets left="10" right="10" />
-         </padding>
-         <!-- LOGO -->
-         <AnchorPane fx:id="Logo" prefHeight="336.0" prefWidth="864.0">
-             <ImageView fitHeight="96.0" fitWidth="104.0" layoutX="7.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
-                 <Image url="@images/Logo.png" />
-             </ImageView>
-             <Text fill="#112250" layoutX="124.0" layoutY="38.0" text="CTRL.ALT.ELITE" wrappingWidth="150.0" AnchorPane.bottomAnchor="9.5" AnchorPane.topAnchor="18.0">
-                 <font>
-                     <Font name="Alte Haas Grotesk Bold" size="18.0" />
-                 </font>
-             </Text>
-         </AnchorPane>
+    <HBox prefHeight="62.0" spacing="20" style="-fx-background-color: #f5f0e9;">
+        <padding>
+            <Insets left="10" right="10" />
+        </padding>
+        <!-- LOGO -->
+        <AnchorPane fx:id="Logo" prefHeight="336.0" prefWidth="864.0">
+            <ImageView fitHeight="96.0" fitWidth="104.0" layoutX="7.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
+                <Image url="@images/Logo.png" />
+            </ImageView>
+            <Text fill="#112250" layoutX="124.0" layoutY="38.0" text="CTRL.ALT.ELITE" wrappingWidth="150.0" AnchorPane.bottomAnchor="9.5" AnchorPane.topAnchor="18.0">
+                <font>
+                    <Font name="Alte Haas Grotesk Bold" size="18.0" />
+                </font>
+            </Text>
+        </AnchorPane>
 
-         <!-- SEARCH AND BUTTONS -->
-         <HBox fx:id="SearchAndButtons" alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
-             <TextField prefWidth="200.0" promptText="Search..." styleClass="search-field" />
-             <JFXButton styleClass="nav-button" text="Categories" />
-             <JFXButton styleClass="nav-button" text="Home" />
-             <JFXButton styleClass="nav-button" text="Library"/>
-             <JFXButton fx:id="profileButton" styleClass="icon-button">
-             <JFXButton styleClass="nav-button" text="Logout" />
-             <graphic>
-                     <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true">
-                         <Image url="@images/ProfileIcon.png" />
-                     </ImageView>
-                 </graphic>
-             </JFXButton>
-         </HBox>
-     </HBox>
+        <!-- SEARCH AND BUTTONS -->
+        <HBox fx:id="SearchAndButtons" alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+            <TextField prefWidth="200.0" promptText="Search..." styleClass="search-field" />
+            <JFXButton styleClass="nav-button" text="Categories" />
+            <JFXButton fx:id="homeButton" styleClass="nav-button" text="Home" />
+            <JFXButton styleClass="nav-button" text="Library"/>
+            <JFXButton fx:id="profileButton" styleClass="icon-button">
+                <graphic>
+                    <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true">
+                        <Image url="@images/logout.png" />
+                    </ImageView>
+                </graphic>
+            </JFXButton>
+        </HBox>
+    </HBox>
     <VBox layoutY="64.8" prefHeight="549.0" prefWidth="1105.0" AnchorPane.bottomAnchor="-14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">
-      <children>
-      
-                 <!-- SCROLLABLE CONTENT -->
-           <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" style="-fx-background-color: transparent;">
-            <content>
-                <VBox style="-fx-background-color: #F5F0E9;">
-            
-                                <!-- SECTION 1: HERO -->
-                    <AnchorPane fx:id="heroSection" prefHeight="514.0" prefWidth="1093.0" style="-fx-background-image: url('/com/ctrlaltelite/ctrlaltelite/images/Background.png'); -fx-background-size: cover; -fx-background-position: center; -fx-background-color: #3C507D;" VBox.vgrow="ALWAYS">
-         
-                                           <ImageView fx:id="ICON" fitHeight="72.0" fitWidth="100.0" layoutX="45.0" layoutY="44.0" preserveRatio="true">
-                             <Image url="@images/ICON.png" />
-                         </ImageView>
-                         <Text fx:id="welcomeText" fill="#f5f0e9" layoutX="129.0" layoutY="89.0" text="My Library" textAlignment="CENTER">
-                             <font>
-                                 <Font name="Alte Haas Grotesk Bold" size="30.0" />
-                             </font>
-                         </Text>
-                     <FlowPane fx:id="bookContainer" layoutX="67.0" layoutY="128.0" prefHeight="438.0" prefWidth="883.0" />
-                    </AnchorPane>
-            
-                                <!-- SECTION 2: CONTENT PLACEHOLDER -->
-                    <AnchorPane fx:id="contentSection" prefHeight="1000.0" style="-fx-background-color: #f5f0e9;" VBox.vgrow="ALWAYS">
-                        <AnchorPane prefHeight="381.0" prefWidth="792.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
-                            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="773.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <padding>
-                                    <Insets top="70.0" />
-                                </padding>
-                                <VBox alignment="TOP_CENTER" prefHeight="622.0" prefWidth="792.0">
-                                    <VBox.margin>
-                                        <Insets top="50.0" />
-                                    </VBox.margin>
-                                    <AnchorPane prefHeight="619.0" prefWidth="792.0" style="-fx-background-color: linear-gradient(to bottom left, #7785a4, #3C507D, #112250); -fx-background-radius: 30;">
-                                        <children>
-                                            <VBox layoutX="23.0" layoutY="28.0" prefHeight="531.0" prefWidth="746.0" spacing="10.0" style="-fx-background-color: transparent;">
-                                                <children>
-                                                    <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
-                                                    <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
-                                                    <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
-                                                    <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
-                                                    <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
-                                                    <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
-                                                    <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
-                                                    <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
-                                                </children>
-                                            </VBox>
-                                            <ButtonBar layoutX="291.0" layoutY="569.0" prefHeight="40.0" prefWidth="130.0">
-                                                <buttons>
-                                                    <JFXButton fx:id="NextButton" text="Button" />
-                                                    <JFXButton fx:id="BackButton" text="Button" />
-                                                    <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
-                                                        <Image url="@images/Left.png" />
-                                                    </ImageView>
-                                                    <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
-                                                        <Image url="@images/Right.png" />
-                                                    </ImageView>
-            
-                                                            </buttons>
-                                            </ButtonBar>
-                                        </children>
-                                    </AnchorPane>
-                                </VBox>
-                            </VBox>
+        <children>
+
+            <!-- SCROLLABLE CONTENT -->
+            <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" style="-fx-background-color: transparent;">
+                <content>
+                    <VBox style="-fx-background-color: #F5F0E9;">
+
+                        <!-- SECTION 1: HERO -->
+                        <AnchorPane fx:id="heroSection" prefHeight="514.0" prefWidth="1093.0" style="-fx-background-image: url('/com/ctrlaltelite/ctrlaltelite/images/Background.png'); -fx-background-size: cover; -fx-background-position: center; -fx-background-color: #3C507D;" VBox.vgrow="ALWAYS">
+
+                            <ImageView fx:id="ICON" fitHeight="72.0" fitWidth="100.0" layoutX="45.0" layoutY="44.0" preserveRatio="true">
+                                <Image url="@images/ICON.png" />
+                            </ImageView>
+                            <Text fx:id="welcomeText" fill="#f5f0e9" layoutX="129.0" layoutY="89.0" text="My Library" textAlignment="CENTER">
+                                <font>
+                                    <Font name="Alte Haas Grotesk Bold" size="30.0" />
+                                </font>
+                            </Text>
+                            <FlowPane fx:id="bookContainer" layoutX="67.0" layoutY="128.0" prefHeight="438.0" prefWidth="883.0" />
                         </AnchorPane>
-                    </AnchorPane>
-                </VBox>
-            </content>
-         </ScrollPane>
-      </children>
+
+                        <!-- SECTION 2: CONTENT PLACEHOLDER -->
+                        <AnchorPane fx:id="contentSection" prefHeight="1000.0" style="-fx-background-color: #f5f0e9;" VBox.vgrow="ALWAYS">
+                            <AnchorPane prefHeight="381.0" prefWidth="792.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
+                                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="773.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <padding>
+                                        <Insets top="70.0" />
+                                    </padding>
+                                    <VBox alignment="TOP_CENTER" prefHeight="622.0" prefWidth="792.0">
+                                        <VBox.margin>
+                                            <Insets top="50.0" />
+                                        </VBox.margin>
+                                        <AnchorPane prefHeight="619.0" prefWidth="792.0" style="-fx-background-color: linear-gradient(to bottom left, #7785a4, #3C507D, #112250); -fx-background-radius: 30;">
+                                            <children>
+                                                <VBox layoutX="23.0" layoutY="28.0" prefHeight="531.0" prefWidth="746.0" spacing="10.0" style="-fx-background-color: transparent;">
+                                                    <children>
+                                                        <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
+                                                        <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
+                                                        <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
+                                                        <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
+                                                        <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
+                                                        <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
+                                                        <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
+                                                        <Pane prefHeight="112.0" prefWidth="746.0" style="-fx-background-color: F5F0E9; -fx-background-radius: 30;" />
+                                                    </children>
+                                                </VBox>
+                                                <ButtonBar layoutX="291.0" layoutY="569.0" prefHeight="40.0" prefWidth="130.0">
+                                                    <buttons>
+                                                        <JFXButton fx:id="NextButton" text="Button" />
+                                                        <JFXButton fx:id="BackButton" text="Button" />
+                                                        <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
+                                                            <Image url="@images/Left.png" />
+                                                        </ImageView>
+                                                        <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
+                                                            <Image url="@images/Right.png" />
+                                                        </ImageView>
+
+                                                    </buttons>
+                                                </ButtonBar>
+                                            </children>
+                                        </AnchorPane>
+                                    </VBox>
+                                </VBox>
+                            </AnchorPane>
+                        </AnchorPane>
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </children>
     </VBox>
 </AnchorPane>

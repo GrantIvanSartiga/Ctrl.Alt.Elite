@@ -300,7 +300,6 @@ public class UserCtrlAltEliteController {
             libraryStage.setMaximized(true);
             libraryStage.show();
 
-
             ((Stage) libraryButton.getScene().getWindow()).close();
 
         } catch (IOException e) {
@@ -308,7 +307,7 @@ public class UserCtrlAltEliteController {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Error");
             errorAlert.setHeaderText("Failed to open Library");
-            errorAlert.setContentText("An unexpected error occurred while loading the Library.");
+            errorAlert.setContentText("An unexpected error occurred while loading the Library: " + e.getMessage());
             errorAlert.showAndWait();
         }
     }

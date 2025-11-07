@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #F5F0E9;" stylesheets="@CtrlAltEliteStyles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ctrlaltelite.ctrlaltelite.controllers.RegisterController">
+<?import com.jfoenix.controls.JFXButton?>
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #F5F0E9;" stylesheets="@CtrlAltEliteStyles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ctrlaltelite.ctrlaltelite.controllers.RegisterController">
 
     <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <children>
@@ -90,47 +99,47 @@
                         <center>
                             <AnchorPane prefHeight="470.0" prefWidth="360.0" style="-fx-background-color: #F5F0E9; -fx-background-radius: 15;" BorderPane.alignment="CENTER">
                                 <children>
-                                    <ImageView fitHeight="61.0" fitWidth="63.0" layoutX="152.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="58.0" fitWidth="47.0" layoutX="154.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                                         <image>
                                             <Image url="@img/book user.png" />
                                         </image>
                                     </ImageView>
-                                    <ImageView fitHeight="18.0" fitWidth="15.0" layoutX="206.0" layoutY="77.0" opacity="0.79" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="18.0" fitWidth="15.0" layoutX="197.0" layoutY="50.0" opacity="0.79" pickOnBounds="true" preserveRatio="true">
                                         <image>
                                             <Image url="@img/add.png" />
                                         </image>
                                     </ImageView>
-                                    <Label layoutX="97.0" layoutY="92.0" text="Create new Account" textFill="#3c507d">
+                                    <Label layoutX="94.0" layoutY="71.0" text="Create new Account" textFill="#3c507d">
                                         <font>
                                             <Font name="Bison Bold" size="25.0" />
                                         </font>
                                     </Label>
-                                    <Label layoutX="32.0" layoutY="131.0" text="Firstname" textFill="#3c507d">
+                                    <Label layoutX="32.0" layoutY="119.0" text="Firstname" textFill="#3c507d">
                                         <font>
                                             <Font name="Bison Bold" size="13.0" />
                                         </font>
                                     </Label>
-                                    <Label layoutX="30.0" layoutY="183.0" text="Lastname" textFill="#3c507d">
+                                    <Label layoutX="30.0" layoutY="165.0" text="Lastname" textFill="#3c507d">
                                         <font>
                                             <Font name="Bison Bold" size="13.0" />
                                         </font>
                                     </Label>
-                                    <Label layoutX="32.0" layoutY="235.0" text="Username" textFill="#3c507d">
+                                    <Label layoutX="29.0" layoutY="215.0" text="Username" textFill="#3c507d">
                                         <font>
                                             <Font name="Bison Bold" size="13.0" />
                                         </font>
                                     </Label>
-                                    <Label layoutX="30.0" layoutY="285.0" text="Password" textFill="#3c507d">
+                                    <Label layoutX="29.0" layoutY="309.0" text="Password" textFill="#3c507d">
                                         <font>
                                             <Font name="Bison Bold" size="13.0" />
                                         </font>
                                     </Label>
-                                    <Label layoutX="29.0" layoutY="337.0" text="Confirm password" textFill="#3c507d">
+                                    <Label layoutX="29.0" layoutY="356.0" text="Confirm password" textFill="#3c507d">
                                         <font>
                                             <Font name="Bison Bold" size="13.0" />
                                         </font>
                                     </Label>
-                                    <TextField fx:id="firstnameField" layoutX="32.0" layoutY="149.0" prefHeight="28.0" prefWidth="296.0" promptText="firstname">
+                                    <TextField fx:id="firstnameField" layoutX="32.0" layoutY="137.0" prefHeight="28.0" prefWidth="296.0" promptText="firstname">
                                         <font>
                                             <Font name="Alte Haas Grotesk" size="12.0" />
                                         </font>
@@ -142,7 +151,7 @@
                                             </InnerShadow>
                                         </effect>
                                     </TextField>
-                                    <TextField fx:id="lastnameField" layoutX="32.0" layoutY="201.0" prefHeight="28.0" prefWidth="296.0" promptText="lastname">
+                                    <TextField fx:id="lastnameField" layoutX="32.0" layoutY="183.0" prefHeight="28.0" prefWidth="296.0" promptText="lastname">
                                         <font>
                                             <Font name="Alte Haas Grotesk" size="12.0" />
                                         </font>
@@ -154,7 +163,7 @@
                                             </InnerShadow>
                                         </effect>
                                     </TextField>
-                                    <TextField fx:id="usernameField" layoutX="32.0" layoutY="252.0" prefHeight="28.0" prefWidth="296.0" promptText="username">
+                                    <TextField fx:id="usernameField" layoutX="32.0" layoutY="233.0" prefHeight="28.0" prefWidth="296.0" promptText="username">
                                         <font>
                                             <Font name="Alte Haas Grotesk" size="12.0" />
                                         </font>
@@ -166,7 +175,7 @@
                                             </InnerShadow>
                                         </effect>
                                     </TextField>
-                                    <PasswordField fx:id="conpassField" layoutX="32.0" layoutY="358.0" prefHeight="28.0" prefWidth="296.0" promptText="confirm password">
+                                    <PasswordField fx:id="conpassField" layoutX="30.0" layoutY="375.0" prefHeight="28.0" prefWidth="296.0" promptText="confirm password">
                                         <effect>
                                             <InnerShadow>
                                                 <color>
@@ -178,7 +187,7 @@
                                             <Font name="Alte Haas Grotesk" size="12.0" />
                                         </font>
                                     </PasswordField>
-                                    <PasswordField fx:id="passwordField" layoutX="32.0" layoutY="305.0" prefHeight="28.0" prefWidth="296.0" promptText="password">
+                                    <PasswordField fx:id="passwordField" layoutX="31.0" layoutY="326.0" prefHeight="28.0" prefWidth="296.0" promptText="password">
                                         <effect>
                                             <InnerShadow>
                                                 <color>
@@ -207,16 +216,33 @@
                                             </DropShadow>
                                         </effect>
                                     </Button>
-                                    <Label fx:id="registerMessageLabel" alignment="CENTER" layoutX="32.0" layoutY="391.0" prefHeight="18.0" prefWidth="295.0" textFill="#112250">
+                                    <Label fx:id="registerMessageLabel" alignment="CENTER" layoutX="29.0" layoutY="103.0" prefHeight="18.0" prefWidth="295.0" textFill="#bf130d">
                                         <font>
                                             <Font name="Alte Haas Grotesk" size="10.0" />
                                         </font>
                                     </Label>
-                                    <Label fx:id="conpassMessageLabel" layoutX="116.0" layoutY="336.0" prefHeight="18.0" prefWidth="122.0" textFill="#ff1100">
+                                    <Label fx:id="conpassMessageLabel" layoutX="115.0" layoutY="355.0" prefHeight="18.0" prefWidth="122.0" textFill="#ff1100">
                                         <font>
                                             <Font name="Alte Haas Grotesk" size="9.0" />
                                         </font>
                                     </Label>
+                           <Label layoutX="29.0" layoutY="264.0" text="EMAIL" textFill="#3c507d">
+                              <font>
+                                 <Font name="Bison Bold" size="13.0" />
+                              </font>
+                           </Label>
+                           <TextField fx:id="emailField" layoutX="31.0" layoutY="282.0" prefHeight="28.0" prefWidth="296.0" promptText="email">
+                              <font>
+                                 <Font name="Alte Haas Grotesk" size="12.0" />
+                              </font>
+                              <effect>
+                                 <InnerShadow>
+                                    <color>
+                                       <Color red="0.43921568989753723" green="0.5568627715110779" blue="0.7882353067398071" />
+                                    </color>
+                                 </InnerShadow>
+                              </effect>
+                           </TextField>
                                 </children>
                             </AnchorPane>
                         </center>

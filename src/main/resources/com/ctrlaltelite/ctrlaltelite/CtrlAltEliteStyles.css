@@ -82,6 +82,7 @@
 }
 .drag-area-default {
     -fx-background-color: #F5F0E940;
+    -fx-background-radius: 20;
     -fx-border-color: #E0C58F;
     -fx-border-width: 4;
     -fx-border-radius: 20;
@@ -89,11 +90,19 @@
 }
 
 .drag-area-hover {
-    -fx-border-color: #4CAF50;
-    -fx-background-color: #e8f5e9;
+    -fx-border-color: #3c507d;
+    -fx-border-width: 4;
+    -fx-border-radius: 20;
+    -fx-border-style: dashed;
+    -fx-background-color: rgba(121, 141, 201, 0.6);
+    -fx-background-radius: 20;
 }
 
 .drag-area-exit {
-    -fx-border-color: #E0C58F;
     -fx-background-color: #F5F0E940;
+    -fx-background-radius: 20;
+    -fx-border-color: #E0C58F;
+    -fx-border-width: 4;
+    -fx-border-radius: 20;
+    -fx-border-style: dashed;
 }

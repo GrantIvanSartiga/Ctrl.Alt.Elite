@@ -5,7 +5,7 @@ package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
 import com.ctrlaltelite.ctrlaltelite.DatabaseConnection;
-import com.mongodb.client.MongoDatabase;
+import com.ctrlaltelite.ctrlaltelite.util.UserManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

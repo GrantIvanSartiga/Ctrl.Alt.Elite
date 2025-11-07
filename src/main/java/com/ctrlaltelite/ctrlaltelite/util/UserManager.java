@@ -1,7 +1,7 @@
 
 
 
-package com.ctrlaltelite.ctrlaltelite.controllers;
+package com.ctrlaltelite.ctrlaltelite.util;
 
 public class UserManager {
     private static String currentUser;

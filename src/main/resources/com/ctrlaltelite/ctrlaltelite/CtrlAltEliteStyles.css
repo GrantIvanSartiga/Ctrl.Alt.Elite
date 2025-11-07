@@ -18,6 +18,7 @@
 
 .scroll-bar .thumb:hover {
     -fx-background-color: #E0C58F;
+    -fx-cursor: hand;
 
 }
 
@@ -71,6 +72,7 @@
 .icon-button:hover {
     -fx-background-color: rgba(60, 80, 125, 0.1);
     -fx-background-radius: 50%;
+    -fx-cursor: hand;
 }
 
 
@@ -203,6 +205,7 @@
 .view-button:hover {
     -fx-background-color: #112250;
     -fx-text-fill: #F5F0E9;
+    -fx-cursor: hand;
 }
 
 .view-button:pressed {
@@ -261,13 +264,13 @@
 .purchase-price {
     -fx-font-family:"Bison Bold";
     -fx-font-size: 14px;
-    -fx-text-fill: #444;
+    -fx-text-fill: #112250;
 }
 
 .purchase-message {
     -fx-font-family:"Bison Bold";
     -fx-font-size: 13px;
-    -fx-text-fill: #555;
+    -fx-text-fill: #112250;
 }
 
 .confirm-button {
@@ -281,6 +284,7 @@
 
 .confirm-button:hover {
     -fx-background-color: #3c507d;
+    -fx-cursor: hand;
 }
 
 .cancel-button {
@@ -294,9 +298,74 @@
 
 .cancel-button:hover {
     -fx-background-color: #f1ede9;
+    -fx-cursor: hand;
 }
 
 .dialog-button-box {
     -fx-spacing: 10;
     -fx-alignment: center;
+}
+
+/* Delete Dialog Styles */
+.delete-dialog-layout {
+    -fx-background-color: #f5f0e9;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color: #112250;
+    -fx-border-width: 3;
+    -fx-padding: 25;
+    -fx-spacing: 15;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.3, 0, 3);
+}
+
+.delete-dialog-title {
+    -fx-font-size: 18px;
+    -fx-font-family:"Bison Bold";
+    -fx-text-fill: #112250;
+}
+
+.delete-dialog-message {
+    -fx-font-family:"Bison Bold";
+    -fx-font-size: 14px;
+    -fx-text-fill: #112250;
+    -fx-wrap-text: true;
+}
+
+.delete-dialog-button-box {
+    -fx-spacing: 15;
+}
+
+.delete-dialog-delete-btn {
+    -fx-background-color: #E63946;
+    -fx-text-fill: #f5f0e9;
+    -fx-font-family:"Bison Bold";
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+}
+
+.delete-dialog-delete-btn:hover {
+    -fx-background-color: #D62828;
+}
+
+.delete-dialog-delete-btn:pressed {
+    -fx-background-color: #C41E3A;
+}
+
+.delete-dialog-cancel-btn {
+    -fx-background-color: #6C757D;
+    -fx-text-fill: #f5f0e9;
+    -fx-font-family:"Bison Bold";
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+}
+
+.delete-dialog-cancel-btn:hover {
+    -fx-background-color: #5A6268;
+}
+
+.delete-dialog-cancel-btn:pressed {
+    -fx-background-color: #4E555B;
 }

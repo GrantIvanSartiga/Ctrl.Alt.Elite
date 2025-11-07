@@ -90,10 +90,27 @@ public class LoginController {
 
     }
 
-        public void cancelButtonOnAction (){
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.close();
+    public void cancelButtonOnAction() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("user-overview-view.fxml"));
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+
+            stage.setScene(scene);
+            stage.setTitle("CtrlAltElite");
+            stage.setMinWidth(600);
+            stage.setMinHeight(400);
+            stage.setResizable(true);
+            stage.setMaximized(true);
+            stage.show();
+
+            ((Stage) cancelButton.getScene().getWindow()).close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
 
     private void openAdminPage() {

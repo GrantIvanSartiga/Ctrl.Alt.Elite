@@ -1,7 +1,7 @@
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
-import com.ctrlaltelite.ctrlaltelite.Launcher;
+import com.ctrlaltelite.ctrlaltelite.util.UserManager;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -19,8 +19,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.io.IOException;
 
 public class CtrlAltEliteController {
     @FXML

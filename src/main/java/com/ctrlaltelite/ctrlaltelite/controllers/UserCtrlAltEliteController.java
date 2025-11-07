@@ -1,6 +1,7 @@
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
+import com.ctrlaltelite.ctrlaltelite.util.UserManager;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -9,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -41,6 +43,8 @@ public class UserCtrlAltEliteController {
     private AnchorPane heroSection;
     @FXML
     private AnchorPane contentSection;
+    @FXML
+    private Button fileUploadButton;
 
     private boolean heroVisible = false;
     private boolean contentVisible = false;
@@ -87,6 +91,7 @@ public class UserCtrlAltEliteController {
 
 
         profileButton.setOnAction(actionEvent -> LoginUser());
+        fileUploadButton.setOnAction(actionEvent -> openFileUpload());
 
 
         checkVisibility();
@@ -253,6 +258,34 @@ public class UserCtrlAltEliteController {
             errorAlert.setHeaderText("Failed to open Library");
             errorAlert.setContentText("An unexpected error occurred while loading the Library.");
             errorAlert.showAndWait();
+        }
+
+
+    }
+
+    private void openFileUpload(){
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("fileChooser.fxml"));
+
+            Stage loginStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 900, 700);
+
+            loginStage.setScene(scene);
+            loginStage.setTitle("Ctrl.Alt.Elite");
+            loginStage.setMinWidth(600);
+            loginStage.setMinHeight(400);
+            loginStage.setResizable(true);
+            loginStage.setMaximized(true);
+
+            loginStage.show();
+
+            ((Stage) profileButton.getScene().getWindow()).close();
+
+
+
+        } catch (Exception e) {
+            System.err.println("ERROR loading login window:");
+            e.printStackTrace();
         }
     }
 

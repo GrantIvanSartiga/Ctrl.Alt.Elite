@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
 ////        MongoDatabase db = client.getDatabase("Users");
 ////        MongoCollection<Document> books = db.getCollection("purchased_notes");
 ////
-////        String currentUser = com.ctrlaltelite.ctrlaltelite.controllers.UserManager.getCurrentUser();
+////        String currentUser = com.ctrlaltelite.ctrlaltelite.util.UserManager.getCurrentUser();
 ////        FindIterable<Document> purchasedBooks = books.find(Filters.in("purchasedBy", currentUser));
 ////
 ////        for (Document doc : purchasedBooks) {

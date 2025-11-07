@@ -16,6 +16,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -28,9 +29,11 @@ import org.bson.Document;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class UserCtrlAltEliteController {
-    private static final DateTimeFormatter DATE_FORMATTER =DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
+
     @FXML
     private JFXButton profileButton;
     @FXML
@@ -38,7 +41,7 @@ public class UserCtrlAltEliteController {
     @FXML
     private ImageView ICON;
     @FXML
-    private Pane Logo;
+    private AnchorPane Logo;
     @FXML
     private Text Text2;
     @FXML
@@ -61,7 +64,7 @@ public class UserCtrlAltEliteController {
 
     @FXML
     public void initialize() {
-
+        // Initial opacity and position setup
         welcomeText.setOpacity(0);
         Text2.setOpacity(0);
         ICON.setOpacity(0);
@@ -74,7 +77,7 @@ public class UserCtrlAltEliteController {
         SearchIcon.setTranslateY(80);
         contentSection.setTranslateY(40);
 
-
+        // Animations
         TranslateTransition slideSearchAndButtons = new TranslateTransition(Duration.seconds(1), SearchAndButtons);
         slideSearchAndButtons.setFromX(50);
         slideSearchAndButtons.setToX(0);
@@ -97,26 +100,42 @@ public class UserCtrlAltEliteController {
         logoAnim.play();
         buttonsAnim.play();
 
+        // Scroll listener
         scrollPane.vvalueProperty().addListener((obs, oldVal, newVal) -> checkVisibility());
 
-
+        // Button actions
         profileButton.setOnAction(actionEvent -> LoginUser());
         fileUploadButton.setOnAction(actionEvent -> openFileUpload());
 
-
         checkVisibility();
 
+        // Configure scroll pane
         if (scrollPane != null) {
             scrollPane.setFitToWidth(true);
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         }
 
-        // Set alignment for the container to top
-        fileListContainer.setAlignment(Pos.TOP_CENTER);
-        fileListContainer.setSpacing(15);
-        fileListContainer.setPadding(new Insets(20));
+        // Configure file list container
+        if (fileListContainer != null) {
+            fileListContainer.setAlignment(Pos.TOP_CENTER);
+            fileListContainer.setSpacing(20);
+            fileListContainer.setPadding(new Insets(30));
+            fileListContainer.setVisible(true);
+            fileListContainer.setManaged(true);
 
-        // Load files from database
+            System.out.println("File list container initialized successfully");
+        } else {
+            System.err.println("WARNING: fileListContainer is null! Check FXML fx:id binding.");
+        }
+
+        if (contentSection != null) {
+            contentSection.setOpacity(1);
+            contentSection.setTranslateY(0);
+            contentSection.setVisible(true);
+            contentSection.setManaged(true);
+        }
+
+
         loadUserFiles();
     }
 
@@ -125,7 +144,7 @@ public class UserCtrlAltEliteController {
         double contentHeight = scrollPane.getContent().getBoundsInLocal().getHeight();
         double scrollY = scrollPane.getVvalue() * (contentHeight - viewportHeight);
 
-
+        // Hero section visibility
         double heroY = heroSection.getBoundsInParent().getMinY();
         double heroBottom = heroSection.getBoundsInParent().getMaxY();
         boolean heroInView = heroBottom > scrollY && heroY < scrollY + viewportHeight;
@@ -138,7 +157,7 @@ public class UserCtrlAltEliteController {
             heroVisible = false;
         }
 
-
+        // Content section visibility
         double contentY = contentSection.getBoundsInParent().getMinY();
         boolean contentInView = contentY < scrollY + viewportHeight - 150;
 
@@ -151,9 +170,7 @@ public class UserCtrlAltEliteController {
         }
     }
 
-
     private void playHeroAnimation() {
-
         FadeTransition fadeWelcome = new FadeTransition(Duration.seconds(2), welcomeText);
         fadeWelcome.setFromValue(0);
         fadeWelcome.setToValue(1);
@@ -188,7 +205,6 @@ public class UserCtrlAltEliteController {
     }
 
     private void resetHeroElements() {
-
         welcomeText.setOpacity(0);
         Text2.setOpacity(0);
         ICON.setOpacity(0);
@@ -216,9 +232,8 @@ public class UserCtrlAltEliteController {
     }
 
     @FXML
-    private void LoginUser(){
-
-        try{
+    private void LoginUser() {
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("overview-view.fxml"));
 
             Stage loginStage = new Stage();
@@ -235,8 +250,6 @@ public class UserCtrlAltEliteController {
 
             ((Stage) profileButton.getScene().getWindow()).close();
 
-
-
         } catch (Exception e) {
             System.err.println("ERROR loading login window:");
             e.printStackTrace();
@@ -245,7 +258,6 @@ public class UserCtrlAltEliteController {
 
     @FXML
     private void openLibrary() {
-        // Check if user is logged in before accessing the Library
         if (!UserManager.isLoggedIn()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Access Denied");
@@ -256,11 +268,9 @@ public class UserCtrlAltEliteController {
         }
 
         try {
-            // Load the Library FXML
             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("library.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
 
-            // Create a new stage for the Library window
             Stage libraryStage = new Stage();
             libraryStage.setScene(scene);
             libraryStage.setTitle("Ctrl+Alt+Elite - Library");
@@ -270,10 +280,6 @@ public class UserCtrlAltEliteController {
             libraryStage.setMaximized(true);
             libraryStage.show();
 
-//            // Close the current window (e.g., Overview)
-//            Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-//            currentStage.close();
-
         } catch (IOException e) {
             e.printStackTrace();
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -282,69 +288,103 @@ public class UserCtrlAltEliteController {
             errorAlert.setContentText("An unexpected error occurred while loading the Library.");
             errorAlert.showAndWait();
         }
-
-
     }
 
-    private void openFileUpload(){
-        try{
+    private void openFileUpload() {
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("fileChooser.fxml"));
 
-            Stage loginStage = new Stage();
+            Stage uploadStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 900, 700);
 
-            loginStage.setScene(scene);
-            loginStage.setTitle("Ctrl.Alt.Elite");
-            loginStage.setMinWidth(600);
-            loginStage.setMinHeight(400);
-            loginStage.setResizable(true);
-            loginStage.setMaximized(true);
+            uploadStage.setScene(scene);
+            uploadStage.setTitle("Upload File - Ctrl.Alt.Elite");
+            uploadStage.setMinWidth(600);
+            uploadStage.setMinHeight(400);
+            uploadStage.setResizable(true);
+            uploadStage.setMaximized(true);
 
-            loginStage.show();
+            uploadStage.show();
 
-            ((Stage) profileButton.getScene().getWindow()).close();
-
-
+            ((Stage) fileUploadButton.getScene().getWindow()).close();
 
         } catch (Exception e) {
-            System.err.println("ERROR loading login window:");
+            System.err.println("ERROR loading file upload window:");
             e.printStackTrace();
         }
     }
 
     private void loadUserFiles() {
-        String currentUserEmail = UserManager.getCurrentUser();
+        System.out.println("=== Loading Marketplace Files (All Users) ===");
 
-        if (currentUserEmail == null || currentUserEmail.isEmpty()) {
-            showNoFilesMessage("Please log in to view your files");
+        if (fileListContainer == null) {
+            System.err.println("CRITICAL ERROR: fileListContainer is null!");
             return;
         }
 
+        // Make sure containers are visible
+        fileListContainer.setVisible(true);
+        fileListContainer.setManaged(true);
+
         // Show loading indicator
-        Label loadingLabel = new Label("Loading files...");
-        loadingLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #757575;");
-        fileListContainer.getChildren().add(loadingLabel);
+        Platform.runLater(() -> {
+            fileListContainer.getChildren().clear();
+            Label loadingLabel = new Label("Loading study materials...");
+            loadingLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #F5F0E9; -fx-font-weight: bold;");
+            fileListContainer.getChildren().add(loadingLabel);
+        });
 
         // Load files in background thread
         Task<Void> loadTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                FindIterable<Document> files = FilesDatabaseConnection.getUserFiles(currentUserEmail);
+                System.out.println("Fetching ALL files from database...");
 
-                Platform.runLater(() -> {
-                    fileListContainer.getChildren().clear();
+                try {
+                    FindIterable<Document> files = FilesDatabaseConnection.getAllFiles();
 
+                    // Process files OUTSIDE Platform.runLater to avoid iterator issues
+                    java.util.List<HBox> fileCards = new java.util.ArrayList<>();
                     int fileCount = 0;
+
                     for (Document fileDoc : files) {
-                        VBox fileCard = createFileCard(fileDoc);
-                        fileListContainer.getChildren().add(fileCard);
-                        fileCount++;
+                        System.out.println("Processing file: " + fileDoc.getString("filename") +
+                                " by " + fileDoc.getString("email"));
+                        try {
+                            HBox fileCard = createModernFileCard(fileDoc);
+                            fileCards.add(fileCard);
+                            fileCount++;
+                        } catch (Exception e) {
+                            System.err.println("Error creating card for file: " + fileDoc.getString("filename"));
+                            e.printStackTrace();
+                        }
                     }
 
-                    if (fileCount == 0) {
-                        showNoFilesMessage("No files uploaded yet");
-                    }
-                });
+                    final int totalFiles = fileCount;
+                    System.out.println("Total marketplace files loaded: " + totalFiles);
+
+                    // Update UI on JavaFX thread
+                    Platform.runLater(() -> {
+                        fileListContainer.getChildren().clear();
+
+                        if (totalFiles == 0) {
+                            showNoFilesMessage("No study materials available yet. Be the first to upload!");
+                        } else {
+                            fileListContainer.getChildren().addAll(fileCards);
+                        }
+
+                        // Force layout refresh
+                        fileListContainer.requestLayout();
+                    });
+
+                } catch (Exception e) {
+                    System.err.println("Error fetching files from database:");
+                    e.printStackTrace();
+                    Platform.runLater(() -> {
+                        fileListContainer.getChildren().clear();
+                        showNoFilesMessage("Error loading marketplace: " + e.getMessage());
+                    });
+                }
 
                 return null;
             }
@@ -354,6 +394,7 @@ public class UserCtrlAltEliteController {
                 Platform.runLater(() -> {
                     fileListContainer.getChildren().clear();
                     showNoFilesMessage("Error loading files: " + getException().getMessage());
+                    System.err.println("Failed to load files:");
                     getException().printStackTrace();
                 });
             }
@@ -363,21 +404,21 @@ public class UserCtrlAltEliteController {
         loadThread.setDaemon(true);
         loadThread.start();
     }
-    private VBox createFileCard(Document fileDoc) {
 
-        VBox card = new VBox(12);
-        card.setMaxWidth(600); // Fixed max width
-        card.setPrefWidth(600);
-        card.setMinWidth(600);
-        card.setAlignment(Pos.TOP_LEFT);
+    private HBox createModernFileCard(Document fileDoc) {
+        // Main card container - horizontal layout
+        HBox card = new HBox(20);
+        card.setMaxWidth(700);
+        card.setPrefWidth(700);
+        card.setAlignment(Pos.CENTER_LEFT);
         card.setPadding(new Insets(20));
         card.setStyle(
-                "-fx-background-color: #F5F0E9; " +
+                "-fx-background-color: #FFFFFF; " +
                         "-fx-border-color: #112250; " +
                         "-fx-border-width: 2; " +
-                        "-fx-border-radius: 10; " +
-                        "-fx-background-radius: 10; " +
-                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);"
+                        "-fx-border-radius: 15; " +
+                        "-fx-background-radius: 15; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(17,34,80,0.3), 10, 0, 0, 4);"
         );
 
         // Extract data from document
@@ -386,220 +427,334 @@ public class UserCtrlAltEliteController {
         String description = fileDoc.getString("description");
         Double price = fileDoc.getDouble("price");
         Long fileSize = fileDoc.getLong("file_size");
-        LocalDateTime uploadDate = fileDoc.get("upload_date", LocalDateTime.class);
+        Object uploadObj = fileDoc.get("upload_date");
+        LocalDateTime uploadDate = null;
+
+        if (uploadObj instanceof java.util.Date) {
+            uploadDate = ((java.util.Date) uploadObj).toInstant()
+                    .atZone(java.time.ZoneId.systemDefault())
+                    .toLocalDateTime();
+        } else if (uploadObj instanceof LocalDateTime) {
+            uploadDate = (LocalDateTime) uploadObj;
+        }
+
+        String sellerEmail = fileDoc.getString("email");
         String fileId = fileDoc.getObjectId("_id").toString();
 
-        // Header row with icon and title
-        HBox headerRow = new HBox(15);
-        headerRow.setAlignment(Pos.CENTER_LEFT);
+        // LEFT SIDE: PDF Cover Preview
+        VBox coverBox = new VBox(5);
+        coverBox.setAlignment(Pos.CENTER);
+        coverBox.setPrefWidth(140);
+        coverBox.setMinWidth(140);
+        coverBox.setMaxWidth(140);
+        coverBox.setStyle(
+                "-fx-background-color: linear-gradient(to bottom, #3C507D, #112250); " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-border-color: #112250; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-border-radius: 10;"
+        );
+        coverBox.setPadding(new Insets(15));
 
-        Label iconLabel = new Label("📄");
-        iconLabel.setFont(Font.font(36));
-        iconLabel.setStyle("-fx-text-fill: #112250;");
+        // PDF Icon
+        ImageView pdfIcon = new ImageView();
+        try {
+            pdfIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/ctrlaltelite/ctrlaltelite/images/ICON.png"))));
+            pdfIcon.setFitWidth(100);
+            pdfIcon.setFitHeight(100);
+            pdfIcon.setPreserveRatio(true);
+        } catch (Exception e) {
+            // Fallback to emoji if image not found
+            Label fallbackIcon = new Label("📄");
+            fallbackIcon.setFont(Font.font(60));
+            fallbackIcon.setStyle("-fx-text-fill: #F5F0E9;");
+            coverBox.getChildren().add(fallbackIcon);
+        }
 
-        VBox titleBox = new VBox(5);
-        titleBox.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(titleBox, Priority.ALWAYS);
+        if (pdfIcon.getImage() != null) {
+            coverBox.getChildren().add(pdfIcon);
+        }
 
-        Label titleLabel = new Label(title != null ? title : "Untitled");
-        titleLabel.setFont(Font.font("System", FontWeight.BOLD, 16));
+        Label pdfLabel = new Label("PDF");
+        pdfLabel.setFont(Font.font("System", FontWeight.BOLD, 12));
+        pdfLabel.setStyle("-fx-text-fill: #F5F0E9;");
+        coverBox.getChildren().add(pdfLabel);
+
+        // RIGHT SIDE: File Details
+        VBox detailsBox = new VBox(12);
+        detailsBox.setAlignment(Pos.TOP_LEFT);
+        HBox.setHgrow(detailsBox, Priority.ALWAYS);
+
+        // Title and filename
+        VBox titleBox = new VBox(3);
+        Label titleLabel = new Label(title != null && !title.isEmpty() ? title : "Untitled Document");
+        titleLabel.setFont(Font.font("System", FontWeight.BOLD, 20));
         titleLabel.setStyle("-fx-text-fill: #112250;");
         titleLabel.setWrapText(true);
-        titleLabel.setMaxWidth(450);
 
         Label filenameLabel = new Label(filename);
         filenameLabel.setFont(Font.font(12));
-        filenameLabel.setStyle("-fx-text-fill: #757575;");
+        filenameLabel.setStyle("-fx-text-fill: #7785a4;");
 
         titleBox.getChildren().addAll(titleLabel, filenameLabel);
 
-        headerRow.getChildren().addAll(iconLabel, titleBox);
+        // Description
+        Label descriptionLabel = new Label(description != null && !description.isEmpty() ? description : "No description available");
+        descriptionLabel.setFont(Font.font(14));
+        descriptionLabel.setStyle("-fx-text-fill: #424242;");
+        descriptionLabel.setWrapText(true);
+        descriptionLabel.setMaxWidth(450);
 
-        // Description section
-        VBox descriptionBox = new VBox(5);
-        descriptionBox.setAlignment(Pos.TOP_LEFT);
-
-        Label descLabel = new Label("Description:");
-        descLabel.setFont(Font.font("System", FontWeight.BOLD, 12));
-        descLabel.setStyle("-fx-text-fill: #112250;");
-
-        Label descriptionText = new Label(description != null ? description : "No description");
-        descriptionText.setFont(Font.font(13));
-        descriptionText.setStyle("-fx-text-fill: #424242;");
-        descriptionText.setWrapText(true);
-        descriptionText.setMaxWidth(550);
-
-        descriptionBox.getChildren().addAll(descLabel, descriptionText);
-
-        // Info row with price, size, and date
+        // Info row (seller, size and date)
         HBox infoRow = new HBox(20);
         infoRow.setAlignment(Pos.CENTER_LEFT);
-        infoRow.setPadding(new Insets(10, 0, 0, 0));
 
-        // Price
-        VBox priceBox = new VBox(3);
-        priceBox.setAlignment(Pos.TOP_LEFT);
+        // *** NEW: Seller info ***
+        HBox sellerInfo = new HBox(8);
+        sellerInfo.setAlignment(Pos.CENTER_LEFT);
+        Label sellerIcon = new Label("👤");
+        sellerIcon.setFont(Font.font(16));
+        String sellerName = sellerEmail != null ? sellerEmail.split("@")[0] : "Unknown";
+        Label sellerText = new Label("By: " + sellerName);
+        sellerText.setFont(Font.font("System", FontWeight.NORMAL, 13));
+        sellerText.setStyle("-fx-text-fill: #757575;");
+        sellerInfo.getChildren().addAll(sellerIcon, sellerText);
+
+        // File size
+        HBox sizeInfo = new HBox(8);
+        sizeInfo.setAlignment(Pos.CENTER_LEFT);
+        Label sizeIcon = new Label("📦");
+        sizeIcon.setFont(Font.font(16));
+        Label sizeText = new Label(formatFileSize(fileSize != null ? fileSize : 0));
+        sizeText.setFont(Font.font("System", FontWeight.NORMAL, 13));
+        sizeText.setStyle("-fx-text-fill: #757575;");
+        sizeInfo.getChildren().addAll(sizeIcon, sizeText);
+
+        // Upload date
+        HBox dateInfo = new HBox(8);
+        dateInfo.setAlignment(Pos.CENTER_LEFT);
+        Label dateIcon = new Label("📅");
+        dateIcon.setFont(Font.font(16));
+        Label dateText = new Label(uploadDate != null ? uploadDate.format(DATE_FORMATTER) : "Unknown");
+        dateText.setFont(Font.font("System", FontWeight.NORMAL, 13));
+        dateText.setStyle("-fx-text-fill: #757575;");
+        dateInfo.getChildren().addAll(dateIcon, dateText);
+
+        infoRow.getChildren().addAll(sellerInfo, sizeInfo, dateInfo);
+
+        // Bottom row: Price and Buttons
+        HBox bottomRow = new HBox(15);
+        bottomRow.setAlignment(Pos.CENTER_LEFT);
+        HBox.setHgrow(bottomRow, Priority.ALWAYS);
+
+        // Price display
+        VBox priceBox = new VBox(2);
+        priceBox.setAlignment(Pos.CENTER_LEFT);
         Label priceLabel = new Label("Price");
-        priceLabel.setFont(Font.font(10));
+        priceLabel.setFont(Font.font(11));
         priceLabel.setStyle("-fx-text-fill: #757575;");
         Label priceValue = new Label(String.format("$%.2f", price != null ? price : 0.0));
-        priceValue.setFont(Font.font("System", FontWeight.BOLD, 14));
+        priceValue.setFont(Font.font("System", FontWeight.BOLD, 24));
         priceValue.setStyle("-fx-text-fill: #4CAF50;");
         priceBox.getChildren().addAll(priceLabel, priceValue);
 
-        // File size
-        VBox sizeBox = new VBox(3);
-        sizeBox.setAlignment(Pos.TOP_LEFT);
-        Label sizeLabel = new Label("Size");
-        sizeLabel.setFont(Font.font(10));
-        sizeLabel.setStyle("-fx-text-fill: #757575;");
-        Label sizeValue = new Label(formatFileSize(fileSize != null ? fileSize : 0));
-        sizeValue.setFont(Font.font("System", FontWeight.BOLD, 12));
-        sizeValue.setStyle("-fx-text-fill: #112250;");
-        sizeBox.getChildren().addAll(sizeLabel, sizeValue);
+        // Spacer
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        // Upload date
-        VBox dateBox = new VBox(3);
-        dateBox.setAlignment(Pos.TOP_LEFT);
-        Label dateLabel = new Label("Uploaded");
-        dateLabel.setFont(Font.font(10));
-        dateLabel.setStyle("-fx-text-fill: #757575;");
-        Label dateValue = new Label(uploadDate != null ? uploadDate.format(DATE_FORMATTER) : "Unknown");
-        dateValue.setFont(Font.font(11));
-        dateValue.setStyle("-fx-text-fill: #112250;");
-        dateBox.getChildren().addAll(dateLabel, dateValue);
+        // Action buttons
+        HBox buttonBox = new HBox(10);
+        buttonBox.setAlignment(Pos.CENTER_RIGHT);
 
-        infoRow.getChildren().addAll(priceBox, sizeBox, dateBox);
-
-        // Action buttons row
-        HBox buttonRow = new HBox(10);
-        buttonRow.setAlignment(Pos.CENTER_RIGHT);
-        buttonRow.setPadding(new Insets(10, 0, 0, 0));
-
-        Button viewButton = new Button("View");
+        Button viewButton = new Button("View Details");
+        viewButton.setPrefWidth(120);
         viewButton.setStyle(
-                "-fx-background-color: #112250; " +
-                        "-fx-text-fill: white; " +
+                "-fx-background-color: transparent; " +
+                        "-fx-text-fill: #112250; " +
                         "-fx-font-weight: bold; " +
-                        "-fx-padding: 8 20; " +
+                        "-fx-font-size: 13px; " +
+                        "-fx-padding: 10 20; " +
                         "-fx-cursor: hand; " +
-                        "-fx-background-radius: 5;"
+                        "-fx-border-color: #112250; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-border-radius: 8; " +
+                        "-fx-background-radius: 8;"
         );
         viewButton.setOnMouseEntered(e ->
-                viewButton.setStyle(
-                        "-fx-background-color: #1a3366; " +
-                                "-fx-text-fill: white; " +
-                                "-fx-font-weight: bold; " +
-                                "-fx-padding: 8 20; " +
-                                "-fx-cursor: hand; " +
-                                "-fx-background-radius: 5;"
-                )
-        );
-        viewButton.setOnMouseExited(e ->
                 viewButton.setStyle(
                         "-fx-background-color: #112250; " +
                                 "-fx-text-fill: white; " +
                                 "-fx-font-weight: bold; " +
-                                "-fx-padding: 8 20; " +
+                                "-fx-font-size: 13px; " +
+                                "-fx-padding: 10 20; " +
                                 "-fx-cursor: hand; " +
-                                "-fx-background-radius: 5;"
+                                "-fx-border-color: #112250; " +
+                                "-fx-border-width: 2; " +
+                                "-fx-border-radius: 8; " +
+                                "-fx-background-radius: 8;"
                 )
         );
-        viewButton.setOnAction(e -> viewFile(fileId, filename));
+        viewButton.setOnMouseExited(e ->
+                viewButton.setStyle(
+                        "-fx-background-color: transparent; " +
+                                "-fx-text-fill: #112250; " +
+                                "-fx-font-weight: bold; " +
+                                "-fx-font-size: 13px; " +
+                                "-fx-padding: 10 20; " +
+                                "-fx-cursor: hand; " +
+                                "-fx-border-color: #112250; " +
+                                "-fx-border-width: 2; " +
+                                "-fx-border-radius: 8; " +
+                                "-fx-background-radius: 8;"
+                )
+        );
+        viewButton.setOnAction(e -> viewFileDetails(fileDoc));
 
-//        Button deleteButton = new Button("Delete");
-//        deleteButton.setStyle(
-//                "-fx-background-color: transparent; " +
-//                        "-fx-text-fill: #f44336; " +
-//                        "-fx-font-weight: bold; " +
-//                        "-fx-padding: 8 20; " +
-//                        "-fx-cursor: hand; " +
-//                        "-fx-border-color: #f44336; " +
-//                        "-fx-border-width: 2; " +
-//                        "-fx-border-radius: 5; " +
-//                        "-fx-background-radius: 5;"
-//        );
-//        deleteButton.setOnMouseEntered(e ->
-//                deleteButton.setStyle(
-//                        "-fx-background-color: #f44336; " +
-//                                "-fx-text-fill: white; " +
-//                                "-fx-font-weight: bold; " +
-//                                "-fx-padding: 8 20; " +
-//                                "-fx-cursor: hand; " +
-//                                "-fx-border-color: #f44336; " +
-//                                "-fx-border-width: 2; " +
-//                                "-fx-border-radius: 5; " +
-//                                "-fx-background-radius: 5;"
-//                )
-//        );
-//        deleteButton.setOnMouseExited(e ->
-//                deleteButton.setStyle(
-//                        "-fx-background-color: transparent; " +
-//                                "-fx-text-fill: #f44336; " +
-//                                "-fx-font-weight: bold; " +
-//                                "-fx-padding: 8 20; " +
-//                                "-fx-cursor: hand; " +
-//                                "-fx-border-color: #f44336; " +
-//                                "-fx-border-width: 2; " +
-//                                "-fx-border-radius: 5; " +
-//                                "-fx-background-radius: 5;"
-//                )
-//        );
-//        deleteButton.setOnAction(e -> deleteFile(fileId, card));
+        Button buyButton = new Button("Buy Now");
+        buyButton.setPrefWidth(120);
+        buyButton.setStyle(
+                "-fx-background-color: #4CAF50; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-size: 13px; " +
+                        "-fx-padding: 10 20; " +
+                        "-fx-cursor: hand; " +
+                        "-fx-background-radius: 8;"
+        );
+        buyButton.setOnMouseEntered(e ->
+                buyButton.setStyle(
+                        "-fx-background-color: #45a049; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-font-weight: bold; " +
+                                "-fx-font-size: 13px; " +
+                                "-fx-padding: 10 20; " +
+                                "-fx-cursor: hand; " +
+                                "-fx-background-radius: 8;"
+                )
+        );
+        buyButton.setOnMouseExited(e ->
+                buyButton.setStyle(
+                        "-fx-background-color: #4CAF50; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-font-weight: bold; " +
+                                "-fx-font-size: 13px; " +
+                                "-fx-padding: 10 20; " +
+                                "-fx-cursor: hand; " +
+                                "-fx-background-radius: 8;"
+                )
+        );
 
-//        buttonRow.getChildren().addAll(viewButton, deleteButton);
+        // *** NEW: Check if user owns this file ***
+        String currentUser = UserManager.getCurrentUser();
+        if (currentUser != null && currentUser.equals(sellerEmail)) {
+            buyButton.setText("Your File");
+            buyButton.setDisable(true);
+            buyButton.setStyle(
+                    "-fx-background-color: #CCCCCC; " +
+                            "-fx-text-fill: #666666; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-font-size: 13px; " +
+                            "-fx-padding: 10 20; " +
+                            "-fx-background-radius: 8;"
+            );
+        } else {
+            buyButton.setOnAction(e -> purchaseFile(fileDoc));
+        }
 
-        // Add all sections to card
-        card.getChildren().addAll(headerRow, descriptionBox, infoRow, buttonRow);
+        buttonBox.getChildren().addAll(viewButton, buyButton);
+        bottomRow.getChildren().addAll(priceBox, spacer, buttonBox);
+
+        // Add all to details box
+        detailsBox.getChildren().addAll(titleBox, descriptionLabel, infoRow, bottomRow);
+
+        // Add cover and details to card
+        card.getChildren().addAll(coverBox, detailsBox);
 
         return card;
     }
 
-    private void viewFile(String fileId, String filename) {
-        // Implement view file functionality
-        System.out.println("Viewing file: " + fileId + " - " + filename);
-        // You can open a PDF viewer here or download the file
+    private void viewFileDetails(Document fileDoc) {
+        String filename = fileDoc.getString("filename");
+        String title = fileDoc.getString("title");
+        String description = fileDoc.getString("description");
+        Double price = fileDoc.getDouble("price");
+        String fileId = fileDoc.getObjectId("_id").toString();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("File Details");
+        alert.setHeaderText(title != null ? title : "Untitled Document");
+        alert.setContentText(
+                "Filename: " + filename + "\n" +
+                        "Description: " + (description != null ? description : "No description") + "\n" +
+                        "Price: $" + String.format("%.2f", price != null ? price : 0.0) + "\n" +
+                        "File ID: " + fileId
+        );
+
+        ButtonType previewButton = new ButtonType("Preview PDF");
+        ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(previewButton, closeButton);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == previewButton) {
+                openPDFViewer(fileId, filename);
+            }
+        });
     }
 
-//    private void deleteFile(String fileId, VBox card) {
-//        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-//        confirmAlert.setTitle("Delete File");
-//        confirmAlert.setHeaderText("Are you sure you want to delete this file?");
-//        confirmAlert.setContentText("This action cannot be undone.");
-//
-//        confirmAlert.showAndWait().ifPresent(response -> {
-//            if (response == ButtonType.OK) {
-//                try {
-//                    FilesDatabaseConnection.deleteFile(fileId);
-//                    fileListContainer.getChildren().remove(card);
-//
-//                    if (fileListContainer.getChildren().isEmpty()) {
-//                        showNoFilesMessage("No files uploaded yet");
-//                    }
-//
-//                    showAlert("Success", "File deleted successfully!");
-//                } catch (Exception e) {
-//                    showAlert("Error", "Failed to delete file: " + e.getMessage());
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//    }
+    private void openPDFViewer(String fileId, String filename) {
+        System.out.println("Opening PDF viewer for: " + filename + " (ID: " + fileId + ")");
+        // TODO: Implement PDF viewer
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        info.setTitle("PDF Viewer");
+        info.setHeaderText("Opening: " + filename);
+        info.setContentText("PDF viewer functionality will be implemented here.");
+        info.showAndWait();
+    }
+
+    private void purchaseFile(Document fileDoc) {
+        String title = fileDoc.getString("title");
+        Double price = fileDoc.getDouble("price");
+
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Purchase Confirmation");
+        confirmAlert.setHeaderText("Purchase: " + (title != null ? title : "Untitled Document"));
+        confirmAlert.setContentText(
+                "Price: $" + String.format("%.2f", price != null ? price : 0.0) + "\n\n" +
+                        "Do you want to proceed with this purchase?"
+        );
+
+        confirmAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                processPurchase(fileDoc);
+            }
+        });
+    }
+
+    private void processPurchase(Document fileDoc) {
+        System.out.println("Processing purchase for: " + fileDoc.getString("filename"));
+        // TODO: Implement payment processing
+
+        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+        successAlert.setTitle("Purchase Successful");
+        successAlert.setHeaderText("Thank you for your purchase!");
+        successAlert.setContentText("The file has been added to your library.\nYou can now access it anytime.");
+        successAlert.showAndWait();
+    }
 
     private void showNoFilesMessage(String message) {
-        VBox emptyBox = new VBox(15);
+        VBox emptyBox = new VBox(20);
         emptyBox.setAlignment(Pos.CENTER);
-        emptyBox.setPadding(new Insets(50));
-        emptyBox.setMaxWidth(400);
+        emptyBox.setPadding(new Insets(60));
 
-        Label emptyIcon = new Label("📁");
-        emptyIcon.setFont(Font.font(60));
+        Label emptyIcon = new Label("📚");
+        emptyIcon.setFont(Font.font(80));
 
         Label emptyLabel = new Label(message);
-        emptyLabel.setFont(Font.font(16));
-        emptyLabel.setStyle("-fx-text-fill: #757575;");
+        emptyLabel.setFont(Font.font("System", FontWeight.NORMAL, 18));
+        emptyLabel.setStyle("-fx-text-fill: #F5F0E9;");
         emptyLabel.setWrapText(true);
         emptyLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        emptyLabel.setMaxWidth(500);
 
         emptyBox.getChildren().addAll(emptyIcon, emptyLabel);
         fileListContainer.getChildren().clear();
@@ -612,15 +767,9 @@ public class UserCtrlAltEliteController {
         return String.format("%.1f MB", size / (1024.0 * 1024.0));
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
     public void refreshFiles() {
         loadUserFiles();
     }
+
 
 }

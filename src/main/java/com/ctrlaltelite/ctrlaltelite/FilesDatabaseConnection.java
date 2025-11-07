@@ -221,6 +221,10 @@ public class FilesDatabaseConnection {
                 .sort(ascending ? new Document("price", 1) : new Document("price", -1));
     }
 
+    public static FindIterable<Document> getAllFiles() {
+        return filesCollection.find().sort(descending("upload_date"));
+    }
+
     private static byte[] readFileToBytes(File file) throws Exception {
         byte[] fileData = new byte[(int) file.length()];
         try (FileInputStream fis = new FileInputStream(file)) {

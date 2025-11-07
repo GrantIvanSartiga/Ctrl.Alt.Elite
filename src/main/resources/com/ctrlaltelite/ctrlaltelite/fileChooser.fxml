@@ -30,7 +30,7 @@
                      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                         <children>
                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Title" />
-                           <TextField fx:id="TitleTextField"/>
+                           <TextField fx:id="TitleTextField" />
                         </children>
                      </HBox>
                      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">

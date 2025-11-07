@@ -49,87 +49,93 @@
         </HBox>
 
         <!-- SCROLLABLE CONTENT -->
-        <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" style="-fx-background-color: transparent;" />
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" style="-fx-background-color: transparent;">
+         <content>
+               <VBox style="-fx-background-color: #F5F0E9;">
+         
+                            <!-- SECTION 1: HERO -->
+                   <AnchorPane fx:id="heroSection" prefHeight="600.0" style="-fx-background-image: url('/com/ctrlaltelite/ctrlaltelite/images/Background.png'); -fx-background-size: cover; -fx-background-position: center; -fx-background-color: #3C507D;" VBox.vgrow="ALWAYS">
+                       <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <padding>
+                               <Insets bottom="40" left="40" right="40" top="50" />
+                           </padding>
+                           <Text fx:id="welcomeText" fill="#f5f0e9" text="Your Study Stash" textAlignment="CENTER">
+                               <font>
+                                   <Font name="Alte Haas Grotesk Bold" size="96.0" />
+                               </font>
+                           </Text>
+                           <Text fx:id="Text2" fill="#f5f0e9" text="Browse, download, and organize notes and materials from trusted creators. Learning made simple." textAlignment="CENTER" wrappingWidth="600.0">
+                               <font>
+                                   <Font size="24.0" />
+                               </font>
+                           </Text>
+         
+                                    <ImageView fx:id="ICON" fitHeight="250.0" preserveRatio="true">
+                               <Image url="@images/ICON.png" />
+                           </ImageView>
+         
+                                    <HBox fx:id="SearchIcon" alignment="CENTER" spacing="10.0">
+                               <JFXButton>
+                                   <graphic>
+                                       <ImageView fitHeight="56.0" fitWidth="56.0" preserveRatio="true">
+                                           <Image url="@images/SearchIcon.png" />
+                                       </ImageView>
+                                   </graphic>
+                               </JFXButton>
+                               <TextField prefHeight="41.0" prefWidth="558.0" promptText="Search..." style="-fx-border-color: #112250; -fx-border-width: 3; -fx-background-radius: 20; -fx-border-radius: 20;" />
+                           </HBox>
+                       </VBox>
+                   </AnchorPane>
+         
+                            <!-- SECTION 2: CONTENT PLACEHOLDER -->
+                   <AnchorPane fx:id="contentSection" prefHeight="1000.0" style="-fx-background-color: #f5f0e9;" VBox.vgrow="ALWAYS">
+                       <AnchorPane prefHeight="381.0" prefWidth="792.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
+                           <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="773.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                               <padding>
+                                   <Insets top="30.0" />
+                               </padding>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Button fx:id="fileUploadButton" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="279.0" text="Button">
+                                                   <graphic>
+                                                      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                        </AnchorPane>
+                                               <Text fill="#112250" strokeType="OUTSIDE" strokeWidth="0.0" text="Check out study materials">
+                                                   <font>
+                                                       <Font name="Alte Haas Grotesk Bold" size="36.0" />
+                                                   </font>
+                                               </Text>
+                                               <Text fill="#112250" strokeType="OUTSIDE" strokeWidth="0.0" text="Look through our collection to find the right study notes for you." textAlignment="CENTER" wrappingWidth="415.45001220703125">
+                                                   <font>
+                                                       <Font name="Alte Haas Grotesk" size="18.0" />
+                                                   </font>
+                                               </Text>
+                                               <VBox alignment="TOP_CENTER" prefHeight="622.0" prefWidth="792.0">
+                                                   <VBox.margin>
+                                                       <Insets top="50.0" />
+                                                   </VBox.margin>
+                                                   <AnchorPane prefHeight="619.0" prefWidth="792.0" style="-fx-background-color: linear-gradient(to bottom left, #7785a4, #3C507D, #112250); -fx-background-radius: 30;">
+                                              <children>
+                                                 <VBox fx:id="fileListContainer" alignment="TOP_CENTER" spacing="15.0" style="-fx-background-color: transparent;"
+                                                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+                                                       prefWidth="792" prefHeight="619" />
+                                              </children>
+                                                   </AnchorPane>
+                                               </VBox>
+                                           </VBox>
+                                       </AnchorPane>
+
+                               </AnchorPane>
+               </VBox>
+         </content>
+        </ScrollPane>
     </VBox>
-      <VBox style="-fx-background-color: #F5F0E9;">
-
-                   <!-- SECTION 1: HERO -->
-          <AnchorPane fx:id="heroSection" prefHeight="600.0" style="-fx-background-image: url('/com/ctrlaltelite/ctrlaltelite/images/Background.png'); -fx-background-size: cover; -fx-background-position: center; -fx-background-color: #3C507D;" VBox.vgrow="ALWAYS">
-              <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  <padding>
-                      <Insets bottom="40" left="40" right="40" top="50" />
-                  </padding>
-                  <Text fx:id="welcomeText" fill="#f5f0e9" text="Your Study Stash" textAlignment="CENTER">
-                      <font>
-                          <Font name="Alte Haas Grotesk Bold" size="96.0" />
-                      </font>
-                  </Text>
-                  <Text fx:id="Text2" fill="#f5f0e9" text="Browse, download, and organize notes and materials from trusted creators. Learning made simple." textAlignment="CENTER" wrappingWidth="600.0">
-                      <font>
-                          <Font size="24.0" />
-                      </font>
-                  </Text>
-
-                           <ImageView fx:id="ICON" fitHeight="250.0" preserveRatio="true">
-                      <Image url="@images/ICON.png" />
-                  </ImageView>
-
-                           <HBox fx:id="SearchIcon" alignment="CENTER" spacing="10.0">
-                      <JFXButton>
-                          <graphic>
-                              <ImageView fitHeight="56.0" fitWidth="56.0" preserveRatio="true">
-                                  <Image url="@images/SearchIcon.png" />
-                              </ImageView>
-                          </graphic>
-                      </JFXButton>
-                      <TextField prefHeight="41.0" prefWidth="558.0" promptText="Search..." style="-fx-border-color: #112250; -fx-border-width: 3; -fx-background-radius: 20; -fx-border-radius: 20;" />
-                  </HBox>
-              </VBox>
-          </AnchorPane>
-
-                   <!-- SECTION 2: CONTENT PLACEHOLDER -->
-          <AnchorPane fx:id="contentSection" prefHeight="1000.0" style="-fx-background-color: #f5f0e9;" VBox.vgrow="ALWAYS">
-              <AnchorPane prefHeight="381.0" prefWidth="792.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="773.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                      <padding>
-                          <Insets top="30.0" />
-                      </padding>
-               <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                  <children>
-                     <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                        <children>
-                           <Button fx:id="fileUploadButton" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="279.0" text="Button">
-                              <graphic>
-                                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                              </graphic>
-                           </Button>
-                        </children>
-                     </VBox>
-                  </children>
-               </AnchorPane>
-                      <Text fill="#112250" strokeType="OUTSIDE" strokeWidth="0.0" text="Check out study materials">
-                          <font>
-                              <Font name="Alte Haas Grotesk Bold" size="36.0" />
-                          </font>
-                      </Text>
-                      <Text fill="#112250" strokeType="OUTSIDE" strokeWidth="0.0" text="Look through our collection to find the right study notes for you." textAlignment="CENTER" wrappingWidth="415.45001220703125">
-                          <font>
-                              <Font name="Alte Haas Grotesk" size="18.0" />
-                          </font>
-                      </Text>
-                      <VBox alignment="TOP_CENTER" prefHeight="622.0" prefWidth="792.0">
-                          <VBox.margin>
-                              <Insets top="50.0" />
-                          </VBox.margin>
-                          <AnchorPane prefHeight="619.0" prefWidth="792.0" style="-fx-background-color: linear-gradient(to bottom left, #7785a4, #3C507D, #112250); -fx-background-radius: 30;">
-                     <children>
-                        <VBox fx:id="fileListContainer" alignment="TOP_CENTER" spacing="15.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                          </AnchorPane>
-                      </VBox>
-                  </VBox>
-              </AnchorPane>
-          </AnchorPane>
-      </VBox>
 
 </AnchorPane>

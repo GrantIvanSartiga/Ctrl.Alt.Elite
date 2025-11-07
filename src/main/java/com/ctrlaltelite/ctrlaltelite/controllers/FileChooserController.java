@@ -206,7 +206,7 @@ public class FileChooserController {
         HBox uploadItem = (HBox) uploadListContainer.getChildren().get(0);
         Label statusLabel = (Label) uploadItem.lookup(".status-label");
         Label speedLabel = (Label) uploadItem.lookup(".speed-label");
-        ProgressBar progressBar = (ProgressBar) uploadItem.lookup(".progress-bar");
+        ProgressBar progressBar = (ProgressBar) uploadItem.lookup(".upload-progress-bar");
 
         // Capture values before starting the background thread
         final String finalTitle = title;
@@ -265,7 +265,7 @@ public class FileChooserController {
             protected void succeeded() {
                 Platform.runLater(() -> {
                     statusLabel.setText("Completed");
-                    statusLabel.setStyle("-fx-text-fill: #4CAF50; -fx-font-weight: bold;");
+                    statusLabel.getStyleClass().add("completed");
                     speedLabel.setText("");
                     isUploading = false;
                     chooseFileButton.setDisable(false);
@@ -289,7 +289,7 @@ public class FileChooserController {
             protected void failed() {
                 Platform.runLater(() -> {
                     statusLabel.setText("Failed");
-                    statusLabel.setStyle("-fx-text-fill: #f44336; -fx-font-weight: bold;");
+                    statusLabel.getStyleClass().add("failed");
                     speedLabel.setText("");
                     isUploading = false;
                     chooseFileButton.setDisable(false);
@@ -310,50 +310,39 @@ public class FileChooserController {
     }
 
     private HBox createUploadItem(File file) {
-        HBox container = new HBox(15);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.setPadding(new Insets(15, 10, 15, 10));
-        container.setStyle("-fx-background-color: #F5F0E9; -fx-border-color: #112250; -fx-border-width: 0 0 1 0; -fx-border-radius: 5; -fx-background-radius: 5;");
-
+        HBox container = new HBox();
+        container.getStyleClass().add("upload-item");
         container.setUserData(file);
 
         Label iconLabel = new Label("📄");
-        iconLabel.setFont(Font.font(32));
-        iconLabel.setStyle("-fx-text-fill: #112250;");
-        iconLabel.setMinWidth(40);
-        iconLabel.setAlignment(Pos.CENTER);
+        iconLabel.getStyleClass().add("upload-icon");
 
-        VBox fileInfo = new VBox(8);
-        fileInfo.setPrefWidth(350);
+        VBox fileInfo = new VBox();
+        fileInfo.getStyleClass().add("file-info-container");
 
-        HBox nameRow = new HBox(10);
-        nameRow.setAlignment(Pos.CENTER_LEFT);
+        HBox nameRow = new HBox();
+        nameRow.getStyleClass().add("file-name-row");
+
         Label fileName = new Label(file.getName());
-        fileName.setFont(Font.font(13));
-        fileName.setStyle("-fx-font-weight: bold; -fx-text-fill: #112250;");
+        fileName.getStyleClass().add("file-name-label");
 
         Label fileSize = new Label(formatFileSize(file.length()));
-        fileSize.setStyle("-fx-text-fill: #757575; -fx-font-size: 12px;");
+        fileSize.getStyleClass().add("file-size-label");
 
         nameRow.getChildren().addAll(fileName, fileSize);
 
         ProgressBar progressBar = new ProgressBar(0);
-        progressBar.setPrefWidth(350);
-        progressBar.setPrefHeight(8);
-        progressBar.getStyleClass().add("progress-bar");
-        progressBar.setStyle("-fx-accent: #E0C58F;");
+        progressBar.getStyleClass().add("upload-progress-bar");
 
         HBox statusRow = new HBox();
-        statusRow.setAlignment(Pos.CENTER_LEFT);
+        statusRow.getStyleClass().add("status-row");
         HBox.setHgrow(statusRow, javafx.scene.layout.Priority.ALWAYS);
 
         Label statusLabel = new Label("Ready to upload");
         statusLabel.getStyleClass().add("status-label");
-        statusLabel.setStyle("-fx-text-fill: #2196F3; -fx-font-size: 11px;");
 
         Label speedLabel = new Label("");
         speedLabel.getStyleClass().add("speed-label");
-        speedLabel.setStyle("-fx-text-fill: #757575; -fx-font-size: 11px;");
 
         javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
         HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
@@ -362,11 +351,9 @@ public class FileChooserController {
 
         fileInfo.getChildren().addAll(nameRow, progressBar, statusRow);
 
-        Button cancelButton = new Button("✕");
-        cancelButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #757575; -fx-font-size: 18; -fx-cursor: hand; -fx-padding: 5;");
-        cancelButton.setOnMouseEntered(e -> cancelButton.setStyle("-fx-background-color: #ffebee; -fx-text-fill: #f44336; -fx-font-size: 18; -fx-cursor: hand; -fx-padding: 5; -fx-background-radius: 3;"));
-        cancelButton.setOnMouseExited(e -> cancelButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #757575; -fx-font-size: 18; -fx-cursor: hand; -fx-padding: 5;"));
-        cancelButton.setOnAction(e -> {
+        Button cancelBtn = new Button("✕");
+        cancelBtn.getStyleClass().add("upload-cancel-button");
+        cancelBtn.setOnAction(e -> {
             if (!isUploading) {
                 uploadListContainer.getChildren().clear();
                 uploadButton.setDisable(true);
@@ -376,7 +363,7 @@ public class FileChooserController {
             }
         });
 
-        container.getChildren().addAll(iconLabel, fileInfo, cancelButton);
+        container.getChildren().addAll(iconLabel, fileInfo, cancelBtn);
 
         return container;
     }

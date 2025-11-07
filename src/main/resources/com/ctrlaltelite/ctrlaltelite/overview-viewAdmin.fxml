@@ -76,8 +76,7 @@
                                        </ImageView>
                                    </graphic>
                                </JFXButton>
-                               <TextField prefHeight="41.0" prefWidth="558.0" promptText="Search..." style="-fx-border-color: #112250; -fx-border-width: 3; -fx-background-radius: 20; -fx-border-radius: 20;" />
-                           </HBox>
+                               <TextField fx:id="searchField" prefHeight="41.0" prefWidth="558.0" promptText="Search..." style="-fx-border-color: #112250; -fx-border-width: 3; -fx-background-radius: 20; -fx-border-radius: 20;" />                           </HBox>
                        </VBox>
                    </AnchorPane>
          

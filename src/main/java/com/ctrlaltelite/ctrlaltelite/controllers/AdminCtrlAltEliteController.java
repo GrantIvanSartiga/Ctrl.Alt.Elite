@@ -57,6 +57,8 @@ public class AdminCtrlAltEliteController {
     @FXML
     private HBox SearchAndButtons;
     @FXML
+    private TextField searchField;
+    @FXML
     private ScrollPane scrollPane;
     @FXML
     private AnchorPane heroSection;
@@ -69,6 +71,8 @@ public class AdminCtrlAltEliteController {
 
     private boolean heroVisible = false;
     private boolean contentVisible = false;
+    private java.util.List<Document> allFiles = new java.util.ArrayList<>();
+    private ObservableList<Document> filteredFiles = FXCollections.observableArrayList();
 
     @FXML
     private TableView<UserManager.User> userTable;
@@ -106,12 +110,12 @@ public class AdminCtrlAltEliteController {
                 UserIDColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
                 UserNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
                 UserEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-                loadUsers();
+                loadUsers(); // Load user data into the table
             } else {
                 System.err.println("WARNING: One or more table columns are null. Check FXML fx:id bindings.");
             }
 
-            // Initialize UI elements with null checks
+            // Initialize UI elements with null checks for Hero Section Animations
             if (welcomeText != null) welcomeText.setOpacity(0);
             if (Text2 != null) Text2.setOpacity(0);
             if (ICON != null) {
@@ -130,8 +134,28 @@ public class AdminCtrlAltEliteController {
             if (Logo != null) Logo.setTranslateX(-50);
             if (SearchAndButtons != null) SearchAndButtons.setTranslateX(50);
 
-            // Animations
-            if (SearchAndButtons != null && Logo != null && ICON != null && SearchIcon != null) {
+            // --- SEARCH BAR SETUP ---
+            if (searchField != null) {
+                // Run search when 'Enter' is pressed
+                searchField.setOnAction(event -> performSearch());
+                searchField.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+                System.out.println("Search field 'Enter' key listener added.");
+            } else {
+                System.err.println("WARNING: searchField is null! Check FXML fx:id binding.");
+            }
+
+            if (SearchIcon != null) {
+                // Run search when the magnifying glass icon is clicked
+                SearchIcon.setOnMouseClicked(event -> performSearch());
+                SearchIcon.setStyle("-fx-cursor: hand;");
+                System.out.println("Search icon click listener added.");
+            } else { // <-- This 'else' block needed the closing brace which caused the errors
+                System.err.println("WARNING: SearchIcon is null! Check FXML fx:id binding.");
+            } // <--- IMPORTANT FIX: Closing bracket added here!
+
+
+            // Animations (Header/Top Bar)
+            if (SearchAndButtons != null && Logo != null) {
                 TranslateTransition slideSearchAndButtons = new TranslateTransition(Duration.seconds(1), SearchAndButtons);
                 slideSearchAndButtons.setFromX(50);
                 slideSearchAndButtons.setToX(0);
@@ -155,7 +179,7 @@ public class AdminCtrlAltEliteController {
                 buttonsAnim.play();
             }
 
-            // Scroll pane listener
+            // Scroll pane listener for visibility animations
             if (scrollPane != null) {
                 scrollPane.vvalueProperty().addListener((obs, oldVal, newVal) -> checkVisibility());
                 checkVisibility();
@@ -173,7 +197,7 @@ public class AdminCtrlAltEliteController {
                 System.err.println("WARNING: fileListContainer is null! Check FXML fx:id binding.");
             }
 
-            // Make content section visible
+            // Make content section visible (initial state)
             if (contentSection != null) {
                 contentSection.setOpacity(1);
                 contentSection.setTranslateY(0);
@@ -181,7 +205,7 @@ public class AdminCtrlAltEliteController {
                 contentSection.setManaged(true);
             }
 
-            // Load files
+            // Load files for the marketplace/stash
             loadUserFiles();
 
         } catch (Exception e) {
@@ -331,90 +355,70 @@ public class AdminCtrlAltEliteController {
         }
     }
 
-    private void loadUserFiles() {
-        System.out.println("=== Loading Marketplace Files (All Users) ===");
+// NEW / REPLACED loadUserFiles() METHOD
+        private void loadUserFiles() {
+            System.out.println("=== Loading Marketplace Files (All Users) ===");
 
-        if (fileListContainer == null) {
-            System.err.println("CRITICAL ERROR: fileListContainer is null!");
-            return;
-        }
+            if (fileListContainer == null) {
+                System.err.println("CRITICAL ERROR: fileListContainer is null!");
+                return;
+            }
 
-        fileListContainer.setVisible(true);
-        fileListContainer.setManaged(true);
+            fileListContainer.setVisible(true);
+            fileListContainer.setManaged(true);
 
-        Platform.runLater(() -> {
-            fileListContainer.getChildren().clear();
-            Label loadingLabel = new Label("Loading study materials...");
-            loadingLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #F5F0E9; -fx-font-family:\"Alte Haas Grotesk\"; -fx-font-weight: bold;");
-            fileListContainer.getChildren().add(loadingLabel);
-        });
+            Platform.runLater(() -> {
+                fileListContainer.getChildren().clear();
+                Label loadingLabel = new Label("Loading study materials...");
+                loadingLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #F5F0E9; -fx-font-family:\"Alte Haas Grotesk\"; -fx-font-weight: bold;");
+                fileListContainer.getChildren().add(loadingLabel);
+            });
 
-        Task<Void> loadTask = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                System.out.println("Fetching ALL files from database...");
+            Task<Void> loadTask = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    System.out.println("Fetching ALL files from database...");
 
-                try {
-                    FindIterable<Document> files = FilesDatabaseConnection.getAllFiles();
+                    try {
+                        // 1. Fetch all files and store them in the master list
+                        FindIterable<Document> files = FilesDatabaseConnection.getAllFiles();
 
-                    java.util.List<HBox> fileCards = new java.util.ArrayList<>();
-                    int fileCount = 0;
-
-                    for (Document fileDoc : files) {
-                        System.out.println("Processing file: " + fileDoc.getString("filename") +
-                                " by " + fileDoc.getString("email"));
-                        try {
-                            HBox fileCard = createModernFileCard(fileDoc);
-                            fileCards.add(fileCard);
-                            fileCount++;
-                        } catch (Exception e) {
-                            System.err.println("Error creating card for file: " + fileDoc.getString("filename"));
-                            e.printStackTrace();
+                        // Clear and populate the master list (allFiles)
+                        allFiles.clear();
+                        for (Document fileDoc : files) {
+                            allFiles.add(fileDoc);
                         }
+
+                        // 2. Initialize filteredFiles with all files
+                        filteredFiles.clear();
+                        filteredFiles.addAll(allFiles);
+
+                        System.out.println("Total marketplace files loaded: " + allFiles.size());
+
+                        // 3. Update the UI using the shared display method
+                        Platform.runLater(() -> updateFileListDisplay());
+
+                    } catch (Exception e) {
+                        System.err.println("Error fetching files from database:");
+                        e.printStackTrace();
+                        Platform.runLater(() -> {
+                            fileListContainer.getChildren().clear();
+                            showNoFilesMessage("Error loading marketplace: " + e.getMessage());
+                        });
                     }
-
-                    final int totalFiles = fileCount;
-                    System.out.println("Total marketplace files loaded: " + totalFiles);
-
-                    Platform.runLater(() -> {
-                        fileListContainer.getChildren().clear();
-
-                        if (totalFiles == 0) {
-                            showNoFilesMessage("No study materials available yet. Be the first to upload!");
-                        } else {
-                            fileListContainer.getChildren().addAll(fileCards);
-                        }
-
-                        fileListContainer.requestLayout();
-                    });
-
-                } catch (Exception e) {
-                    System.err.println("Error fetching files from database:");
-                    e.printStackTrace();
-                    Platform.runLater(() -> {
-                        fileListContainer.getChildren().clear();
-                        showNoFilesMessage("Error loading marketplace: " + e.getMessage());
-                    });
+                    return null;
                 }
 
-                return null;
-            }
+                @Override
+                protected void failed() {
+                    // ... (existing failed logic) ...
+                }
+            };
 
-            @Override
-            protected void failed() {
-                Platform.runLater(() -> {
-                    fileListContainer.getChildren().clear();
-                    showNoFilesMessage("Error loading files: " + getException().getMessage());
-                    System.err.println("Failed to load files:");
-                    getException().printStackTrace();
-                });
-            }
-        };
-
-        Thread loadThread = new Thread(loadTask);
-        loadThread.setDaemon(true);
-        loadThread.start();
-    }
+            Thread loadThread = new Thread(loadTask);
+            loadThread.setDaemon(true);
+            loadThread.start();
+        }
 
     private HBox createModernFileCard(Document fileDoc) {
         HBox card = new HBox(20);
@@ -761,4 +765,90 @@ public class AdminCtrlAltEliteController {
     public void refreshFiles() {
         loadUserFiles();
     }
+
+        @FXML
+        private void performSearch() {
+            // Safe way to get search text, handles if searchField is somehow null
+            String searchText = (searchField != null && searchField.getText() != null)
+                    ? searchField.getText().toLowerCase().trim()
+                    : "";
+
+            if (allFiles.isEmpty()) {
+                System.out.println("Cannot search: Master file list is empty.");
+                return;
+            }
+
+            if (searchText.isEmpty()) {
+                // If search is empty, show all files
+                filteredFiles.clear();
+                filteredFiles.addAll(allFiles);
+            } else {
+                // Filter files based on search text
+                filteredFiles.clear();
+
+                for (Document file : allFiles) {
+                    // Safely get and normalize text fields for comparison
+                    String filename = file.getString("filename") != null ? file.getString("filename").toLowerCase() : "";
+                    String title = file.getString("title") != null ? file.getString("title").toLowerCase() : "";
+                    String description = file.getString("description") != null ? file.getString("description").toLowerCase() : "";
+
+                    // Search across filename, title, and description
+                    if (filename.contains(searchText) ||
+                            title.contains(searchText) ||
+                            description.contains(searchText)) {
+                        filteredFiles.add(file);
+                    }
+                }
+            }
+
+            System.out.println("Search results: " + filteredFiles.size() + " files found");
+
+            // Update the UI with filtered results
+            updateFileListDisplay();
+
+            // Auto-scroll to show results (same logic as before)
+            if (!searchText.isEmpty() && scrollPane != null && contentSection != null) {
+                Platform.runLater(() -> {
+                    double contentHeight = scrollPane.getContent().getBoundsInLocal().getHeight();
+                    double viewportHeight = scrollPane.getViewportBounds().getHeight();
+                    double contentY = contentSection.getBoundsInParent().getMinY();
+                    double maxV = Math.max(0, contentHeight - viewportHeight);
+
+                    if (maxV > 0) {
+                        double targetV = Math.min(1.0, contentY / maxV);
+                        javafx.animation.KeyValue kv = new javafx.animation.KeyValue(scrollPane.vvalueProperty(), targetV);
+                        javafx.animation.KeyFrame kf = new javafx.animation.KeyFrame(Duration.millis(500), kv);
+                        javafx.animation.Timeline timeline = new javafx.animation.Timeline(kf);
+                        timeline.play();
+                    }
+                });
+            }
+        }
+
+        private void updateFileListDisplay() {
+            if (fileListContainer == null) {
+                return;
+            }
+
+            Platform.runLater(() -> {
+                fileListContainer.getChildren().clear();
+
+                if (filteredFiles.isEmpty()) {
+                    showNoFilesMessage("No study materials match your search criteria.");
+                } else {
+                    java.util.List<HBox> fileCards = new java.util.ArrayList<>();
+                    for (Document fileDoc : filteredFiles) {
+                        try {
+                            HBox fileCard = createModernFileCard(fileDoc);
+                            fileCards.add(fileCard);
+                        } catch (Exception e) {
+                            System.err.println("Error creating card for file: " + fileDoc.getString("filename"));
+                            e.printStackTrace();
+                        }
+                    }
+                    fileListContainer.getChildren().addAll(fileCards);
+                }
+                fileListContainer.requestLayout();
+            });
+        }
 }

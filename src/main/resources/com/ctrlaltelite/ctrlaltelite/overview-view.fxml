@@ -85,8 +85,7 @@
                                         </ImageView>
                                     </graphic>
                                 </JFXButton>
-                                <TextField prefHeight="41.0" prefWidth="558.0" promptText="Search..." styleClass="hero-search-field" />
-                            </HBox>
+                                <TextField fx:id="searchField" prefHeight="41.0" prefWidth="558.0" promptText="Search..." styleClass="hero-search-field" />                            </HBox>
                         </VBox>
                     </AnchorPane>
       

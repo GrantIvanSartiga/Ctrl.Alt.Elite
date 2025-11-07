@@ -29,6 +29,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.bson.Document;
 
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -63,9 +64,13 @@ public class CtrlAltEliteController {
     private Button fileUploadButton;
     @FXML
     private VBox fileListContainer;
+    @FXML
+    private TextField searchField;
 
     private boolean heroVisible = false;
     private boolean contentVisible = false;
+    private java.util.List<Document> allFiles = new java.util.ArrayList<>();
+    private javafx.collections.ObservableList<Document> filteredFiles = javafx.collections.FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
@@ -97,6 +102,23 @@ public class CtrlAltEliteController {
         ICON.setTranslateY(80);
         SearchIcon.setTranslateY(80);
         contentSection.setTranslateY(40);
+
+        // --- NEW SEARCH FIELD BINDINGS ---
+        if (searchField != null) {
+            searchField.setOnAction(event -> performSearch()); // Search on Enter
+            System.out.println("Search field 'Enter' key listener added.");
+        } else {
+            System.err.println("WARNING: searchField is null! Check FXML fx:id binding.");
+        }
+
+        if (SearchIcon != null) {
+            SearchIcon.setOnMouseClicked(event -> performSearch()); // Search on icon click
+            SearchIcon.setStyle("-fx-cursor: hand;");
+            System.out.println("Search icon click listener added.");
+        } else {
+            System.err.println("WARNING: SearchIcon is null! Check FXML fx:id binding.");
+        }
+        // --- END NEW SEARCH FIELD BINDINGS ---
 
         // Animations
         TranslateTransition slideSearchAndButtons = new TranslateTransition(Duration.seconds(1), SearchAndButtons);
@@ -399,11 +421,9 @@ public class CtrlAltEliteController {
             return;
         }
 
-        // Make sure containers are visible
         fileListContainer.setVisible(true);
         fileListContainer.setManaged(true);
 
-        // Show loading indicator
         Platform.runLater(() -> {
             fileListContainer.getChildren().clear();
             Label loadingLabel = new Label("Loading study materials...");
@@ -418,41 +438,23 @@ public class CtrlAltEliteController {
                 System.out.println("Fetching ALL files from database...");
 
                 try {
+                    // 1. Fetch all files and store them in the master list
                     FindIterable<Document> files = FilesDatabaseConnection.getAllFiles();
 
-                    // Process files OUTSIDE Platform.runLater to avoid iterator issues
-                    java.util.List<HBox> fileCards = new java.util.ArrayList<>();
-                    int fileCount = 0;
-
+                    // Clear and populate the master list (allFiles)
+                    allFiles.clear();
                     for (Document fileDoc : files) {
-                        System.out.println("Processing file: " + fileDoc.getString("filename") +
-                                " by " + fileDoc.getString("email"));
-                        try {
-                            HBox fileCard = createModernFileCard(fileDoc);
-                            fileCards.add(fileCard);
-                            fileCount++;
-                        } catch (Exception e) {
-                            System.err.println("Error creating card for file: " + fileDoc.getString("filename"));
-                            e.printStackTrace();
-                        }
+                        allFiles.add(fileDoc);
                     }
 
-                    final int totalFiles = fileCount;
-                    System.out.println("Total marketplace files loaded: " + totalFiles);
+                    // 2. Initialize filteredFiles with all files
+                    filteredFiles.clear();
+                    filteredFiles.addAll(allFiles);
 
-                    // Update UI on JavaFX thread
-                    Platform.runLater(() -> {
-                        fileListContainer.getChildren().clear();
+                    System.out.println("Total marketplace files loaded: " + allFiles.size());
 
-                        if (totalFiles == 0) {
-                            showNoFilesMessage("No study materials available yet. Be the first to upload!");
-                        } else {
-                            fileListContainer.getChildren().addAll(fileCards);
-                        }
-
-                        // Force layout refresh
-                        fileListContainer.requestLayout();
-                    });
+                    // 3. Update the UI using the shared display method
+                    Platform.runLater(() -> updateFileListDisplay());
 
                 } catch (Exception e) {
                     System.err.println("Error fetching files from database:");
@@ -462,7 +464,6 @@ public class CtrlAltEliteController {
                         showNoFilesMessage("Error loading marketplace: " + e.getMessage());
                     });
                 }
-
                 return null;
             }
 
@@ -838,6 +839,94 @@ public class CtrlAltEliteController {
 
     public void refreshFiles() {
         loadUserFiles();
+    }
+
+    @FXML
+    private void performSearch() {
+        // Safe way to get search text, handles if searchField is somehow null
+        String searchText = (searchField != null && searchField.getText() != null)
+                ? searchField.getText().toLowerCase().trim()
+                : "";
+
+        if (allFiles.isEmpty()) {
+            System.out.println("Cannot search: Master file list is empty.");
+            return;
+        }
+
+        if (searchText.isEmpty()) {
+            // If search is empty, show all files
+            filteredFiles.clear();
+            filteredFiles.addAll(allFiles);
+        } else {
+            // Filter files based on search text
+            filteredFiles.clear();
+
+            for (Document file : allFiles) {
+                // Safely get and normalize text fields for comparison
+                String filename = file.getString("filename") != null ? file.getString("filename").toLowerCase() : "";
+                String title = file.getString("title") != null ? file.getString("title").toLowerCase() : "";
+                String description = file.getString("description") != null ? file.getString("description").toLowerCase() : "";
+
+                // Search across filename, title, and description
+                if (filename.contains(searchText) ||
+                        title.contains(searchText) ||
+                        description.contains(searchText)) {
+                    filteredFiles.add(file);
+                }
+            }
+        }
+
+        System.out.println("Search results: " + filteredFiles.size() + " files found");
+
+        // Update the UI with filtered results
+        updateFileListDisplay();
+
+        // Auto-scroll to show results
+        if (!searchText.isEmpty() && scrollPane != null && contentSection != null) {
+            Platform.runLater(() -> {
+                double contentHeight = scrollPane.getContent().getBoundsInLocal().getHeight();
+                double viewportHeight = scrollPane.getViewportBounds().getHeight();
+                double contentY = contentSection.getBoundsInParent().getMinY();
+                double maxV = Math.max(0, contentHeight - viewportHeight);
+
+                if (maxV > 0) {
+                    double targetV = Math.min(1.0, contentY / maxV);
+                    javafx.animation.KeyValue kv = new javafx.animation.KeyValue(scrollPane.vvalueProperty(), targetV);
+                    javafx.animation.KeyFrame kf = new javafx.animation.KeyFrame(Duration.millis(500), kv);
+                    javafx.animation.Timeline timeline = new javafx.animation.Timeline(kf);
+                    timeline.play();
+                }
+            });
+        }
+    }
+
+    private void updateFileListDisplay() {
+        if (fileListContainer == null) {
+            return;
+        }
+
+        Platform.runLater(() -> {
+            fileListContainer.getChildren().clear();
+
+            if (filteredFiles.isEmpty()) {
+                // Display message if no files match the current filter/search
+                showNoFilesMessage("No study materials match your search criteria.");
+            } else {
+                java.util.List<HBox> fileCards = new java.util.ArrayList<>();
+                for (Document fileDoc : filteredFiles) {
+                    try {
+                        // Use the existing card creation method
+                        HBox fileCard = createModernFileCard(fileDoc);
+                        fileCards.add(fileCard);
+                    } catch (Exception e) {
+                        System.err.println("Error creating card for file: " + fileDoc.getString("filename"));
+                        e.printStackTrace();
+                    }
+                }
+                fileListContainer.getChildren().addAll(fileCards);
+            }
+            fileListContainer.requestLayout();
+        });
     }
 
 

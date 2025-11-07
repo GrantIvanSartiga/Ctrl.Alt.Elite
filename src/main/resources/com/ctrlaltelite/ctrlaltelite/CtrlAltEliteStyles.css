@@ -44,53 +44,6 @@
 }
 
 
-.scroll-bar-yellow {
-    -fx-background-color: transparent;
-}
-
-.scroll-bar-yellow:vertical {
-    -fx-pref-width: 10;
-}
-
-.scroll-bar-yellow:horizontal {
-    -fx-pref-height: 8;
-}
-
-.scroll-bar-yellow .thumb {
-    -fx-background-color: #e0c58f;
-    -fx-background-radius: 10;
-
-}
-
-.scroll-bar-yellow-bar .thumb:hover {
-    -fx-background-color: #3c507d;
-    -fx-cursor: hand;
-
-}
-
-.scroll-bar-yellow .track {
-    -fx-background-color: transparent;
-    -fx-background-radius: 10;
-    -fx-pref-width: 11;
-}
-
-.scroll-bar-yellow .increment-button,
-.scroll-bar-yellow .decrement-button {
-    -fx-opacity: 0;
-    -fx-pref-height: 0;
-    -fx-pref-width: 0;
-}
-
-.scroll-pane {
-    -fx-background-color: transparent;
-}
-
-.scroll-pane > .viewport {
-    -fx-background-color: transparent;
-}
-
-
-
 .nav-button {
     -fx-font-family: 'Bison Bold';
     -fx-font-size: 20px;
@@ -414,4 +367,147 @@
 
 .delete-dialog-cancel-btn:pressed {
     -fx-background-color: #4E555B;
+}
+
+
+
+.form-input {
+    -fx-font-family: "Alte Haas Grotesk";
+    -fx-font-size: 12;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #112250;
+    -fx-border-color: #e8dfd5;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 12;
+}
+
+.form-input:focused {
+    -fx-border-color: #3C507D;
+    -fx-border-width: 2;
+    -fx-background-color: #FEFDFB;
+}
+
+.form-input:disabled {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #999999;
+    -fx-opacity: 0.6;
+}
+
+/* Form TextArea */
+.form-textarea {
+    -fx-font-family: "Alte Haas Grotesk";
+    -fx-font-size: 12;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #112250;
+    -fx-border-color: #e8dfd5;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 12;
+    -fx-control-inner-background: #FFFFFF;
+}
+
+.form-textarea:focused {
+    -fx-border-color: #3C507D;
+    -fx-border-width: 2;
+    -fx-background-color: #FEFDFB;
+}
+
+.form-textarea:disabled {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #999999;
+    -fx-opacity: 0.6;
+}
+
+/* File Chooser Button */
+.file-chooser-button {
+    -fx-background-color: #E0C58F;
+    -fx-text-fill: #F5F0E9;
+    -fx-font-family: "Bison Bold";
+    -fx-font-size: 17;
+    -fx-padding: 12 30;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 8, 0.5, 0, 2);
+}
+
+.file-chooser-button:hover {
+    -fx-background-color: #f5d89f;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 12, 0.5, 0, 3);
+}
+
+.file-chooser-button:pressed {
+    -fx-background-color: #ecddc0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0.5, 0, 1);
+}
+
+.file-chooser-button:disabled {
+    -fx-background-color: #CCCCCC;
+    -fx-text-fill: #666666;
+    -fx-cursor: default;
+    -fx-opacity: 0.5;
+}
+
+/* Upload Button */
+.upload-button {
+    -fx-background-color: #3C507D;
+    -fx-text-fill: #F5F0E9;
+    -fx-font-family: "Bison Bold";
+    -fx-font-size: 17;
+    -fx-padding: 10 30;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(17,34,80,0.3), 8, 0.5, 0, 2);
+}
+
+.upload-button:hover {
+    -fx-background-color: #5571A8;
+    -fx-effect: dropshadow(three-pass-box, rgba(17,34,80,0.4), 10, 0.5, 0, 3);
+}
+
+.upload-button:pressed {
+    -fx-background-color: #2a3857;
+    -fx-effect: dropshadow(three-pass-box, rgba(17,34,80,0.2), 6, 0.5, 0, 1);
+}
+
+.upload-button:disabled {
+    -fx-background-color: #CCCCCC;
+    -fx-text-fill: #666666;
+    -fx-cursor: default;
+    -fx-opacity: 0.5;
+}
+
+/* Cancel Button - File Chooser */
+.cancel-button-file {
+    -fx-background-color: transparent;
+    -fx-text-fill: #112250;
+    -fx-font-family: "Bison Bold";
+    -fx-font-size: 17;
+    -fx-padding: 10 30;
+    -fx-background-radius: 8;
+    -fx-border-color: #112250;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+}
+
+.cancel-button-file:hover {
+    -fx-background-color: #112250;
+    -fx-text-fill: #F5F0E9;
+    -fx-cursor: hand;
+}
+
+.cancel-button-file:pressed {
+    -fx-background-color: #0d1a38;
+    -fx-text-fill: #F5F0E9;
+}
+
+.cancel-button-file:disabled {
+    -fx-text-fill: #999999;
+    -fx-border-color: #999999;
+    -fx-cursor: default;
+    -fx-opacity: 0.5;
 }

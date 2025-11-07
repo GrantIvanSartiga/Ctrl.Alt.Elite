@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="200.0" style="-fx-background-color: #D9CBC2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 5);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ctrlaltelite.ctrlaltelite.controllers.BookCardController">
+    <VBox alignment="CENTER" layoutX="32.0" layoutY="12.0" spacing="8">
+        <padding>
+            <javafx.geometry.Insets bottom="10" left="10" right="10" top="10" />
+        </padding>
+        <Button fx:id="BookCoverButton" layoutX="10" layoutY="10" onAction="#openBook" prefHeight="120.0" prefWidth="50.0" textFill="#d9cbc2">
+            <graphic>
+                <ImageView fx:id="BookCover" fitHeight="150.0" fitWidth="100.0">
+               <image>
+                  <Image url="@books/BookCover_Introduction to Programming.png" />
+               </image></ImageView>
+            </graphic>
+        </Button>
+        <Label fx:id="Title" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="90.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Intro to Prog" textFill="#112250" wrapText="true">
+         <font>
+            <Font name="Alte Haas Grotesk" size="2.0" />
+         </font></Label>
+        <Label fx:id="Description" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="85.0" style="-fx-font-size: 12px; -fx-text-fill: #777;" text="Book Introduction" textFill="#4f5566" wrapText="true">
+         <font>
+            <Font name="Alte Haas Grotesk" size="10.0" />
+         </font></Label>
+      <Label fx:id="Category" alignment="CENTER" layoutX="20.0" layoutY="212.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="85.0" style="-fx-font-size: 12px; -fx-text-fill: #63460c;" text="Programmiing" textFill="#63460c" wrapText="true">
+         <font>
+            <Font name="Alte Haas Grotesk" size="8.0" />
+         </font>
+      </Label>
+    </VBox>
+</AnchorPane>

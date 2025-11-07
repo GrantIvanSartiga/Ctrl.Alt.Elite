@@ -1,3 +1,6 @@
+
+
+
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
@@ -5,9 +8,14 @@ import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -16,6 +24,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.IOException;
 
 public class UserCtrlAltEliteController {
     @FXML
@@ -210,4 +220,50 @@ public class UserCtrlAltEliteController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void openLibrary(ActionEvent event) {
+        if (!UserManager.isLoggedIn()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Access Denied");
+            alert.setHeaderText("Please log in first");
+            alert.setContentText("You must be logged in to access the Library.");
+
+//            DialogPane dialogPane = alert.getDialogPane();
+//            dialogPane.getStylesheets().add(
+//                    getClass().getResource("alert.css").toExternalForm()
+//            );
+//            dialogPane.getStyleClass().add("custom-alert");
+
+            alert.showAndWait();
+
+            return;
+        }
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("library.fxml"));
+
+            Stage libraryStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+
+            libraryStage.setScene(scene);
+            libraryStage.setTitle("Ctrl+Alt+Elite");
+            libraryStage.setMinWidth(600);
+            libraryStage.setMinHeight(400);
+            libraryStage.setResizable(true);
+            libraryStage.setMaximized(true);
+
+            libraryStage.show();
+
+            Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 }

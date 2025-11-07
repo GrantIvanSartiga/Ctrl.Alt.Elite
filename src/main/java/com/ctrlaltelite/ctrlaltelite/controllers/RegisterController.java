@@ -1,3 +1,6 @@
+
+
+
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
@@ -14,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+
 
 public class RegisterController {
 
@@ -68,7 +72,7 @@ public class RegisterController {
         try {
             LocalDateTime now = LocalDateTime.now();
 
-            DatabaseConnection.addUser(firstName, lastName, username, email, password);
+            DatabaseConnection.addUser(firstName, lastName, email, username, password);
 
             registerMessageLabel.setText("Registration Successful. Press Cancel to Proceed to Login.");
             clearForm();

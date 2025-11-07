@@ -1,7 +1,6 @@
 package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
-import com.ctrlaltelite.ctrlaltelite.Launcher;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -9,7 +8,6 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -22,8 +20,6 @@ import javafx.util.Duration;
 public class UserCtrlAltEliteController {
     @FXML
     private JFXButton profileButton;
-    @FXML
-    private Button fileUploadButton;
     @FXML
     private Text welcomeText;
     @FXML
@@ -88,7 +84,6 @@ public class UserCtrlAltEliteController {
 
 
         profileButton.setOnAction(actionEvent -> LoginUser());
-        fileUploadButton.setOnAction(actionEvent -> fileUpload());
 
 
         checkVisibility();
@@ -212,22 +207,6 @@ public class UserCtrlAltEliteController {
 
         } catch (Exception e) {
             System.err.println("ERROR loading login window:");
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void fileUpload(){
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("fileChooser.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 800, 700);
-            stage.setTitle("FileChooser");
-            stage.setScene(scene);
-            stage.setResizable(true);
-            stage.show();
-        } catch (Exception e) {
-            System.err.println("ERROR loading:");
             e.printStackTrace();
         }
     }

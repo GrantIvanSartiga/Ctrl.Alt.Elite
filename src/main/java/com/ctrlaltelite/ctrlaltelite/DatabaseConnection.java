@@ -1,3 +1,6 @@
+
+
+
 package com.ctrlaltelite.ctrlaltelite;
 
 import com.mongodb.client.*;
@@ -28,7 +31,7 @@ public class DatabaseConnection {
         return user != null;
     }
 
-    public static void addUser(String firstName, String lastName, String email, String password, String s) throws Exception {
+    public static void addUser(String firstName, String lastName, String email, String username, String password) throws Exception {
 
         String passwordHash = hashPassword(password);
 

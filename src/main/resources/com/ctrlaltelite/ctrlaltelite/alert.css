@@ -1,0 +1,18 @@
+.custom-alert {
+    -fx-font-family: "Alte Haas Grotesk";
+    -fx-background-color: #D9CBC2;
+    -fx-border-color: #112250;
+    -fx-border-width: 2px;
+}
+
+.dialog-pane .label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 14px;
+}
+
+.button-bar .button {
+    -fx-background-color: #112250;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+}

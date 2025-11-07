@@ -50,7 +50,7 @@ public class LoginController {
 
     public void loginButtonOnAction(ActionEvent event) throws Exception {
 
-        if (emailTextField.getText().isBlank() == false && passwordField.getText().isBlank() == false) {
+        if (!emailTextField.getText().isBlank() && !passwordField.getText().isBlank()) {
             String email = emailTextField.getText();
             String password = passwordField.getText();
 

@@ -22,7 +22,9 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.bson.Document;
 
@@ -64,7 +66,23 @@ public class UserCtrlAltEliteController {
 
     @FXML
     public void initialize() {
-        // Initial opacity and position setup
+
+        try {
+            var resource = this.getClass().getResource("/com/ctrlaltelite/ctrlaltelite/CtrlAltElite.css");
+            if (resource != null) {
+                String css = resource.toExternalForm();
+                if (contentSection != null) {
+                    contentSection.getStylesheets().add(css);
+                    System.out.println("CSS loaded successfully");
+                }
+            } else {
+                System.err.println("WARNING: CSS file not found at /com/ctrlaltelite/ctrlaltelite/CtrlAltElite.css");
+            }
+        } catch (Exception e) {
+            System.err.println("ERROR loading CSS: " + e.getMessage());
+            e.printStackTrace();
+        }
+
         welcomeText.setOpacity(0);
         Text2.setOpacity(0);
         ICON.setOpacity(0);
@@ -330,7 +348,7 @@ public class UserCtrlAltEliteController {
         Platform.runLater(() -> {
             fileListContainer.getChildren().clear();
             Label loadingLabel = new Label("Loading study materials...");
-            loadingLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #F5F0E9; -fx-font-weight: bold;");
+            loadingLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #F5F0E9; -fx-font-family:\"Alte Haas Grotesk\"; -fx-font-weight: bold;");
             fileListContainer.getChildren().add(loadingLabel);
         });
 
@@ -408,18 +426,7 @@ public class UserCtrlAltEliteController {
     private HBox createModernFileCard(Document fileDoc) {
         // Main card container - horizontal layout
         HBox card = new HBox(20);
-        card.setMaxWidth(700);
-        card.setPrefWidth(700);
-        card.setAlignment(Pos.CENTER_LEFT);
-        card.setPadding(new Insets(20));
-        card.setStyle(
-                "-fx-background-color: #FFFFFF; " +
-                        "-fx-border-color: #112250; " +
-                        "-fx-border-width: 2; " +
-                        "-fx-border-radius: 15; " +
-                        "-fx-background-radius: 15; " +
-                        "-fx-effect: dropshadow(gaussian, rgba(17,34,80,0.3), 10, 0, 0, 4);"
-        );
+        card.getStyleClass().add("file-card");;
 
         // Extract data from document
         String filename = fileDoc.getString("filename");
@@ -441,22 +448,12 @@ public class UserCtrlAltEliteController {
         String sellerEmail = fileDoc.getString("email");
         String fileId = fileDoc.getObjectId("_id").toString();
 
-        // LEFT SIDE: PDF Cover Preview
+
         VBox coverBox = new VBox(5);
-        coverBox.setAlignment(Pos.CENTER);
-        coverBox.setPrefWidth(140);
-        coverBox.setMinWidth(140);
-        coverBox.setMaxWidth(140);
-        coverBox.setStyle(
-                "-fx-background-color: linear-gradient(to bottom, #3C507D, #112250); " +
-                        "-fx-background-radius: 10; " +
-                        "-fx-border-color: #112250; " +
-                        "-fx-border-width: 2; " +
-                        "-fx-border-radius: 10;"
-        );
+        coverBox.getStyleClass().add("file-card-cover");
         coverBox.setPadding(new Insets(15));
 
-        // PDF Icon
+
         ImageView pdfIcon = new ImageView();
         try {
             pdfIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/ctrlaltelite/ctrlaltelite/images/ICON.png"))));
@@ -464,10 +461,9 @@ public class UserCtrlAltEliteController {
             pdfIcon.setFitHeight(100);
             pdfIcon.setPreserveRatio(true);
         } catch (Exception e) {
-            // Fallback to emoji if image not found
+
             Label fallbackIcon = new Label("📄");
-            fallbackIcon.setFont(Font.font(60));
-            fallbackIcon.setStyle("-fx-text-fill: #F5F0E9;");
+            fallbackIcon.getStyleClass().add("pdf-icon");;
             coverBox.getChildren().add(fallbackIcon);
         }
 
@@ -476,73 +472,65 @@ public class UserCtrlAltEliteController {
         }
 
         Label pdfLabel = new Label("PDF");
-        pdfLabel.setFont(Font.font("System", FontWeight.BOLD, 12));
-        pdfLabel.setStyle("-fx-text-fill: #F5F0E9;");
+        pdfLabel.getStyleClass().add("pdf-label");
         coverBox.getChildren().add(pdfLabel);
 
-        // RIGHT SIDE: File Details
+
         VBox detailsBox = new VBox(12);
         detailsBox.setAlignment(Pos.TOP_LEFT);
         HBox.setHgrow(detailsBox, Priority.ALWAYS);
 
-        // Title and filename
+
         VBox titleBox = new VBox(3);
         Label titleLabel = new Label(title != null && !title.isEmpty() ? title : "Untitled Document");
-        titleLabel.setFont(Font.font("System", FontWeight.BOLD, 20));
-        titleLabel.setStyle("-fx-text-fill: #112250;");
-        titleLabel.setWrapText(true);
+        titleLabel.getStyleClass().add("file-title");
 
         Label filenameLabel = new Label(filename);
-        filenameLabel.setFont(Font.font(12));
-        filenameLabel.setStyle("-fx-text-fill: #7785a4;");
+        filenameLabel.getStyleClass().add("file-filename");
 
         titleBox.getChildren().addAll(titleLabel, filenameLabel);
 
-        // Description
-        Label descriptionLabel = new Label(description != null && !description.isEmpty() ? description : "No description available");
-        descriptionLabel.setFont(Font.font(14));
-        descriptionLabel.setStyle("-fx-text-fill: #424242;");
-        descriptionLabel.setWrapText(true);
-        descriptionLabel.setMaxWidth(450);
 
-        // Info row (seller, size and date)
+        Label descriptionLabel = new Label(description != null && !description.isEmpty() ? description : "No description available");
+        descriptionLabel.getStyleClass().add("file-description");
+        //descriptionLabel.setMaxWidth(450);
+
+
         HBox infoRow = new HBox(20);
         infoRow.setAlignment(Pos.CENTER_LEFT);
 
-        // *** NEW: Seller info ***
+
         HBox sellerInfo = new HBox(8);
         sellerInfo.setAlignment(Pos.CENTER_LEFT);
         Label sellerIcon = new Label("👤");
-        sellerIcon.setFont(Font.font(16));
+        sellerIcon.getStyleClass().add("info-icon");
         String sellerName = sellerEmail != null ? sellerEmail.split("@")[0] : "Unknown";
         Label sellerText = new Label("By: " + sellerName);
-        sellerText.setFont(Font.font("System", FontWeight.NORMAL, 13));
-        sellerText.setStyle("-fx-text-fill: #757575;");
+        sellerText.getStyleClass().add("info-label");
+
         sellerInfo.getChildren().addAll(sellerIcon, sellerText);
 
-        // File size
+
         HBox sizeInfo = new HBox(8);
         sizeInfo.setAlignment(Pos.CENTER_LEFT);
         Label sizeIcon = new Label("📦");
-        sizeIcon.setFont(Font.font(16));
+        sizeIcon.getStyleClass().add("info-icon");
         Label sizeText = new Label(formatFileSize(fileSize != null ? fileSize : 0));
-        sizeText.setFont(Font.font("System", FontWeight.NORMAL, 13));
-        sizeText.setStyle("-fx-text-fill: #757575;");
+        sizeText.getStyleClass().add("info-label");
         sizeInfo.getChildren().addAll(sizeIcon, sizeText);
 
-        // Upload date
+
         HBox dateInfo = new HBox(8);
         dateInfo.setAlignment(Pos.CENTER_LEFT);
         Label dateIcon = new Label("📅");
-        dateIcon.setFont(Font.font(16));
+        dateIcon.getStyleClass().add("info-icon");
         Label dateText = new Label(uploadDate != null ? uploadDate.format(DATE_FORMATTER) : "Unknown");
-        dateText.setFont(Font.font("System", FontWeight.NORMAL, 13));
-        dateText.setStyle("-fx-text-fill: #757575;");
+        dateText.getStyleClass().add("info-label");
         dateInfo.getChildren().addAll(dateIcon, dateText);
 
         infoRow.getChildren().addAll(sellerInfo, sizeInfo, dateInfo);
 
-        // Bottom row: Price and Buttons
+
         HBox bottomRow = new HBox(15);
         bottomRow.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(bottomRow, Priority.ALWAYS);
@@ -551,11 +539,9 @@ public class UserCtrlAltEliteController {
         VBox priceBox = new VBox(2);
         priceBox.setAlignment(Pos.CENTER_LEFT);
         Label priceLabel = new Label("Price");
-        priceLabel.setFont(Font.font(11));
-        priceLabel.setStyle("-fx-text-fill: #757575;");
-        Label priceValue = new Label(String.format("$%.2f", price != null ? price : 0.0));
-        priceValue.setFont(Font.font("System", FontWeight.BOLD, 24));
-        priceValue.setStyle("-fx-text-fill: #4CAF50;");
+        priceLabel.getStyleClass().add("price-label");
+        Label priceValue = new Label(String.format("Php%.2f", price != null ? price : 0.0));
+        priceValue.getStyleClass().add("price-value");
         priceBox.getChildren().addAll(priceLabel, priceValue);
 
         // Spacer
@@ -567,96 +553,18 @@ public class UserCtrlAltEliteController {
         buttonBox.setAlignment(Pos.CENTER_RIGHT);
 
         Button viewButton = new Button("View Details");
-        viewButton.setPrefWidth(120);
-        viewButton.setStyle(
-                "-fx-background-color: transparent; " +
-                        "-fx-text-fill: #112250; " +
-                        "-fx-font-weight: bold; " +
-                        "-fx-font-size: 13px; " +
-                        "-fx-padding: 10 20; " +
-                        "-fx-cursor: hand; " +
-                        "-fx-border-color: #112250; " +
-                        "-fx-border-width: 2; " +
-                        "-fx-border-radius: 8; " +
-                        "-fx-background-radius: 8;"
-        );
-        viewButton.setOnMouseEntered(e ->
-                viewButton.setStyle(
-                        "-fx-background-color: #112250; " +
-                                "-fx-text-fill: white; " +
-                                "-fx-font-weight: bold; " +
-                                "-fx-font-size: 13px; " +
-                                "-fx-padding: 10 20; " +
-                                "-fx-cursor: hand; " +
-                                "-fx-border-color: #112250; " +
-                                "-fx-border-width: 2; " +
-                                "-fx-border-radius: 8; " +
-                                "-fx-background-radius: 8;"
-                )
-        );
-        viewButton.setOnMouseExited(e ->
-                viewButton.setStyle(
-                        "-fx-background-color: transparent; " +
-                                "-fx-text-fill: #112250; " +
-                                "-fx-font-weight: bold; " +
-                                "-fx-font-size: 13px; " +
-                                "-fx-padding: 10 20; " +
-                                "-fx-cursor: hand; " +
-                                "-fx-border-color: #112250; " +
-                                "-fx-border-width: 2; " +
-                                "-fx-border-radius: 8; " +
-                                "-fx-background-radius: 8;"
-                )
-        );
+        viewButton.getStyleClass().add("view-button");
         viewButton.setOnAction(e -> viewFileDetails(fileDoc));
 
         Button buyButton = new Button("Buy Now");
-        buyButton.setPrefWidth(120);
-        buyButton.setStyle(
-                "-fx-background-color: #4CAF50; " +
-                        "-fx-text-fill: white; " +
-                        "-fx-font-weight: bold; " +
-                        "-fx-font-size: 13px; " +
-                        "-fx-padding: 10 20; " +
-                        "-fx-cursor: hand; " +
-                        "-fx-background-radius: 8;"
-        );
-        buyButton.setOnMouseEntered(e ->
-                buyButton.setStyle(
-                        "-fx-background-color: #45a049; " +
-                                "-fx-text-fill: white; " +
-                                "-fx-font-weight: bold; " +
-                                "-fx-font-size: 13px; " +
-                                "-fx-padding: 10 20; " +
-                                "-fx-cursor: hand; " +
-                                "-fx-background-radius: 8;"
-                )
-        );
-        buyButton.setOnMouseExited(e ->
-                buyButton.setStyle(
-                        "-fx-background-color: #4CAF50; " +
-                                "-fx-text-fill: white; " +
-                                "-fx-font-weight: bold; " +
-                                "-fx-font-size: 13px; " +
-                                "-fx-padding: 10 20; " +
-                                "-fx-cursor: hand; " +
-                                "-fx-background-radius: 8;"
-                )
-        );
+        buyButton.getStyleClass().add("buy-button");
 
-        // *** NEW: Check if user owns this file ***
+
         String currentUser = UserManager.getCurrentUser();
         if (currentUser != null && currentUser.equals(sellerEmail)) {
             buyButton.setText("Your File");
             buyButton.setDisable(true);
-            buyButton.setStyle(
-                    "-fx-background-color: #CCCCCC; " +
-                            "-fx-text-fill: #666666; " +
-                            "-fx-font-weight: bold; " +
-                            "-fx-font-size: 13px; " +
-                            "-fx-padding: 10 20; " +
-                            "-fx-background-radius: 8;"
-            );
+
         } else {
             buyButton.setOnAction(e -> purchaseFile(fileDoc));
         }
@@ -715,19 +623,96 @@ public class UserCtrlAltEliteController {
         String title = fileDoc.getString("title");
         Double price = fileDoc.getDouble("price");
 
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmAlert.setTitle("Purchase Confirmation");
-        confirmAlert.setHeaderText("Purchase: " + (title != null ? title : "Untitled Document"));
-        confirmAlert.setContentText(
-                "Price: $" + String.format("%.2f", price != null ? price : 0.0) + "\n\n" +
-                        "Do you want to proceed with this purchase?"
-        );
+        // Create custom dialog (Stage)
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("Purchase Confirmation");
+        dialog.setResizable(false);
+        dialog.initStyle(StageStyle.UNDECORATED);
 
-        confirmAlert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                processPurchase(fileDoc);
-            }
+        VBox coverBox = new VBox(5);
+        coverBox.getStyleClass().add("file-card-cover");
+        coverBox.setPadding(new Insets(15));
+
+
+        ImageView pdfIcon = new ImageView();
+        try {
+            pdfIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/ctrlaltelite/ctrlaltelite/images/ICON.png"))));
+            pdfIcon.setFitWidth(100);
+            pdfIcon.setFitHeight(100);
+            pdfIcon.setPreserveRatio(true);
+        } catch (Exception e) {
+
+            Label fallbackIcon = new Label("📄");
+            fallbackIcon.getStyleClass().add("pdf-icon");;
+            coverBox.getChildren().add(fallbackIcon);
+        }
+
+        if (pdfIcon.getImage() != null) {
+            coverBox.getChildren().add(pdfIcon);
+        }
+
+        Label pdfLabel = new Label("PDF");
+        pdfLabel.getStyleClass().add("pdf-label");
+        coverBox.getChildren().add(pdfLabel);
+
+
+
+        Label header = new Label("Purchase: " + (title != null ? title : "Untitled Document"));
+        header.getStyleClass().add("purchase-header");
+
+        Label priceLabel = new Label("Price: Php" + String.format("%.2f", price != null ? price : 0.0));
+        priceLabel.getStyleClass().add("purchase-price");
+
+        Label message = new Label("Do you want to proceed with this purchase?");
+        message.getStyleClass().add("purchase-message");
+
+        Button confirmBtn = new Button("Buy Now");
+        confirmBtn.getStyleClass().add("confirm-button");
+
+        Button cancelBtn = new Button("Cancel");
+        cancelBtn.getStyleClass().add("cancel-button");
+
+        confirmBtn.setOnAction(e -> {
+            processPurchase(fileDoc);
+            dialog.close();
         });
+
+        cancelBtn.setOnAction(e -> dialog.close());
+
+        // Layout
+        HBox buttonBox = new HBox(confirmBtn, cancelBtn);
+        buttonBox.getStyleClass().add("dialog-button-box");
+
+        HBox contentBox = new HBox(15);
+        contentBox.setAlignment(Pos.CENTER);
+
+        VBox detailsBox = new VBox(header, priceLabel, message, buttonBox);
+        detailsBox.setSpacing(10);
+        contentBox.getChildren().addAll(coverBox, detailsBox);
+
+        VBox layout = new VBox(contentBox);
+        layout.getStyleClass().add("purchase-dialog");
+
+        Scene scene = new Scene(layout, 500, 250);
+
+        var resource = CtrlAltEliteApplication.class.getResource("CtrlAltEliteStyles.css");
+        if (resource != null) {
+            scene.getStylesheets().add(resource.toExternalForm());
+            System.out.println("CSS loaded for dialog");
+        } else {
+            System.err.println("CSS file not found! Check the file location.");
+        }
+
+        dialog.setScene(scene);
+
+        // Optional fade-in animation
+        FadeTransition fade = new FadeTransition(Duration.millis(300), layout);
+        fade.setFromValue(0);
+        fade.setToValue(1);
+        fade.play();
+
+        dialog.showAndWait();
     }
 
     private void processPurchase(Document fileDoc) {

@@ -235,18 +235,30 @@ public class AdminCtrlAltEliteController {
 
     // (FIXED) Added the missing LoginUser method.
     @FXML
-    private void LoginUser() {
-        // Implement your navigation logic here
-        System.out.println("Profile Button Clicked! Add navigation logic to login/profile screen.");
+    private void LoginUser(){
 
-        // Example of how to change scenes:
-        // try {
-        //     FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-view.fxml")); // Or profile-view.fxml
-        //     Scene scene = new Scene(fxmlLoader.load());
-        //     Stage stage = (Stage) profileButton.getScene().getWindow();
-        //     stage.setScene(scene);
-        // } catch (Exception e) {
-        //     e.printStackTrace();
-        // }
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("overview-view.fxml"));
+
+            Stage loginStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+
+            loginStage.setScene(scene);
+            loginStage.setTitle("Login");
+            loginStage.setMinWidth(600);
+            loginStage.setMinHeight(400);
+            loginStage.setResizable(true);
+            loginStage.setMaximized(true);
+
+            loginStage.show();
+
+            ((Stage) profileButton.getScene().getWindow()).close();
+
+
+
+        } catch (Exception e) {
+            System.err.println("ERROR loading login window:");
+            e.printStackTrace();
+        }
     }
 }

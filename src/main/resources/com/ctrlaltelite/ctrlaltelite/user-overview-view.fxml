@@ -44,7 +44,7 @@
                 <JFXButton fx:id="profileButton" styleClass="icon-button">
                     <graphic>
                         <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true">
-                            <Image url="@images/ProfileIcon.png" />
+                            <Image url="@images/logout.png" />
                         </ImageView>
                     </graphic>
                 </JFXButton>

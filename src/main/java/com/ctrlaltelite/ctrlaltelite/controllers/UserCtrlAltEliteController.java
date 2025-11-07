@@ -196,7 +196,7 @@ public class UserCtrlAltEliteController {
     private void LoginUser(){
 
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("overview-view.fxml"));
 
             Stage loginStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);

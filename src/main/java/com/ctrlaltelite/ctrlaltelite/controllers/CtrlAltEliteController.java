@@ -2,6 +2,7 @@ package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
 import com.ctrlaltelite.ctrlaltelite.FilesDatabaseConnection;
+import com.ctrlaltelite.ctrlaltelite.util.CustomAlert;
 import com.ctrlaltelite.ctrlaltelite.util.UserManager;
 import com.jfoenix.controls.JFXButton;
 import com.mongodb.client.FindIterable;
@@ -282,13 +283,13 @@ public class CtrlAltEliteController {
 
     private boolean requireLoginBeforeAction(Runnable action) {
         if (!UserManager.isLoggedIn()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Access Denied");
-            alert.setHeaderText("Please log in first");
-            alert.setContentText("You must be logged in to perform this action.");
-
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
+            CustomAlert.showWarning(
+                    (Stage) profileButton.getScene().getWindow(),
+                    "Access Denied",
+                    "Please log in first",
+                    "You must be logged in to perform this action.",
+                    (confirmed) -> {
+                        if (confirmed) {
                     try {
                         FXMLLoader loader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
                         Scene scene = new Scene(loader.load(), 900, 600);
@@ -301,9 +302,7 @@ public class CtrlAltEliteController {
                         stage.setMaximized(true);
                         stage.show();
 
-                        // Close current window
-                        Stage currentStage = (Stage) alert.getDialogPane().getScene().getWindow();
-                        currentStage.close();
+                        ((Stage) profileButton.getScene().getWindow()).close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -320,14 +319,13 @@ public class CtrlAltEliteController {
     @FXML
     private void openLibrary() {
         if (!UserManager.isLoggedIn()) {
-            // Show warning alert
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Access Denied");
-            alert.setHeaderText("Please log in first");
-            alert.setContentText("You must be logged in to access the Library.");
-
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
+            CustomAlert.showWarning(
+                    (Stage) fileUploadButton.getScene().getWindow(),
+                    "Access Denied",
+                    "Please log in first",
+                    "You must be logged in to access the Library.",
+                    (confirmed) -> {
+                        if (confirmed) {
                     try {
                         FXMLLoader loader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
                         Stage loginStage = new Stage();
@@ -348,12 +346,13 @@ public class CtrlAltEliteController {
 
     private void openFileUpload() {
         if (!UserManager.isLoggedIn()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Access Denied");
-            alert.setHeaderText("Login Required");
-            alert.setContentText("You must be logged in to upload files.");
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
+            CustomAlert.showWarning(
+                    (Stage) fileUploadButton.getScene().getWindow(),
+                    "Access Denied",
+                    "Login Required",
+                    "You must be logged in to upload files.",
+                    (confirmed) -> {
+                        if (confirmed) {
                     try {
                         FXMLLoader loader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
                         Stage loginStage = new Stage();
@@ -643,13 +642,13 @@ public class CtrlAltEliteController {
 
     private void viewFileDetails(Document fileDoc) {
         if (!UserManager.isLoggedIn()) {
-            // Show warning alert
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Access Denied");
-            alert.setHeaderText("No Access Until Logged In");
-            alert.setContentText("You must be logged in to view file details.");
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
+            CustomAlert.showWarning(
+                    (Stage) fileUploadButton.getScene().getWindow(),
+                    "Access Denied",
+                    "No Access Until Logged In",
+                    "You must be logged in to view file details.",
+                    (confirmed) -> {
+                        if (confirmed) {
                     try {
                         FXMLLoader loader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
                         Stage loginStage = new Stage();
@@ -681,12 +680,13 @@ public class CtrlAltEliteController {
 
     private void purchaseFile(Document fileDoc) {
         if (!UserManager.isLoggedIn()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Access Denied");
-            alert.setHeaderText("No Access Until Logged In");
-            alert.setContentText("You must be logged in to make a purchase.");
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
+            CustomAlert.showWarning(
+                    (Stage) fileUploadButton.getScene().getWindow(),
+                    "Access Denied",
+                    "No Access Until Logged In",
+                    "You must be logged in to make a purchase.",
+                    (confirmed) -> {
+                        if (confirmed)  {
                     try {
                         FXMLLoader loader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
                         Stage loginStage = new Stage();
@@ -803,11 +803,11 @@ public class CtrlAltEliteController {
         System.out.println("Processing purchase for: " + fileDoc.getString("filename"));
         // TODO: Implement payment processing
 
-        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-        successAlert.setTitle("Purchase Successful");
-        successAlert.setHeaderText("Thank you for your purchase!");
-        successAlert.setContentText("The file has been added to your library.\nYou can now access it anytime.");
-        successAlert.showAndWait();
+        CustomAlert.showSuccess(
+                (Stage) fileUploadButton.getScene().getWindow(),
+                "Purchase Successful",
+                "Thank you for your purchase!",
+                "The file has been added to your library.\nYou can now access it anytime.");
     }
 
     private void showNoFilesMessage(String message) {

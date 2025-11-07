@@ -106,3 +106,197 @@
     -fx-border-radius: 20;
     -fx-border-style: dashed;
 }
+
+.file-card {
+    -fx-spacing: 20;
+    -fx-max-width: 1400;
+    -fx-pref-width: 700;
+    -fx-alignment: center-left;
+    -fx-padding: 20;
+    -fx-background-color: #F5F0E9;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(17,34,80,0.3), 10, 0.5, 0, 4);
+}
+
+.file-card-cover {
+    -fx-spacing: 5;
+    -fx-alignment: center;
+    -fx-pref-width: 140;
+    -fx-min-width: 140;
+    -fx-max-width: 140;
+    -fx-background-color: linear-gradient(to bottom, #3C507D, #112250);
+    -fx-background-radius: 10;
+    -fx-border-color: #112250;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-padding: 15;
+}
+
+.pdf-icon {
+    -fx-font-size: 60;
+    -fx-text-fill: #F5F0E9;
+}
+
+.pdf-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 12;
+    -fx-text-fill: #F5F0E9;
+}
+
+.file-title {
+    -fx-font-family:"Alte Haas Grotesk";
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+    -fx-text-fill: #112250;
+    -fx-wrap-text: true;
+}
+
+.file-filename {
+    -fx-font-family:"Alte Haas Grotesk";
+    -fx-font-size: 12;
+    -fx-text-fill: #7785a4;
+}
+
+.file-description {
+    -fx-font-family:"Alte Haas Grotesk";
+    -fx-font-size: 14;
+    -fx-text-fill: #424242;
+    -fx-wrap-text: true;
+}
+
+.info-label {
+    -fx-font-family:"Alte Haas Grotesk";
+    -fx-font-size: 13;
+    -fx-text-fill: #757575;
+}
+
+.info-icon {
+    -fx-font-family:"Alte Haas Grotesk";
+    -fx-font-size: 16;
+}
+
+.price-label {
+    -fx-font-family:"Alte Haas Grotesk";
+    -fx-font-size: 11;
+    -fx-text-fill: #757575;
+}
+
+.price-value {
+    -fx-font-family:"Bison Bold";
+    -fx-font-size: 24;
+    -fx-text-fill: #E0C58F;
+}
+
+.view-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #112250;
+    -fx-font-family:"Bison Bold";
+    -fx-font-size: 17px;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-border-color: #112250;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.view-button:hover {
+    -fx-background-color: #112250;
+    -fx-text-fill: #F5F0E9;
+}
+
+.view-button:pressed {
+    -fx-background-color: #0d1a38;
+    -fx-text-fill: #F5F0E9;
+}
+
+.buy-button {
+    -fx-background-color: #E0C58F;
+    -fx-text-fill: #F5F0E9;
+    -fx-font-family:"Bison Bold";
+    -fx-font-size: 17px;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-pref-width: 120;
+    -fx-effect: dropshadow(three-pass-box, rgba(17,34,80,0.3), 10, 0.5, 0, 0);
+}
+
+.buy-button:hover {
+    -fx-background-color: #e1c79e;
+}
+
+.buy-button:pressed {
+    -fx-background-color: #ecddc0;
+}
+
+
+.buy-button:disabled {
+    -fx-background-color: #CCCCCC;
+    -fx-text-fill: #666666;
+    -fx-cursor: default;
+    -fx-opacity: 0.7;
+}
+
+
+/* Purchase Dialog Styles */
+.purchase-dialog {
+    -fx-background-color: #f5f0e9;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color: #112250;
+    -fx-border-width: 3;
+    -fx-padding: 25;
+    -fx-spacing: 15;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.3, 0, 3);
+}
+
+.purchase-header {
+    -fx-font-size: 18px;
+    -fx-font-family:"Bison Bold";
+    -fx-text-fill: #112250;
+}
+
+.purchase-price {
+    -fx-font-family:"Bison Bold";
+    -fx-font-size: 14px;
+    -fx-text-fill: #444;
+}
+
+.purchase-message {
+    -fx-font-family:"Bison Bold";
+    -fx-font-size: 13px;
+    -fx-text-fill: #555;
+}
+
+.confirm-button {
+    -fx-background-color: #112250;
+    -fx-text-fill: #f5f0e9;
+    -fx-font-family:"Bison Bold";
+    -fx-padding: 8 20;
+    -fx-background-radius: 8;
+    -fx-pref-width: 100;
+}
+
+.confirm-button:hover {
+    -fx-background-color: #3c507d;
+}
+
+.cancel-button {
+    -fx-font-family:"Bison Bold";
+    -fx-background-color: #f5f0e9;
+    -fx-text-fill: #333;
+    -fx-padding: 8 20;
+    -fx-background-radius: 8;
+    -fx-pref-width: 100;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #f1ede9;
+}
+
+.dialog-button-box {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}

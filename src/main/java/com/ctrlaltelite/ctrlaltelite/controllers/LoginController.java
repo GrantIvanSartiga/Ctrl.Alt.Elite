@@ -57,6 +57,7 @@ public class LoginController {
             if (emailTextField.getText().equals("admin") && passwordField.getText().equals("admin123")) {
                 loginMessageLabel.setText("Admin login successful!");
                 openAdminPage();
+                return;
             }
 
             else {

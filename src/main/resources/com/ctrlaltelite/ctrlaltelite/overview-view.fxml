@@ -32,7 +32,7 @@
                 <JFXButton styleClass="nav-button" text="Categories" />
                 <JFXButton styleClass="nav-button" text="Home" />
                 <JFXButton fx:id="libraryButton" onAction="#openLibrary" styleClass="nav-button" text="Library" />
-                <JFXButton fx:id="profileButton" styleClass="icon-button">
+                <JFXButton fx:id="profileButton" styleClass="icon-button" onAction="#LoginUser">
                     <graphic>
                         <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true">
                             <Image url="@images/ProfileIcon.png" />
@@ -42,8 +42,9 @@
             </HBox>
         </HBox>
 
-        <!-- SCROLLABLE CONTENT -->
-        <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" style="-fx-background-color: transparent;">
+    <!-- SCROLLABLE CONTENT -->
+    <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" style="-fx-background-color: transparent;">
+        <content>
             <VBox style="-fx-background-color: #F5F0E9;">
 
                 <!-- SECTION 1: HERO -->
@@ -85,8 +86,21 @@
                     <AnchorPane prefHeight="381.0" prefWidth="792.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="773.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <padding>
-                                <Insets top="70.0" />
+                                <Insets top="30.0" />
                             </padding>
+                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                <children>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <children>
+                                            <Button fx:id="fileUploadButton" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="279.0" text="Button">
+                                                <graphic>
+                                                    <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                                                </graphic>
+                                            </Button>
+                                        </children>
+                                    </VBox>
+                                </children>
+                            </AnchorPane>
                             <Text fill="#112250" strokeType="OUTSIDE" strokeWidth="0.0" text="Check out study materials">
                                 <font>
                                     <Font name="Alte Haas Grotesk Bold" size="36.0" />
@@ -102,54 +116,19 @@
                                     <Insets top="50.0" />
                                 </VBox.margin>
                                 <AnchorPane prefHeight="619.0" prefWidth="792.0" style="-fx-background-color: linear-gradient(to bottom left, #7785a4, #3C507D, #112250); -fx-background-radius: 30;">
-                                    <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                        <columnConstraints>
-                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        </columnConstraints>
-                                        <rowConstraints>
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        </rowConstraints>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F5F0E9;">
-                                            <GridPane.margin>
-                                                <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-                                            </GridPane.margin>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F5F0E9;" GridPane.columnIndex="1">
-                                            <GridPane.margin>
-                                                <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-                                            </GridPane.margin>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F5F0E9;" GridPane.columnIndex="2">
-                                            <GridPane.margin>
-                                                <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-                                            </GridPane.margin>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F5F0E9;" GridPane.rowIndex="1">
-                                            <GridPane.margin>
-                                                <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-                                            </GridPane.margin>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F5F0E9;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                            <GridPane.margin>
-                                                <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-                                            </GridPane.margin>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: F5F0E9;" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                            <GridPane.margin>
-                                                <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-                                            </GridPane.margin>
-                                        </AnchorPane>
-                                    </GridPane>
+                                    <children>
+                                        <VBox fx:id="fileListContainer" alignment="TOP_CENTER" prefHeight="619" prefWidth="792" spacing="15.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    </children>
                                 </AnchorPane>
                             </VBox>
                         </VBox>
                     </AnchorPane>
+
                 </AnchorPane>
             </VBox>
-        </ScrollPane>
+        </content>
+    </ScrollPane>
+
     </VBox>
 
 </AnchorPane>

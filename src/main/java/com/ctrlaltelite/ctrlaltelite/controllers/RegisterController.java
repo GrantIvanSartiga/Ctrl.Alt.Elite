@@ -88,7 +88,7 @@ public class RegisterController {
             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-window.fxml"));
 
             Stage loginStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Scene scene = new Scene(fxmlLoader.load(), 900, 600);
 
             loginStage.setScene(scene);
             loginStage.setTitle("Login");

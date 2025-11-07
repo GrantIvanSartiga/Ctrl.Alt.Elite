@@ -26,7 +26,7 @@ public class UserManager {
         return currentUser != null;
     }
 
-    public class User {
+    public static class User {
         private String userId;
         private String name;
         private String email;

@@ -2,6 +2,8 @@ package com.ctrlaltelite.ctrlaltelite.controllers;
 
 import com.ctrlaltelite.ctrlaltelite.CtrlAltEliteApplication;
 import com.ctrlaltelite.ctrlaltelite.DatabaseConnection;
+// (FIXED) Assuming UserManager is in this package. Adjust if needed.
+import com.ctrlaltelite.ctrlaltelite.util.UserManager;
 import com.jfoenix.controls.JFXButton;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -23,6 +25,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.bson.Document;
+
+// (FIXED) Added missing imports
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
 
 public class AdminCtrlAltEliteController {
     @FXML
@@ -49,16 +55,22 @@ public class AdminCtrlAltEliteController {
     private boolean heroVisible = false;
     private boolean contentVisible = false;
 
-    @FXML private TableView<User> userTable;
-    @FXML private TableColumn<User, String> idColumn;
-    @FXML private TableColumn<User, String> nameColumn;
-    @FXML private TableColumn<User, String> emailColumn;
+    // (FIXED) Added missing @FXML declarations for the table and columns.
+    // Make sure the <UserManager.User> type matches your User class.
+    @FXML
+    private TableView<UserManager.User> userTable;
+    @FXML
+    private TableColumn<UserManager.User, String> UserIDColumn;
+    @FXML
+    private TableColumn<UserManager.User, String> UserNameColumn;
+    @FXML
+    private TableColumn<UserManager.User, String> UserEmailColumn;
 
 
     @FXML
     public void initialize() {
 
-        UserIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        UserIDColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
         UserNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         UserEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
@@ -101,9 +113,8 @@ public class AdminCtrlAltEliteController {
 
         scrollPane.vvalueProperty().addListener((obs, oldVal, newVal) -> checkVisibility());
 
-
-        profileButton.setOnAction(actionEvent -> LoginUser());
-
+        // (FIXED) Removed redundant setOnAction. The FXML's onAction="#LoginUser" handles this.
+        // profileButton.setOnAction(actionEvent -> LoginUser());
 
         checkVisibility();
     }
@@ -218,6 +229,24 @@ public class AdminCtrlAltEliteController {
             users.add(new UserManager.User(id, fullName, email));
         }
 
-        userTable.setItems(userList);
+        // (FIXED) Changed 'userList' to 'users', which is the list you created.
+        userTable.setItems(users);
+    }
+
+    // (FIXED) Added the missing LoginUser method.
+    @FXML
+    private void LoginUser() {
+        // Implement your navigation logic here
+        System.out.println("Profile Button Clicked! Add navigation logic to login/profile screen.");
+
+        // Example of how to change scenes:
+        // try {
+        //     FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("login-view.fxml")); // Or profile-view.fxml
+        //     Scene scene = new Scene(fxmlLoader.load());
+        //     Stage stage = (Stage) profileButton.getScene().getWindow();
+        //     stage.setScene(scene);
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
     }
 }

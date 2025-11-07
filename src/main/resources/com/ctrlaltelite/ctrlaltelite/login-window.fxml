@@ -44,7 +44,7 @@
                   <HBox fx:id="SearchAndButtons" alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
                       <TextField prefWidth="200.0" promptText="Search..." styleClass="search-field" />
                       <JFXButton styleClass="nav-button" text="Categories" />
-                      <JFXButton styleClass="nav-button" text="Home" />
+                      <JFXButton fx:id = "HomeButton" styleClass="nav-button" text="Home" />
                       <JFXButton styleClass="nav-button" text="Library" />
                       <JFXButton fx:id="profileButton" styleClass="icon-button">
                           <graphic>

@@ -1,14 +1,210 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #F5F0E9;" stylesheets="@CtrlAltEliteStyles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ctrlaltelite.ctrlaltelite.controllers.UserCtrlAltEliteController">
+    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- HEADER -->
+        <HBox prefHeight="62.0" spacing="20" style="-fx-background-color: #f5f0e9;">
+            <padding>
+                <Insets left="10" right="10"/>
+            </padding>
+            <!-- LOGO -->
+            <AnchorPane fx:id="Logo" prefHeight="62.0" prefWidth="300.0">
+                <ImageView fitHeight="96.0" fitWidth="104.0" layoutX="7.0" layoutY="12.0" pickOnBounds="true"
+                           preserveRatio="true" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0"
+                           AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
+                    <Image url="@images/Logo.png"/>
+                </ImageView>
+                <Text fill="#112250" layoutX="124.0" layoutY="38.0" text="CTRL.ALT.ELITE" wrappingWidth="150.0"
+                      AnchorPane.bottomAnchor="9.5" AnchorPane.topAnchor="18.0">
+                    <font>
+                        <Font name="Alte Haas Grotesk Bold" size="18.0"/>
+                    </font>
+                </Text>
+            </AnchorPane>
+
+            <!-- SEARCH AND BUTTONS -->
+            <HBox fx:id="SearchAndButtons" alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <TextField prefWidth="200.0" promptText="Search..." styleClass="search-field"/>
+                <JFXButton styleClass="nav-button" text="Categories"/>
+                <JFXButton styleClass="nav-button" text="Home"/>
+                <JFXButton styleClass="nav-button" text="Library"/>
+                <JFXButton fx:id="profileButton" styleClass="icon-button" >
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true">
+                            <Image url="@images/ProfileIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                </JFXButton>
+            </HBox>
+        </HBox>
+
+        <!-- SCROLLABLE CONTENT -->
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" style="-fx-background-color: transparent;">
+            <VBox style="-fx-background-color: #F5F0E9;">
+
+                <!-- SECTION 1: HERO -->
+                <AnchorPane fx:id="heroSection" prefHeight="600.0"
+                            style="-fx-background-image: url('/com/ctrlaltelite/ctrlaltelite/images/Background.png'); -fx-background-size: cover; -fx-background-position: center; -fx-background-color: #3C507D;"
+                            VBox.vgrow="ALWAYS">
+                    <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <padding>
+                            <Insets bottom="40" left="40" right="40" top="50"/>
+                        </padding>
+                        <Text fx:id="welcomeText" fill="#f5f0e9" text="Your Study Stash"
+                              textAlignment="CENTER">
+                            <font>
+                                <Font name="Alte Haas Grotesk Bold" size="96.0"/>
+                            </font>
+                        </Text>
+                        <Text fx:id="Text2" fill="#f5f0e9"
+                              text="Browse, download, and organize notes and materials from trusted creators. Learning made simple."
+                              textAlignment="CENTER" wrappingWidth="600.0">
+                            <font>
+                                <Font size="24.0"/>
+                            </font>
+                        </Text>
+
+                        <ImageView fx:id="ICON" fitHeight="250.0" preserveRatio="true">
+                            <Image url="@images/ICON.png"/>
+                        </ImageView>
+
+                        <HBox fx:id="SearchIcon" alignment="CENTER" spacing="10.0">
+                            <JFXButton>
+                                <graphic>
+                                    <ImageView fitHeight="56.0" fitWidth="56.0" preserveRatio="true">
+                                        <Image url="@images/SearchIcon.png"/>
+                                    </ImageView>
+                                </graphic>
+                            </JFXButton>
+                            <TextField prefHeight="41.0" prefWidth="558.0" promptText="Search..."
+                                       style="-fx-border-color: #112250; -fx-border-width: 3; -fx-background-radius: 20; -fx-border-radius: 20;"/>
+                        </HBox>
+                    </VBox>
+                </AnchorPane>
+
+                <!-- SECTION 2: CONTENT PLACEHOLDER -->
+                <AnchorPane fx:id="contentSection" prefHeight="1000.0" style="-fx-background-color: #f5f0e9;"
+                            VBox.vgrow="ALWAYS">
+                    <AnchorPane prefHeight="381.0" prefWidth="792.0" style="-fx-background-color: transparent;"
+                                AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0"
+                                AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="773.0" spacing="20.0"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <padding>
+                                <Insets top="70.0"/>
+                            </padding>
+                            <Text fill="#112250" strokeType="OUTSIDE" strokeWidth="0.0"
+                                  text="Check out study materials">
+                                <font>
+                                    <Font name="Alte Haas Grotesk Bold" size="36.0"/>
+                                </font>
+                            </Text>
+                            <Text fill="#112250" strokeType="OUTSIDE" strokeWidth="0.0"
+                                  text="Look through our collection to find the right study notes for you."
+                                  textAlignment="CENTER" wrappingWidth="415.45001220703125">
+                                <font>
+                                    <Font name="Alte Haas Grotesk" size="18.0"/>
+                                </font>
+                            </Text>
+                            <VBox alignment="TOP_CENTER" prefHeight="622.0" prefWidth="792.0">
+                                <VBox.margin>
+                                    <Insets top="50.0"/>
+                                </VBox.margin>
+                                <AnchorPane prefHeight="619.0" prefWidth="792.0"
+                                            style="-fx-background-color: linear-gradient(to bottom left, #7785a4, #3C507D, #112250); -fx-background-radius: 30;">
+                                    <GridPane AnchorPane.bottomAnchor="0.0"
+                                              AnchorPane.leftAnchor="0.0"
+                                              AnchorPane.rightAnchor="0.0"
+                                              AnchorPane.topAnchor="0.0">
+                                        <columnConstraints>
+                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+                                                               prefWidth="100.0"/>
+                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+                                                               prefWidth="100.0"/>
+                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+                                                               prefWidth="100.0"/>
+                                        </columnConstraints>
+                                        <rowConstraints>
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0"
+                                                            vgrow="SOMETIMES"/>
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0"
+                                                            vgrow="SOMETIMES"/>
+                                        </rowConstraints>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"
+                                                    style="-fx-background-color: F5F0E9;">
+                                            <GridPane.margin>
+                                                <Insets bottom="50.0" left="50.0"
+                                                        right="50.0" top="50.0"/>
+                                            </GridPane.margin>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"
+                                                    style="-fx-background-color: F5F0E9;"
+                                                    GridPane.columnIndex="1">
+                                            <GridPane.margin>
+                                                <Insets bottom="50.0" left="50.0"
+                                                        right="50.0" top="50.0"/>
+                                            </GridPane.margin>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"
+                                                    style="-fx-background-color: F5F0E9;"
+                                                    GridPane.columnIndex="2">
+                                            <GridPane.margin>
+                                                <Insets bottom="50.0" left="50.0"
+                                                        right="50.0" top="50.0"/>
+                                            </GridPane.margin>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"
+                                                    style="-fx-background-color: F5F0E9;"
+                                                    GridPane.rowIndex="1">
+                                            <GridPane.margin>
+                                                <Insets bottom="50.0" left="50.0"
+                                                        right="50.0" top="50.0"/>
+                                            </GridPane.margin>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"
+                                                    style="-fx-background-color: F5F0E9;"
+                                                    GridPane.columnIndex="1"
+                                                    GridPane.rowIndex="1">
+                                            <GridPane.margin>
+                                                <Insets bottom="50.0" left="50.0"
+                                                        right="50.0" top="50.0"/>
+                                            </GridPane.margin>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"
+                                                    style="-fx-background-color: F5F0E9;"
+                                                    GridPane.columnIndex="2"
+                                                    GridPane.rowIndex="1">
+                                            <GridPane.margin>
+                                                <Insets bottom="50.0" left="50.0"
+                                                        right="50.0" top="50.0"/>
+                                            </GridPane.margin>
+                                        </AnchorPane>
+                                    </GridPane>
+                                </AnchorPane>
+                            </VBox>
+                        </VBox>
+                    </AnchorPane>
+                </AnchorPane>
+            </VBox>
+        </ScrollPane>
+    </VBox>
 
 </AnchorPane>

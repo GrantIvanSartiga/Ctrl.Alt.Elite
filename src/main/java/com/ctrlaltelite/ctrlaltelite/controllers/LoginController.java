@@ -16,6 +16,13 @@ import java.io.IOException;
 
 public class LoginController {
 
+    // Hardcoded admin credentials
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin123";
+
+
+    @FXML
+    private Button HomeButton;
     @FXML
     private Button cancelButton;
     @FXML
@@ -32,17 +39,17 @@ public class LoginController {
     @FXML
     public void initialize() {
         registerButton.setOnAction(event -> createAccountForm());
-        cancelButton.setOnAction(event ->cancelButtonOnAction());
+        cancelButton.setOnAction(event -> cancelButtonOnAction());
+        HomeButton.setOnAction(event -> cancelButtonOnAction());
+
     }
 
     public void loginButtonOnAction(ActionEvent event) {
-
         if (usernameTextField.getText().isBlank() == false && passwordField.getText().isBlank() == false) {
             validateLogin();
         } else {
             loginMessageLabel.setText("Please enter username and password");
         }
-
     }
 
     public void cancelButtonOnAction() {
@@ -51,8 +58,6 @@ public class LoginController {
 
             Stage stage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 900, 600);
-
-
 
             stage.setScene(scene);
             stage.setTitle("CtrlAltElite");
@@ -69,55 +74,69 @@ public class LoginController {
         }
     }
 
-    public void validateLogin(){
-//        MongoDatabase db = DatabaseHelper.getInstance().getDatabase();
-//
-//        if (db != null){
-//            loginMessageLabel.setText("Connected to database: " + db.getName() + " with collection of " + db.getCollection("movies").getNamespace());
-//            // loginMessageLabel.setText("Please enter username and password");
-//        }
+    public void validateLogin() {
+        String enteredUsername = usernameTextField.getText();
+        String enteredPassword = passwordField.getText();
 
+        // Check if admin credentials
+        if (enteredUsername.equals(ADMIN_USERNAME) && enteredPassword.equals(ADMIN_PASSWORD)) {
+            loginMessageLabel.setText("Admin login successful!");
+            openAdminPage();
+        }
+        // TODO: Add regular user authentication here when database is ready
+        else {
+            loginMessageLabel.setText("Invalid username or password");
+        }
 
+        // Commented out database code for when your groupmate is ready
+        /*
+        MongoDatabase db = DatabaseHelper.getInstance().getDatabase();
 
-
-//        DatabaseConnection connectNow = new DatabaseConnection();
-//        Connection connectDB = connectNow.getConnection();
-//
-//        String verifyLogin = "SELECT count(1) FROM caeusers.useraccounts WHERE username = '"
-//                + usernameTextField.getText() + "' AND password = ' " + passwordField.getText() + "'" ;
-//
-//        try {
-//            Statement statement = connectDB.createStatement();
-//            ResultSet queryResult = statement.executeQuery(verifyLogin);
-//
-//            while (queryResult.next()) {
-//                if (queryResult.getInt(1) == 1) {
-//                    loginMessageLabel.setText("Login successful");
-//                    createAccountForm();
-//                } else {
-//                    loginMessageLabel.setText("Login failed");
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            e.getCause();
-//        }
-
+        if (db != null) {
+            // Check database for regular users
+            // Your MongoDB authentication logic here
+        }
+        */
     }
-    public void createAccountForm(){
-        try{
+
+    private void openAdminPage() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("overview-viewAdmin.fxml"));
+
+            Stage adminStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+
+            adminStage.setScene(scene);
+            adminStage.setTitle("CtrlAltElite");
+            adminStage.setMinWidth(600);
+            adminStage.setMinHeight(400);
+            adminStage.setResizable(true);
+            adminStage.setMaximized(true);
+            adminStage.show();
+
+            // Close login window
+            ((Stage) loginButton.getScene().getWindow()).close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            loginMessageLabel.setText("Error loading admin panel");
+        }
+    }
+
+    public void createAccountForm() {
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("register.fxml"));
             Stage registerStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 600, 470);
             registerStage.setScene(scene);
             registerStage.show();
 
-
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
-        }
-    }
 
+
+        }
+
+    }
 }

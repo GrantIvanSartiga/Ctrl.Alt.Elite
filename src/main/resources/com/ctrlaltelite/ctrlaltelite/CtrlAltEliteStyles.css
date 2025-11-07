@@ -44,6 +44,52 @@
 }
 
 
+.scroll-bar-yellow {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar-yellow:vertical {
+    -fx-pref-width: 10;
+}
+
+.scroll-bar-yellow:horizontal {
+    -fx-pref-height: 8;
+}
+
+.scroll-bar-yellow .thumb {
+    -fx-background-color: #e0c58f;
+    -fx-background-radius: 10;
+
+}
+
+.scroll-bar-yellow-bar .thumb:hover {
+    -fx-background-color: #3c507d;
+    -fx-cursor: hand;
+
+}
+
+.scroll-bar-yellow .track {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-pref-width: 11;
+}
+
+.scroll-bar-yellow .increment-button,
+.scroll-bar-yellow .decrement-button {
+    -fx-opacity: 0;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+
 
 .nav-button {
     -fx-font-family: 'Bison Bold';

@@ -42,6 +42,15 @@ public class FileChooserController {
     @FXML
     private VBox dragDropArea;
 
+    @FXML
+    private TextField TitleTextField;
+
+    @FXML
+    private TextArea DiscriptionTextArea;
+
+    @FXML
+    private TextField PriceTextField;
+
     private File currentFile;
     private boolean isUploading = false;
 
@@ -154,14 +163,55 @@ public class FileChooserController {
             return;
         }
 
+        // Validate form fields
+        String title = TitleTextField.getText().trim();
+        String description = DiscriptionTextArea.getText().trim();
+        String priceText = PriceTextField.getText().trim();
+
+        if (title.isEmpty()) {
+            showAlert("Validation Error", "Please enter a title for the document.");
+            return;
+        }
+
+        if (description.isEmpty()) {
+            showAlert("Validation Error", "Please enter a description for the document.");
+            return;
+        }
+
+        if (priceText.isEmpty()) {
+            showAlert("Validation Error", "Please enter a price for the document.");
+            return;
+        }
+
+        // Validate price is a valid number
+        double price;
+        try {
+            price = Double.parseDouble(priceText);
+            if (price < 0) {
+                showAlert("Validation Error", "Price cannot be negative.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            showAlert("Validation Error", "Please enter a valid price (numbers only).");
+            return;
+        }
+
         isUploading = true;
         uploadButton.setDisable(true);
         chooseFileButton.setDisable(true);
+        TitleTextField.setDisable(true);
+        DiscriptionTextArea.setDisable(true);
+        PriceTextField.setDisable(true);
 
         HBox uploadItem = (HBox) uploadListContainer.getChildren().get(0);
         Label statusLabel = (Label) uploadItem.lookup(".status-label");
         Label speedLabel = (Label) uploadItem.lookup(".speed-label");
         ProgressBar progressBar = (ProgressBar) uploadItem.lookup(".progress-bar");
+
+        // Capture values before starting the background thread
+        final String finalTitle = title;
+        final String finalDescription = description;
+        final double finalPrice = price;
 
         Task<Void> uploadTask = new Task<Void>() {
             @Override
@@ -195,9 +245,18 @@ public class FileChooserController {
                     Thread.sleep(50);
                 }
 
-                // Upload to database
-                String fileId = FilesDatabaseConnection.uploadFile(currentFile, currentUserEmail);
+                // Upload to database with metadata
+                String fileId = FilesDatabaseConnection.uploadFile(
+                        currentFile,
+                        currentUserEmail,
+                        finalTitle,
+                        finalDescription,
+                        finalPrice
+                );
                 System.out.println("File uploaded successfully with ID: " + fileId);
+                System.out.println("Title: " + finalTitle);
+                System.out.println("Description: " + finalDescription);
+                System.out.println("Price: $" + finalPrice);
 
                 return null;
             }
@@ -210,7 +269,19 @@ public class FileChooserController {
                     speedLabel.setText("");
                     isUploading = false;
                     chooseFileButton.setDisable(false);
+                    TitleTextField.setDisable(false);
+                    DiscriptionTextArea.setDisable(false);
+                    PriceTextField.setDisable(false);
+
+                    // Clear form after successful upload
                     currentFile = null;
+                    TitleTextField.clear();
+                    DiscriptionTextArea.clear();
+                    PriceTextField.clear();
+                    uploadListContainer.getChildren().clear();
+                    uploadButton.setDisable(true);
+
+                    showAlert("Success", "File uploaded successfully!");
                 });
             }
 
@@ -222,7 +293,11 @@ public class FileChooserController {
                     speedLabel.setText("");
                     isUploading = false;
                     chooseFileButton.setDisable(false);
+                    TitleTextField.setDisable(false);
+                    DiscriptionTextArea.setDisable(false);
+                    PriceTextField.setDisable(false);
                     getException().printStackTrace();
+                    showAlert("Upload Failed", "An error occurred during upload: " + getException().getMessage());
                 });
             }
         };

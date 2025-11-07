@@ -28,13 +28,15 @@ public class FilesDatabaseConnection {
     }
 
     /**
-     * Upload a file to the database
+     * Upload a file to the database with metadata
      * @param file The file to upload
      * @param email The email of the user uploading the file
+     * @param title The title of the document
+     * @param description The description of the document
+     * @param price The price of the document
      * @return The file ID (ObjectId as String)
      */
-
-    public static String uploadFile(File file, String email) throws Exception {
+    public static String uploadFile(File file, String email, String title, String description, double price) throws Exception {
         byte[] fileData = readFileToBytes(file);
 
         Document fileDoc = new Document("filename", file.getName())
@@ -42,11 +44,24 @@ public class FilesDatabaseConnection {
                 .append("file_size", file.length())
                 .append("file_type", getFileType(file))
                 .append("email", email)
+                .append("title", title)
+                .append("description", description)
+                .append("price", price)
                 .append("upload_date", LocalDateTime.now())
                 .append("absolute_path", file.getAbsolutePath());
 
         var result = filesCollection.insertOne(fileDoc);
         return result.getInsertedId().asObjectId().getValue().toString();
+    }
+
+    /**
+     * Upload a file to the database (backward compatibility - without metadata)
+     * @param file The file to upload
+     * @param email The email of the user uploading the file
+     * @return The file ID (ObjectId as String)
+     */
+    public static String uploadFile(File file, String email) throws Exception {
+        return uploadFile(file, email, "Untitled", "No description provided", 0.0);
     }
 
     /**
@@ -79,12 +94,57 @@ public class FilesDatabaseConnection {
     }
 
     /**
-     * Update file metadata
+     * Update file metadata including title, description, and price
+     */
+    public static void updateFileMetadata(String fileId, String newFilename, String title, String description, double price) throws Exception {
+        Document updateDoc = new Document("filename", newFilename)
+                .append("title", title)
+                .append("description", description)
+                .append("price", price);
+
+        filesCollection.updateOne(
+                new Document("_id", new ObjectId(fileId)),
+                new Document("$set", updateDoc)
+        );
+    }
+
+    /**
+     * Update file metadata (backward compatibility - filename only)
      */
     public static void updateFileMetadata(String fileId, String newFilename) throws Exception {
         filesCollection.updateOne(
                 new Document("_id", new ObjectId(fileId)),
                 new Document("$set", new Document("filename", newFilename))
+        );
+    }
+
+    /**
+     * Update title only
+     */
+    public static void updateFileTitle(String fileId, String title) throws Exception {
+        filesCollection.updateOne(
+                new Document("_id", new ObjectId(fileId)),
+                new Document("$set", new Document("title", title))
+        );
+    }
+
+    /**
+     * Update description only
+     */
+    public static void updateFileDescription(String fileId, String description) throws Exception {
+        filesCollection.updateOne(
+                new Document("_id", new ObjectId(fileId)),
+                new Document("$set", new Document("description", description))
+        );
+    }
+
+    /**
+     * Update price only
+     */
+    public static void updateFilePrice(String fileId, double price) throws Exception {
+        filesCollection.updateOne(
+                new Document("_id", new ObjectId(fileId)),
+                new Document("$set", new Document("price", price))
         );
     }
 
@@ -125,12 +185,40 @@ public class FilesDatabaseConnection {
     }
 
     /**
+     * Search files by title
+     */
+    public static FindIterable<Document> searchFilesByTitle(String email, String title) {
+        return filesCollection.find(
+                new Document("email", email)
+                        .append("title", new Document("$regex", title).append("$options", "i"))
+        );
+    }
+
+    /**
+     * Get files within a price range
+     */
+    public static FindIterable<Document> getFilesByPriceRange(String email, double minPrice, double maxPrice) {
+        return filesCollection.find(
+                new Document("email", email)
+                        .append("price", new Document("$gte", minPrice).append("$lte", maxPrice))
+        ).sort(descending("upload_date"));
+    }
+
+    /**
      * Get files of a specific type
      */
     public static FindIterable<Document> getFilesByType(String email, String fileType) {
         return filesCollection.find(
                 new Document("email", email).append("file_type", fileType)
         );
+    }
+
+    /**
+     * Get all files sorted by price (ascending)
+     */
+    public static FindIterable<Document> getUserFilesSortedByPrice(String email, boolean ascending) {
+        return filesCollection.find(eq("email", email))
+                .sort(ascending ? new Document("price", 1) : new Document("price", -1));
     }
 
     private static byte[] readFileToBytes(File file) throws Exception {

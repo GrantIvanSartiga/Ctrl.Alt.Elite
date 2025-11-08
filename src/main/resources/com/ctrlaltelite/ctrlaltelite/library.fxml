@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,92 +15,94 @@
 <AnchorPane prefHeight="600.0" prefWidth="856.0" style="-fx-background-color: #F5F0E9;" stylesheets="@CtrlAltEliteStyles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ctrlaltelite.ctrlaltelite.controllers.LibraryController">
     <VBox layoutX="33.0" layoutY="64.8" prefHeight="609.0" prefWidth="856.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <children>
-              <VBox prefHeight="610.0" prefWidth="856.0" style="-fx-background-color: #F5F0E9;">
-            <children>
-            
-                <!-- HEADER -->
-            
-                <HBox prefHeight="62.0" spacing="20" style="-fx-background-color: #f5f0e9;">
-                    <padding>
-                        <Insets left="10" right="10" />
-                    </padding>
-                    <!-- LOGO -->
-                    <AnchorPane fx:id="Logo" prefHeight="336.0" prefWidth="864.0">
-                        <ImageView fitHeight="96.0" fitWidth="104.0" layoutX="7.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
-                            <Image url="@images/Logo.png" />
-                        </ImageView>
-                        <Text fill="#112250" layoutX="124.0" layoutY="38.0" text="CTRL.ALT.ELITE" wrappingWidth="150.0" AnchorPane.bottomAnchor="9.5" AnchorPane.topAnchor="18.0">
-                            <font>
-                                <Font name="Alte Haas Grotesk Bold" size="18.0" />
-                            </font>
-                        </Text>
-                    </AnchorPane>
-            
-                    <!-- SEARCH AND BUTTONS -->
-                    <HBox fx:id="SearchAndButtons" alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
-                        <TextField prefWidth="200.0" promptText="Search..." styleClass="search-field" />
-                        <JFXButton styleClass="nav-button" text="Categories" />
-                        <JFXButton fx:id="homeButton" styleClass="nav-button" text="Home" />
-                        <JFXButton styleClass="nav-button" text="Library" />
-                        <JFXButton fx:id="profileButton" styleClass="icon-button">
-                            <graphic>
-                                <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true">
-                                    <Image url="@images/logout.png" />
-                                </ImageView>
-                            </graphic>
-                        </JFXButton>
+            <VBox prefHeight="610.0" prefWidth="856.0" style="-fx-background-color: #F5F0E9;" VBox.vgrow="ALWAYS">
+                <children>
+
+                    <!-- HEADER -->
+
+                    <HBox prefHeight="62.0" spacing="20" style="-fx-background-color: #f5f0e9;" VBox.vgrow="ALWAYS">
+                        <padding>
+                            <Insets left="10" right="10" />
+                        </padding>
+                        <!-- LOGO -->
+                        <AnchorPane fx:id="Logo" prefHeight="336.0" prefWidth="864.0">
+                            <ImageView fitHeight="96.0" fitWidth="104.0" layoutX="7.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
+                                <Image url="@images/Logo.png" />
+                            </ImageView>
+                            <Text fill="#112250" layoutX="124.0" layoutY="38.0" text="CTRL.ALT.ELITE" wrappingWidth="150.0" AnchorPane.bottomAnchor="9.5" AnchorPane.topAnchor="18.0">
+                                <font>
+                                    <Font name="Alte Haas Grotesk Bold" size="18.0" />
+                                </font>
+                            </Text>
+                        </AnchorPane>
+
+                        <!-- SEARCH AND BUTTONS -->
+                        <HBox fx:id="SearchAndButtons" alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+                            <JFXButton styleClass="nav-button" text="Categories" />
+                            <JFXButton fx:id="homeButton" styleClass="nav-button" text="Home" />
+                            <JFXButton styleClass="nav-button" text="Library" />
+                            <JFXButton fx:id="profileButton" styleClass="icon-button">
+                                <graphic>
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" preserveRatio="true">
+                                        <Image url="@images/logout.png" />
+                                    </ImageView>
+                                </graphic>
+                            </JFXButton>
+                        </HBox>
                     </HBox>
-                </HBox>
-      
-                           <!-- SCROLLABLE CONTENT -->
-                  <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" prefHeight="549.0" prefWidth="856.0" style="-fx-background-color: transparent;">
+
+                    <!-- SCROLLABLE CONTENT -->
+                    <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" prefHeight="549.0" prefWidth="856.0" style="-fx-background-color: #3C507D; -fx-control-inner-background: #3C507D;" VBox.vgrow="ALWAYS">
                   <content>
                   
-                                                                  <!-- SECTION 1: HERO -->
-                           <AnchorPane fx:id="heroSection" maxWidth="-Infinity" prefHeight="600.0" prefWidth="856.0" style="-fx-background-image: url('/com/ctrlaltelite/ctrlaltelite/images/Background.png'); -fx-background-size: cover; -fx-background-position: center; -fx-background-color: #3C507D;">
-                        <VBox alignment="TOP_RIGHT" layoutX="-42.0" prefHeight="848.0" prefWidth="856.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <ImageView fx:id="ICON1" fitHeight="72.0" fitWidth="100.0" preserveRatio="true">
-                                       <image>
-                                          <Image url="@images/ICON.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Text fx:id="welcomeText1" fill="#f5f0e9" text="My Library" textAlignment="CENTER">
-                                       <font>
-                                          <Font name="Alte Haas Grotesk Bold" size="30.0" />
-                                       </font>
-                                    </Text>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                           <Text fill="#f5f0e9" text="My Notes" textAlignment="CENTER">
-                                               <font>
-                                                   <Font name="Alte Haas Grotesk Bold" size="30.0" />
-                                               </font>
-                                           </Text>
-                                 </children>
-                              </HBox>
-                              <FlowPane fx:id="bookContainer1" prefHeight="305.0" prefWidth="856.0" />
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Text fill="#f5f0e9" text="My Uploads" textAlignment="CENTER">
-                                       <font>
-                                          <Font name="Alte Haas Grotesk Bold" size="30.0" />
-                                       </font>
-                                    </Text>
-                                 </children>
-                              </HBox>
-                              <FlowPane fx:id="bookContainer11" prefHeight="349.0" prefWidth="856.0" />
-                           </children>
-                        </VBox>
-                           </AnchorPane>
+                            <!-- SECTION 1: HERO -->
+                            <AnchorPane fx:id="heroSection" minHeight="1200.0" style="-fx-background-image: url('/com/ctrlaltelite/ctrlaltelite/images/Background.png'); -fx-background-size: cover; -fx-background-position: center; -fx-background-color: #3C507D;">
+                                <VBox alignment="TOP_CENTER" prefHeight="1200.0" spacing="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <padding>
+                                        <Insets bottom="20" left="20" right="20" top="20" />
+                                    </padding>
+                                    <children>
+                                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                            <children>
+                                                <ImageView fx:id="ICON1" fitHeight="72.0" fitWidth="100.0" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@images/ICON.png" />
+                                                    </image>
+                                                </ImageView>
+                                                <Text fx:id="welcomeText1" fill="#f5f0e9" text="My Library" textAlignment="CENTER">
+                                                    <font>
+                                                        <Font name="Alte Haas Grotesk Bold" size="30.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
+                                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                            <children>
+                                                <Text fill="#f5f0e9" text="My Notes" textAlignment="CENTER">
+                                                    <font>
+                                                        <Font name="Alte Haas Grotesk Bold" size="30.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
+                                        <FlowPane fx:id="bookContainer1" alignment="TOP_CENTER" hgap="20.0" prefHeight="305.0" prefWidth="856.0" />
+                                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                            <children>
+                                                <Text fill="#f5f0e9" text="My Uploads" textAlignment="CENTER">
+                                                    <font>
+                                                        <Font name="Alte Haas Grotesk Bold" size="30.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
+                                        <FlowPane fx:id="bookContainer11" alignment="TOP_CENTER" hgap="20.0" prefHeight="349.0" prefWidth="856.0" />
+                                    </children>
+                                </VBox>
+                            </AnchorPane>
                   </content>
-                  </ScrollPane>
-            </children>
-              </VBox>
+                    </ScrollPane>
+                </children>
+            </VBox>
         </children>
     </VBox>
 </AnchorPane>

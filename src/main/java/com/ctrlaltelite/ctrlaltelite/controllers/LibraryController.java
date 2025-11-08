@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.bson.types.ObjectId;
 
 public class LibraryController implements Initializable {
 
@@ -270,7 +271,7 @@ public class LibraryController implements Initializable {
         );
 
 
-        Button editBtn = new Button("Edit");
+        Button editBtn = new Button("Delete");
         editBtn.getStyleClass().add("library-edit-button");
         editBtn.setOnAction(e -> editUploadedFile(fileDoc));
 
@@ -319,9 +320,33 @@ public class LibraryController implements Initializable {
 
     private void editUploadedFile(Document fileDoc) {
         String filename = fileDoc.getString("filename");
-        System.out.println("Editing: " + filename);
+        ObjectId fileId = fileDoc.getObjectId("_id"); // ✅ Define fileId here
 
-        // Implement file editing here
+        System.out.println("Editing (deleting) file: " + filename + " (ID: " + fileId.toHexString() + ")");
+
+        javafx.scene.control.Alert confirmAlert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Delete File");
+        confirmAlert.setHeaderText("Are you sure you want to delete this file?");
+        confirmAlert.setContentText(filename);
+
+        confirmAlert.showAndWait().ifPresent(response -> {
+            if (response == javafx.scene.control.ButtonType.OK) {
+                try {
+                    FilesDatabaseConnection.deleteFile(fileId.toHexString());
+                    System.out.println("File deleted: " + filename);
+                    refreshFiles();
+                } catch (Exception e) {
+                    System.err.println("Error deleting file: " + e.getMessage());
+                    e.printStackTrace();
+
+                    javafx.scene.control.Alert errorAlert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Error");
+                    errorAlert.setHeaderText("Failed to delete file");
+                    errorAlert.setContentText(e.getMessage());
+                    errorAlert.showAndWait();
+                }
+            }
+        });
     }
 
     public void refreshFiles() {

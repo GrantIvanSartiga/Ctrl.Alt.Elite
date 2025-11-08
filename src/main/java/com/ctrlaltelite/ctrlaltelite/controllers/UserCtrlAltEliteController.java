@@ -129,23 +129,23 @@ public class UserCtrlAltEliteController {
         logoAnim.play();
         buttonsAnim.play();
 
-        // Scroll listener
+
         scrollPane.vvalueProperty().addListener((obs, oldVal, newVal) -> checkVisibility());
 
-        // Button actions
+
         profileButton.setOnAction(actionEvent -> LoginUser());
         fileUploadButton.setOnAction(actionEvent -> openFileUpload());
         libraryButton.setOnAction(actionEvent -> openLibrary());
 
         checkVisibility();
 
-        // Configure scroll pane
+
         if (scrollPane != null) {
             scrollPane.setFitToWidth(true);
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         }
 
-        // Configure file list container
+
         if (fileListContainer != null) {
             fileListContainer.setAlignment(Pos.TOP_CENTER);
             fileListContainer.setSpacing(20);
@@ -164,9 +164,9 @@ public class UserCtrlAltEliteController {
             contentSection.setManaged(true);
         }
 
-// Setup search field BEFORE loading files
+
         if (searchField != null) {
-            // This makes the search run when you press "Enter"
+
             searchField.setOnAction(event -> performSearch());
             searchField.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
             System.out.println("Search field 'Enter' key listener added");
@@ -174,10 +174,9 @@ public class UserCtrlAltEliteController {
             System.err.println("WARNING: searchField is null!");
         }
 
-        // This makes the search run when you click the magnifying glass icon
+
         if (SearchIcon != null) {
             SearchIcon.setOnMouseClicked(event -> performSearch());
-            // Optional: Add a hover effect to show it's clickable
             SearchIcon.setStyle("-fx-cursor: hand;");
             System.out.println("Search icon click listener added");
         } else {
@@ -185,18 +184,18 @@ public class UserCtrlAltEliteController {
         }
 
         if (searchField != null) {
-            // Runs search when you press "Enter"
+
             searchField.setOnAction(event -> performSearch());
             searchField.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
         }
 
         if (SearchIcon != null) {
-            // Runs search when you click the HBox (the magnifying glass area)
+
             SearchIcon.setOnMouseClicked(event -> performSearch());
             SearchIcon.setStyle("-fx-cursor: hand;");
         }
 
-        // Load files after everything is set up
+
         loadUserFiles();
     }
 
@@ -205,7 +204,7 @@ public class UserCtrlAltEliteController {
         double contentHeight = scrollPane.getContent().getBoundsInLocal().getHeight();
         double scrollY = scrollPane.getVvalue() * (contentHeight - viewportHeight);
 
-        // Hero section visibility
+
         double heroY = heroSection.getBoundsInParent().getMinY();
         double heroBottom = heroSection.getBoundsInParent().getMaxY();
         boolean heroInView = heroBottom > scrollY && heroY < scrollY + viewportHeight;
@@ -218,7 +217,7 @@ public class UserCtrlAltEliteController {
             heroVisible = false;
         }
 
-        // Content section visibility
+
         double contentY = contentSection.getBoundsInParent().getMinY();
         boolean contentInView = contentY < scrollY + viewportHeight - 150;
 
@@ -388,7 +387,7 @@ public class UserCtrlAltEliteController {
         fileListContainer.setVisible(true);
         fileListContainer.setManaged(true);
 
-        // Show loading indicator
+
         Platform.runLater(() -> {
             fileListContainer.getChildren().clear();
             Label loadingLabel = new Label("Loading study materials...");
@@ -396,7 +395,7 @@ public class UserCtrlAltEliteController {
             fileListContainer.getChildren().add(loadingLabel);
         });
 
-        // Load files in background thread
+
         Task<Void> loadTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -423,7 +422,7 @@ public class UserCtrlAltEliteController {
                         }
                     }
 
-                    // Initialize filtered files with all files
+
                     filteredFiles.clear();
                     filteredFiles.addAll(allFiles);
 
@@ -735,11 +734,293 @@ public class UserCtrlAltEliteController {
     private void processPurchase(Document fileDoc) {
         System.out.println("Processing purchase for: " + fileDoc.getString("filename"));
 
-        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-        successAlert.setTitle("Purchase Successful");
-        successAlert.setHeaderText("Thank you for your purchase!");
-        successAlert.setContentText("The file has been added to your library.\nYou can now access it anytime.");
-        successAlert.showAndWait();
+        String currentUser = UserManager.getCurrentUser();
+        String fileId = fileDoc.getObjectId("_id").toString();
+        Double price = fileDoc.getDouble("price");
+
+        System.out.println("Current user: " + currentUser);
+        System.out.println("File ID: " + fileId);
+        System.out.println("Price: " + price);
+
+        // Check if already purchased
+        if (FilesDatabaseConnection.hasUserPurchasedFile(currentUser, fileId)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Already Purchased");
+            alert.setHeaderText("File Already in Library");
+            alert.setContentText("You have already purchased this file.");
+            alert.showAndWait();
+            return;
+        }
+
+        Task<Boolean> purchaseTask = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                // Simulate payment processing
+                Thread.sleep(1500);
+
+                try {
+                    System.out.println("=== SAVING PURCHASE TO DATABASE ===");
+                    System.out.println("User: " + currentUser);
+                    System.out.println("File ID: " + fileId);
+                    System.out.println("Price: " + price);
+
+                    // Add to purchased_notes collection
+                    FilesDatabaseConnection.addPurchasedFileToUser(currentUser, fileId, price);
+
+                    System.out.println("Purchase saved successfully!");
+
+                    // Create receipt record
+                    String receiptId = FilesDatabaseConnection.createReceiptRecord(
+                            currentUser,
+                            fileId,
+                            price
+                    );
+
+                    System.out.println("Receipt created: " + receiptId);
+                    return true;
+
+                } catch (Exception e) {
+                    System.err.println("Error during purchase processing: " + e.getMessage());
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+        };
+
+        purchaseTask.setOnSucceeded(e -> {
+            if (purchaseTask.getValue()) {
+                System.out.println("Purchase task succeeded!");
+                showPurchaseReceipt(fileDoc);
+            } else {
+                System.out.println("Purchase task returned false!");
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Purchase Failed");
+                errorAlert.setHeaderText("Transaction Error");
+                errorAlert.setContentText("An error occurred while processing your purchase. Please try again.");
+                errorAlert.showAndWait();
+            }
+        });
+
+        purchaseTask.setOnFailed(e -> {
+            System.out.println("Purchase task failed!");
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Purchase Failed");
+            errorAlert.setHeaderText("Transaction Error");
+            errorAlert.setContentText("An error occurred while processing your purchase. Please try again.");
+            errorAlert.showAndWait();
+        });
+
+        Thread purchaseThread = new Thread(purchaseTask);
+        purchaseThread.setDaemon(true);
+        purchaseThread.start();
+    }
+
+    private void showPurchaseReceipt(Document fileDoc) {
+        String filename = fileDoc.getString("filename");
+        String title = fileDoc.getString("title");
+        Double price = fileDoc.getDouble("price");
+        LocalDateTime purchaseDate = LocalDateTime.now();
+        String receiptId = "RCP-" + System.currentTimeMillis();
+        String currentUser = UserManager.getCurrentUser();
+
+        Stage receiptStage = new Stage();
+        receiptStage.initModality(Modality.APPLICATION_MODAL);
+        receiptStage.setTitle("Purchase Receipt");
+        receiptStage.setResizable(false);
+        receiptStage.initStyle(StageStyle.UNDECORATED);
+
+        // Receipt Header
+        VBox receiptContent = new VBox(15);
+        receiptContent.getStyleClass().add("receipt-container");
+        receiptContent.setPadding(new Insets(30));
+        receiptContent.setAlignment(Pos.TOP_CENTER);
+
+        Label successIcon = new Label("✓");
+        successIcon.getStyleClass().add("receipt-success-icon");
+
+        Label successTitle = new Label("Purchase Successful!");
+        successTitle.getStyleClass().add("receipt-title");
+
+        Label thankYou = new Label("Thank you for your purchase");
+        thankYou.getStyleClass().add("receipt-subtitle");
+
+        // Separator
+        Separator sep1 = new Separator();
+        sep1.setPrefWidth(400);
+
+        // Receipt Details
+        VBox detailsBox = new VBox(10);
+        detailsBox.setAlignment(Pos.TOP_LEFT);
+        detailsBox.setPrefWidth(400);
+
+        HBox receiptIdBox = createReceiptRow("Receipt ID:", receiptId);
+        HBox dateBox = createReceiptRow("Date:", purchaseDate.format(DATE_FORMATTER));
+        HBox buyerBox = createReceiptRow("Buyer:", currentUser != null ? currentUser.split("@")[0] : "Unknown");
+
+        detailsBox.getChildren().addAll(receiptIdBox, dateBox, buyerBox);
+
+        // Item Details
+        VBox itemBox = new VBox(10);
+        itemBox.setAlignment(Pos.TOP_LEFT);
+        itemBox.setPrefWidth(400);
+
+        Label itemsLabel = new Label("ITEMS");
+        itemsLabel.getStyleClass().add("receipt-section-title");
+
+        VBox itemDetails = new VBox(8);
+
+        HBox titleRow = createReceiptRow("Title:", title != null ? title : "Untitled Document");
+        HBox filenameRow = createReceiptRow("File:", filename);
+
+        itemDetails.getChildren().addAll(titleRow, filenameRow);
+
+        itemBox.getChildren().addAll(itemsLabel, itemDetails);
+
+        // Pricing
+        Separator sep2 = new Separator();
+        sep2.setPrefWidth(400);
+
+        VBox pricingBox = new VBox(8);
+        pricingBox.setAlignment(Pos.TOP_LEFT);
+        pricingBox.setPrefWidth(400);
+
+        Double total = price != null ? price : 0.0;
+
+        Label totalLabel = new Label("TOTAL");
+        totalLabel.getStyleClass().add("receipt-total-label");
+        Label totalValue = new Label(String.format("Php%.2f", total));
+        totalValue.getStyleClass().add("receipt-total-value");
+        HBox totalRow = new HBox(20);
+        totalRow.setAlignment(Pos.CENTER);
+        totalRow.setPrefWidth(400);
+        totalRow.getChildren().addAll(totalLabel, totalValue);
+
+        pricingBox.getChildren().addAll(new Separator(), totalRow);
+
+        // Buttons
+        HBox buttonBox = new HBox(15);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPrefWidth(400);
+
+        Button downloadBtn = new Button("Download Receipt");
+        downloadBtn.getStyleClass().add("receipt-download-button");
+        downloadBtn.setOnAction(e -> downloadReceipt(receiptId, fileDoc, total));
+
+        Button viewLibraryBtn = new Button("Go to Library");
+        viewLibraryBtn.getStyleClass().add("receipt-library-button");
+        viewLibraryBtn.setOnAction(e -> {
+            receiptStage.close();
+            openLibraryAfterPurchase();
+        });
+
+        buttonBox.getChildren().addAll(downloadBtn, viewLibraryBtn);
+
+        // Add all to receipt
+        receiptContent.getChildren().addAll(
+                successIcon,
+                successTitle,
+                thankYou,
+                sep1,
+                detailsBox,
+                itemBox,
+                pricingBox,
+                buttonBox
+        );
+
+        // Scroll wrap for large receipts
+        ScrollPane scrollPane = new ScrollPane(receiptContent);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background-color: #f5f0e9;");
+
+        VBox mainLayout = new VBox(receiptContent);
+        mainLayout.setStyle("-fx-background-color: #f5f0e9;");
+
+        Scene scene = new Scene(scrollPane, 500, 600);
+
+        var resource = CtrlAltEliteApplication.class.getResource("CtrlAltEliteStyles.css");
+        if (resource != null) {
+            scene.getStylesheets().add(resource.toExternalForm());
+        }
+
+        receiptStage.setScene(scene);
+
+        // Fade in animation
+        FadeTransition fade = new FadeTransition(Duration.millis(400), scrollPane);
+        fade.setFromValue(0);
+        fade.setToValue(1);
+        fade.play();
+
+        receiptStage.showAndWait();
+    }
+
+    private HBox createReceiptRow(String label, String value) {
+        HBox row = new HBox(20);
+        row.setAlignment(Pos.CENTER);
+        row.setPrefWidth(400);
+
+        Label labelField = new Label(label);
+        labelField.getStyleClass().add("receipt-label");
+        labelField.setMinWidth(150);
+
+        Label valueField = new Label(value);
+        valueField.getStyleClass().add("receipt-value");
+        valueField.setWrapText(true);
+        valueField.setMaxWidth(200);
+
+        row.getChildren().addAll(labelField, valueField);
+        return row;
+    }
+
+    private void downloadReceipt(String receiptId, Document fileDoc, Double total) {
+        System.out.println("Downloading receipt: " + receiptId);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Download");
+        alert.setHeaderText("Receipt Download");
+        alert.setContentText("Receipt " + receiptId + " has been downloaded successfully.");
+        alert.showAndWait();
+    }
+
+    private void openLibraryAfterPurchase() {
+        try {
+            System.out.println("=== OPENING LIBRARY AFTER PURCHASE ===");
+            System.out.println("Current user: " + UserManager.getCurrentUser());
+
+            // Test: Check if purchase was actually saved
+            String currentUser = UserManager.getCurrentUser();
+            if (currentUser != null) {
+                long purchaseCount = FilesDatabaseConnection.getUserPurchaseCount(currentUser);
+                System.out.println("User purchase count: " + purchaseCount);
+
+                List<Document> purchasedFiles = FilesDatabaseConnection.getUserPurchasedFilesDetails(currentUser);
+                System.out.println("Purchased files details: " + (purchasedFiles != null ? purchasedFiles.size() : "null"));
+                if (purchasedFiles != null) {
+                    for (Document file : purchasedFiles) {
+                        System.out.println("  - " + file.getString("title"));
+                    }
+                }
+            }
+
+            FXMLLoader fxmlLoader = new FXMLLoader(CtrlAltEliteApplication.class.getResource("library.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+
+            Stage libraryStage = new Stage();
+            libraryStage.setScene(scene);
+            libraryStage.setTitle("Ctrl+Alt+Elite - Library");
+            libraryStage.setMinWidth(600);
+            libraryStage.setMinHeight(400);
+            libraryStage.setResizable(true);
+            libraryStage.setMaximized(true);
+            libraryStage.show();
+
+            // Close current marketplace window
+            ((Stage) fileUploadButton.getScene().getWindow()).close();
+            System.out.println("Library window opened successfully");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error opening library: " + e.getMessage());
+        }
     }
 
     private void showNoFilesMessage(String message) {
@@ -772,11 +1053,11 @@ public class UserCtrlAltEliteController {
         loadUserFiles();
     }
 
-// In UserCtrlAltEliteController.java:
+
 
     @FXML
     private void performSearch() {
-        // *** Added null check for safety! ***
+
         String searchText = searchField.getText() != null ? searchField.getText().toLowerCase().trim() : "";
 
         if (searchText.isEmpty()) {
@@ -785,7 +1066,7 @@ public class UserCtrlAltEliteController {
         } else {
             filteredFiles.clear();
             for (Document file : allFiles) {
-                // *** Added null-safe checks for database fields! ***
+
                 String filename = file.getString("filename") != null ? file.getString("filename").toLowerCase() : "";
                 String title = file.getString("title") != null ? file.getString("title").toLowerCase() : "";
                 String description = file.getString("description") != null ? file.getString("description").toLowerCase() : "";
@@ -798,10 +1079,10 @@ public class UserCtrlAltEliteController {
 
         updateFileListDisplay();
 
-        // Added auto-scroll to show results
+        // *** Added auto-scroll to show results! ***
         if (!searchText.isEmpty() && scrollPane != null && contentSection != null) {
             Platform.runLater(() -> {
-                // smooth scrolling logic from previous response
+                // ... (smooth scrolling logic from previous response) ...
                 double contentHeight = scrollPane.getContent().getBoundsInLocal().getHeight();
                 double viewportHeight = scrollPane.getViewportBounds().getHeight();
                 double contentY = contentSection.getBoundsInParent().getMinY();
@@ -817,7 +1098,6 @@ public class UserCtrlAltEliteController {
             });
         }
     }
-
 
     private void updateFileListDisplay() {
         Platform.runLater(() -> {

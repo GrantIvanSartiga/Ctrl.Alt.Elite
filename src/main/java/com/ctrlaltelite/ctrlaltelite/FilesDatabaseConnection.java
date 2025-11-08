@@ -8,6 +8,9 @@ import org.bson.types.ObjectId;
 import java.io.File;
 import java.io.FileInputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Sorts.descending;
@@ -49,32 +52,22 @@ public class FilesDatabaseConnection {
         return uploadFile(file, email, "Untitled", "No description provided", 0.0);
     }
 
-    //Get a specific file by ID
-
     public static Document getFile(String fileId) throws Exception {
         return filesCollection.find(new Document("_id", new ObjectId(fileId))).first();
     }
-
-    //Get all files uploaded by a specific user
 
     public static FindIterable<Document> getUserFiles(String email) {
         return filesCollection.find(eq("email", email))
                 .sort(descending("upload_date"));
     }
 
-    // Delete a file by ID
-
     public static void deleteFile(String fileId) throws Exception {
         filesCollection.deleteOne(new Document("_id", new ObjectId(fileId)));
     }
 
-    //Delete all files uploaded by a user
-
     public static void deleteUserFiles(String email) throws Exception {
         filesCollection.deleteMany(eq("email", email));
     }
-
-    //Update file metadata including title, description, and price
 
     public static void updateFileMetadata(String fileId, String newFilename, String title, String description, double price) throws Exception {
         Document updateDoc = new Document("filename", newFilename)
@@ -88,16 +81,12 @@ public class FilesDatabaseConnection {
         );
     }
 
-    //Update file metadata (backward compatibility - filename only)
-
     public static void updateFileMetadata(String fileId, String newFilename) throws Exception {
         filesCollection.updateOne(
                 new Document("_id", new ObjectId(fileId)),
                 new Document("$set", new Document("filename", newFilename))
         );
     }
-
-    //Update title only
 
     public static void updateFileTitle(String fileId, String title) throws Exception {
         filesCollection.updateOne(
@@ -106,16 +95,12 @@ public class FilesDatabaseConnection {
         );
     }
 
-    // Update description only
-
     public static void updateFileDescription(String fileId, String description) throws Exception {
         filesCollection.updateOne(
                 new Document("_id", new ObjectId(fileId)),
                 new Document("$set", new Document("description", description))
         );
     }
-
-    // Update price only
 
     public static void updateFilePrice(String fileId, double price) throws Exception {
         filesCollection.updateOne(
@@ -124,13 +109,9 @@ public class FilesDatabaseConnection {
         );
     }
 
-    // Get file count for a user
-
     public static long getUserFileCount(String email) {
         return filesCollection.countDocuments(eq("email", email));
     }
-
-    // Get total storage used by a user (in bytes)
 
     public static long getUserStorageUsed(String email) {
         long totalSize = 0;
@@ -141,13 +122,9 @@ public class FilesDatabaseConnection {
         return totalSize;
     }
 
-    // Check if a file exists
-
     public static boolean fileExists(String fileId) {
         return filesCollection.find(new Document("_id", new ObjectId(fileId))).first() != null;
     }
-
-    //Search files by filename
 
     public static FindIterable<Document> searchFilesByName(String email, String filename) {
         return filesCollection.find(
@@ -156,16 +133,12 @@ public class FilesDatabaseConnection {
         );
     }
 
-    // Search files by title
-
     public static FindIterable<Document> searchFilesByTitle(String email, String title) {
         return filesCollection.find(
                 new Document("email", email)
                         .append("title", new Document("$regex", title).append("$options", "i"))
         );
     }
-
-    // Get files within a price range
 
     public static FindIterable<Document> getFilesByPriceRange(String email, double minPrice, double maxPrice) {
         return filesCollection.find(
@@ -174,15 +147,11 @@ public class FilesDatabaseConnection {
         ).sort(descending("upload_date"));
     }
 
-    //Get files of a specific type
-
     public static FindIterable<Document> getFilesByType(String email, String fileType) {
         return filesCollection.find(
                 new Document("email", email).append("file_type", fileType)
         );
     }
-
-    //Get all files sorted by price (ascending)
 
     public static FindIterable<Document> getUserFilesSortedByPrice(String email, boolean ascending) {
         return filesCollection.find(eq("email", email))
@@ -192,6 +161,201 @@ public class FilesDatabaseConnection {
     public static FindIterable<Document> getAllFiles() {
         return filesCollection.find().sort(descending("upload_date"));
     }
+
+    // ==================== PURCHASE METHODS ====================
+
+    /**
+     * Add a purchased file to purchased_notes collection
+     */
+    public static void addPurchasedFileToUser(String userEmail, String fileId, Double price) {
+        try {
+            MongoCollection<Document> purchasedNotesCollection = database.getCollection("purchased_notes");
+
+            System.out.println("DEBUG: Inserting into purchased_notes");
+            System.out.println("  - Email: " + userEmail);
+            System.out.println("  - File ID: " + fileId);
+            System.out.println("  - Price: " + price);
+
+            Document purchaseRecord = new Document("user_email", userEmail)
+                    .append("file_id", new ObjectId(fileId))
+                    .append("purchase_date", new Date())
+                    .append("price", price);
+
+            purchasedNotesCollection.insertOne(purchaseRecord);
+
+            System.out.println("✓ Successfully inserted into purchased_notes!");
+
+            // Verify insertion
+            long count = purchasedNotesCollection.countDocuments(eq("user_email", userEmail));
+            System.out.println("  - User now has " + count + " purchased files");
+
+        } catch (Exception e) {
+            System.err.println("ERROR adding purchased file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get all purchased file records for a user
+     */
+    public static List<Document> getUserPurchasedFiles(String userEmail) {
+        try {
+            MongoCollection<Document> purchasedNotesCollection = database.getCollection("purchased_notes");
+
+            List<Document> purchasedFiles = new ArrayList<>();
+            FindIterable<Document> purchases = purchasedNotesCollection.find(eq("user_email", userEmail));
+
+            for (Document purchase : purchases) {
+                purchasedFiles.add(purchase);
+            }
+
+            System.out.println("Found " + purchasedFiles.size() + " purchase records for " + userEmail);
+            return purchasedFiles;
+        } catch (Exception e) {
+            System.err.println("Error fetching user purchased files: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Get full file details for purchased files
+     */
+    public static List<Document> getUserPurchasedFilesDetails(String userEmail) {
+        try {
+            List<Document> purchasedRecords = getUserPurchasedFiles(userEmail);
+            List<Document> fileDetails = new ArrayList<>();
+
+            System.out.println("Processing " + purchasedRecords.size() + " purchase records...");
+
+            for (Document purchase : purchasedRecords) {
+                ObjectId fileId = (ObjectId) purchase.get("file_id");
+                System.out.println("  Looking up file: " + fileId);
+
+                Document fileDoc = filesCollection.find(eq("_id", fileId)).first();
+
+                if (fileDoc != null) {
+                    System.out.println("    ✓ Found: " + fileDoc.getString("title"));
+                    // Add purchase info to file document
+                    fileDoc.append("purchase_date", purchase.get("purchase_date"));
+                    fileDoc.append("purchase_price", purchase.get("price"));
+                    fileDoc.append("purchase_id", purchase.getObjectId("_id"));
+                    fileDetails.add(fileDoc);
+                } else {
+                    System.out.println("    ✗ File not found in books collection");
+                }
+            }
+
+            System.out.println("Returning " + fileDetails.size() + " file details");
+            return fileDetails;
+        } catch (Exception e) {
+            System.err.println("Error fetching purchased file details: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Get all uploaded files by a specific user
+     */
+    public static List<Document> getUserUploadedFiles(String userEmail) {
+        try {
+            List<Document> userFiles = new ArrayList<>();
+            FindIterable<Document> files = filesCollection.find(eq("email", userEmail));
+
+            for (Document file : files) {
+                userFiles.add(file);
+            }
+
+            System.out.println("Found " + userFiles.size() + " uploaded files for " + userEmail);
+            return userFiles;
+        } catch (Exception e) {
+            System.err.println("Error fetching user uploaded files: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Check if user has already purchased a file
+     */
+    public static boolean hasUserPurchasedFile(String userEmail, String fileId) {
+        try {
+            MongoCollection<Document> purchasedNotesCollection = database.getCollection("purchased_notes");
+
+            Document purchase = purchasedNotesCollection.find(
+                    new Document("user_email", userEmail)
+                            .append("file_id", new ObjectId(fileId))
+            ).first();
+
+            boolean hasPurchased = purchase != null;
+            System.out.println("User " + userEmail + " has purchased file " + fileId + ": " + hasPurchased);
+            return hasPurchased;
+        } catch (Exception e) {
+            System.err.println("Error checking purchase status: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Create a receipt record in database
+     */
+    public static String createReceiptRecord(String userEmail, String fileId, Double totalPrice) {
+        try {
+            MongoCollection<Document> receiptsCollection = database.getCollection("receipts");
+
+            String receiptId = "RCP-" + System.currentTimeMillis();
+
+            Document receipt = new Document("receipt_id", receiptId)
+                    .append("buyer_email", userEmail)
+                    .append("file_id", new ObjectId(fileId))
+                    .append("purchase_date", new Date())
+                    .append("total", totalPrice)
+                    .append("status", "completed");
+
+            receiptsCollection.insertOne(receipt);
+            System.out.println("Receipt created: " + receiptId);
+
+            return receiptId;
+        } catch (Exception e) {
+            System.err.println("Error creating receipt: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Get receipt details
+     */
+    public static Document getReceipt(String receiptId) {
+        try {
+            MongoCollection<Document> receiptsCollection = database.getCollection("receipts");
+            return receiptsCollection.find(eq("receipt_id", receiptId)).first();
+        } catch (Exception e) {
+            System.err.println("Error fetching receipt: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Get purchase count for a user
+     */
+    public static long getUserPurchaseCount(String userEmail) {
+        try {
+            MongoCollection<Document> purchasedNotesCollection = database.getCollection("purchased_notes");
+            long count = purchasedNotesCollection.countDocuments(eq("user_email", userEmail));
+            System.out.println("User " + userEmail + " has " + count + " purchases");
+            return count;
+        } catch (Exception e) {
+            System.err.println("Error counting user purchases: " + e.getMessage());
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    // ==================== HELPER METHODS ====================
 
     private static byte[] readFileToBytes(File file) throws Exception {
         byte[] fileData = new byte[(int) file.length()];

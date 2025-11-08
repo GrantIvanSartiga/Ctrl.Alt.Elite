@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #F5F0E9;" stylesheets="@CtrlAltEliteStyles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ctrlaltelite.ctrlaltelite.controllers.AdminCtrlAltEliteController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #F5F0E9;" stylesheets="@CtrlAltEliteStyles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ctrlaltelite.ctrlaltelite.controllers.AdminCtrlAltEliteController">
     <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
         <HBox prefHeight="62.0" spacing="20" style="-fx-background-color: #f5f0e9;">
@@ -43,11 +36,11 @@
                 </JFXButton>
             </HBox>
         </HBox>
-
-        <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" prefHeight="2500.0" prefWidth="906.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+   
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" prefHeight="2500.0" prefWidth="906.0" style="-fx-background-color: transparent;">
          <content>
                <VBox style="-fx-background-color: #F5F0E9;">
-         
+   
                    <AnchorPane fx:id="heroSection" prefHeight="600.0" style="-fx-background-image: url('/com/ctrlaltelite/ctrlaltelite/images/Background.png'); -fx-background-size: cover; -fx-background-position: center; -fx-background-color: #3C507D;" VBox.vgrow="ALWAYS">
                        <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
@@ -63,11 +56,11 @@
                                    <Font size="24.0" />
                                </font>
                            </Text>
-         
+   
                            <ImageView fx:id="ICON" fitHeight="250.0" preserveRatio="true">
                                <Image url="@images/ICON.png" />
                            </ImageView>
-         
+   
                            <HBox fx:id="SearchIcon" alignment="CENTER" spacing="10.0">
                                <JFXButton>
                                    <graphic>
@@ -79,7 +72,7 @@
                                <TextField fx:id="searchField" prefHeight="41.0" prefWidth="558.0" promptText="Search..." style="-fx-border-color: #112250; -fx-border-width: 3; -fx-background-radius: 20; -fx-border-radius: 20;" />                           </HBox>
                        </VBox>
                    </AnchorPane>
-         
+   
                    <AnchorPane fx:id="contentSection" prefHeight="1026.0" prefWidth="872.0" style="-fx-background-color: #f5f0e9;" VBox.vgrow="ALWAYS">
                        <AnchorPane prefHeight="381.0" prefWidth="792.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
                            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="773.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -109,7 +102,7 @@
                            </VBox>
                        </AnchorPane>
                    </AnchorPane>
-         
+   
                    <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="622.0" prefWidth="770.0">
                        <children>
                            <AnchorPane prefHeight="399.0" prefWidth="806.0" style="-fx-background-color: linear-gradient(to bottom left, #7785a4, #3C507D, #112250); -fx-background-radius: 30;">
@@ -118,10 +111,9 @@
                                        <children>
                                            <TableView fx:id="userTable" prefHeight="411.0" prefWidth="696.0">
                                                <columns>
-                                                   <TableColumn fx:id="UserIDColumn" prefWidth="168.00000381469727" style="-fx-background-color: #90aae1;" text="User ID" />
-                                                   <TableColumn fx:id="UserNameColumn" prefWidth="167.2000274658203" style="-fx-background-color: #a6b3cf;" text="User Name" />
-                                                   <TableColumn fx:id="UserEmailColumn" prefWidth="182.39993286132812" style="-fx-background-color: #90aae1;" text="User Email" />
-                                                   <TableColumn prefWidth="177.60003662109375" style="-fx-background-color: #a6b3cf;" text="Amount Spent" />
+                                                   <TableColumn fx:id="UserIDColumn" prefWidth="212.80002212524414" style="-fx-background-color: #90aae1;" text="User ID" />
+                                                   <TableColumn fx:id="UserNameColumn" prefWidth="235.99996948242188" style="-fx-background-color: #a6b3cf;" text="User Name" />
+                                                   <TableColumn fx:id="UserEmailColumn" prefWidth="246.4000244140625" style="-fx-background-color: #90aae1;" text="User Email" />
                                                </columns>
                                            </TableView>
                                        </children>
@@ -130,7 +122,8 @@
                            </AnchorPane>
                        </children>
                    </VBox>
-         
+   
                </VBox>
-         </content></ScrollPane> </VBox>
+         </content>
+      </ScrollPane> </VBox>
 </AnchorPane>

@@ -59,6 +59,11 @@ public class RegisterController {
             return;
         }
 
+        if (!email.endsWith("@gmail.com")) {
+            registerMessageLabel.setText("Email must be a valid Gmail address (e.g., example@gmail.com).");
+            return;
+        }
+
         if (!password.equals(confirmPassword)) {
             conpassMessageLabel.setText("Passwords do not match.");
             return;

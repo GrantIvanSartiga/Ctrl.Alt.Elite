@@ -323,6 +323,7 @@ public class AdminCtrlAltEliteController {
             String email = doc.getString("email");
 
             String fullName = firstName + " " + lastName;
+
             users.add(new UserManager.User(id, fullName, email));
         }
 
@@ -355,7 +356,6 @@ public class AdminCtrlAltEliteController {
         }
     }
 
-// NEW / REPLACED loadUserFiles() METHOD
         private void loadUserFiles() {
             System.out.println("=== Loading Marketplace Files (All Users) ===");
 

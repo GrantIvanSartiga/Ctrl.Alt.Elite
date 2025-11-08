@@ -1,6 +1,3 @@
-
-
-
 package com.ctrlaltelite.ctrlaltelite;
 
 import com.mongodb.client.*;
@@ -26,11 +23,6 @@ public class DatabaseConnection {
         collection = database.getCollection(COLLECTION_NAME);
     }
 
-    public static boolean emailExists(String email) {
-        Document user = collection.find(eq("email", email)).first();
-        return user != null;
-    }
-
     public static void addUser(String firstName, String lastName, String email, String username, String password) throws Exception {
 
         String passwordHash = hashPassword(password);
@@ -42,6 +34,11 @@ public class DatabaseConnection {
 
 
         collection.insertOne(doc);
+    }
+
+    public static boolean emailExists(String email) {
+        Document user = collection.find(eq("email", email)).first();
+        return user != null;
     }
 
     public static boolean validateLogin(String email, String password) throws Exception {

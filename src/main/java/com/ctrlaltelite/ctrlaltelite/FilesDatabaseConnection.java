@@ -162,11 +162,7 @@ public class FilesDatabaseConnection {
         return filesCollection.find().sort(descending("upload_date"));
     }
 
-    // ==================== PURCHASE METHODS ====================
 
-    /**
-     * Add a purchased file to purchased_notes collection
-     */
     public static void addPurchasedFileToUser(String userEmail, String fileId, Double price) {
         try {
             MongoCollection<Document> purchasedNotesCollection = database.getCollection("purchased_notes");
@@ -185,7 +181,7 @@ public class FilesDatabaseConnection {
 
             System.out.println("✓ Successfully inserted into purchased_notes!");
 
-            // Verify insertion
+
             long count = purchasedNotesCollection.countDocuments(eq("user_email", userEmail));
             System.out.println("  - User now has " + count + " purchased files");
 
@@ -195,9 +191,7 @@ public class FilesDatabaseConnection {
         }
     }
 
-    /**
-     * Get all purchased file records for a user
-     */
+
     public static List<Document> getUserPurchasedFiles(String userEmail) {
         try {
             MongoCollection<Document> purchasedNotesCollection = database.getCollection("purchased_notes");
@@ -218,9 +212,6 @@ public class FilesDatabaseConnection {
         }
     }
 
-    /**
-     * Get full file details for purchased files
-     */
     public static List<Document> getUserPurchasedFilesDetails(String userEmail) {
         try {
             List<Document> purchasedRecords = getUserPurchasedFiles(userEmail);
@@ -255,9 +246,7 @@ public class FilesDatabaseConnection {
         }
     }
 
-    /**
-     * Get all uploaded files by a specific user
-     */
+
     public static List<Document> getUserUploadedFiles(String userEmail) {
         try {
             List<Document> userFiles = new ArrayList<>();
@@ -276,9 +265,7 @@ public class FilesDatabaseConnection {
         }
     }
 
-    /**
-     * Check if user has already purchased a file
-     */
+
     public static boolean hasUserPurchasedFile(String userEmail, String fileId) {
         try {
             MongoCollection<Document> purchasedNotesCollection = database.getCollection("purchased_notes");
@@ -298,9 +285,6 @@ public class FilesDatabaseConnection {
         }
     }
 
-    /**
-     * Create a receipt record in database
-     */
     public static String createReceiptRecord(String userEmail, String fileId, Double totalPrice) {
         try {
             MongoCollection<Document> receiptsCollection = database.getCollection("receipts");
@@ -325,9 +309,6 @@ public class FilesDatabaseConnection {
         }
     }
 
-    /**
-     * Get receipt details
-     */
     public static Document getReceipt(String receiptId) {
         try {
             MongoCollection<Document> receiptsCollection = database.getCollection("receipts");
@@ -339,9 +320,6 @@ public class FilesDatabaseConnection {
         }
     }
 
-    /**
-     * Get purchase count for a user
-     */
     public static long getUserPurchaseCount(String userEmail) {
         try {
             MongoCollection<Document> purchasedNotesCollection = database.getCollection("purchased_notes");
@@ -354,7 +332,6 @@ public class FilesDatabaseConnection {
             return 0;
         }
     }
-
 
 
     private static byte[] readFileToBytes(File file) throws Exception {

@@ -38,7 +38,6 @@
 
                         <!-- SEARCH AND BUTTONS -->
                         <HBox fx:id="SearchAndButtons" alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
-                            <JFXButton styleClass="nav-button" text="Categories" />
                             <JFXButton fx:id="homeButton" styleClass="nav-button" text="Home" />
                             <JFXButton styleClass="nav-button" text="Library" />
                             <JFXButton fx:id="profileButton" styleClass="icon-button">

@@ -62,6 +62,24 @@ public class FileChooserController {
         cancelButton.setOnAction(actionEvent -> cancelButtonOnAction());
     }
 
+    private File getInitialDirectory() {
+
+        File desktopDir = new File(System.getProperty("user.home") + "/Desktop");
+        if (desktopDir.exists() && desktopDir.isDirectory()) {
+            return desktopDir;
+        }
+
+
+        File documentsDir = new File(System.getProperty("user.home") + "/Documents");
+        if (documentsDir.exists() && documentsDir.isDirectory()) {
+            return documentsDir;
+        }
+
+
+        return new File(System.getProperty("user.home"));
+    }
+
+
     @FXML
     void chooseFile(ActionEvent e) {
         if (isUploading) {
@@ -71,7 +89,7 @@ public class FileChooserController {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose PDF File to Upload");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
+        fileChooser.setInitialDirectory(getInitialDirectory());  // Use the new method
 
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("PDF Files", "*.pdf"),

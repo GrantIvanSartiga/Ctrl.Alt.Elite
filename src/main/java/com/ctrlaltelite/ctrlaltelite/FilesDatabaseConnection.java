@@ -355,7 +355,7 @@ public class FilesDatabaseConnection {
         }
     }
 
-    // ==================== HELPER METHODS ====================
+
 
     private static byte[] readFileToBytes(File file) throws Exception {
         byte[] fileData = new byte[(int) file.length()];

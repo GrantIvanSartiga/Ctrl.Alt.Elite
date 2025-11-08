@@ -19,7 +19,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.bson.Document;
+import org.bson.types.Binary;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -282,7 +284,37 @@ public class LibraryController implements Initializable {
         String fileId = fileDoc.getObjectId("_id").toString();
         System.out.println("Opening: " + filename + " (ID: " + fileId + ")");
 
-        // Implement PDF viewer here
+        try {
+            Document dbFileDoc = FilesDatabaseConnection.getFile(fileId.toString());
+            if (dbFileDoc == null) {
+                System.err.println("File not found in database.");
+                return;
+            }
+
+            Binary fileData = dbFileDoc.get("file_data", Binary.class);
+            if (fileData == null) {
+                System.err.println("No file data found for: " + filename);
+                return;
+            }
+
+            File tempFile = File.createTempFile("temp_", "_" + filename);
+            try (java.io.FileOutputStream fos = new java.io.FileOutputStream(tempFile)) {
+                fos.write(fileData.getData());
+            }
+
+            if (java.awt.Desktop.isDesktopSupported()) {
+                java.awt.Desktop.getDesktop().open(tempFile);
+                System.out.println("File opened: " + tempFile.getAbsolutePath());
+            } else {
+                System.err.println("Desktop is not supported. Cannot open file.");
+            }
+
+            tempFile.deleteOnExit();
+
+        } catch (Exception e) {
+            System.err.println("Error opening file: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void editUploadedFile(Document fileDoc) {

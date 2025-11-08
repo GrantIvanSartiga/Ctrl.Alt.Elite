@@ -27,15 +27,6 @@ public class FilesDatabaseConnection {
         filesCollection = database.getCollection(FILES_COLLECTION_NAME);
     }
 
-    /**
-     * Upload a file to the database with metadata
-     * @param file The file to upload
-     * @param email The email of the user uploading the file
-     * @param title The title of the document
-     * @param description The description of the document
-     * @param price The price of the document
-     * @return The file ID (ObjectId as String)
-     */
     public static String uploadFile(File file, String email, String title, String description, double price) throws Exception {
         byte[] fileData = readFileToBytes(file);
 
@@ -54,48 +45,37 @@ public class FilesDatabaseConnection {
         return result.getInsertedId().asObjectId().getValue().toString();
     }
 
-    /**
-     * Upload a file to the database (backward compatibility - without metadata)
-     * @param file The file to upload
-     * @param email The email of the user uploading the file
-     * @return The file ID (ObjectId as String)
-     */
     public static String uploadFile(File file, String email) throws Exception {
         return uploadFile(file, email, "Untitled", "No description provided", 0.0);
     }
 
-    /**
-     * Get a specific file by ID
-     */
+    //Get a specific file by ID
+
     public static Document getFile(String fileId) throws Exception {
         return filesCollection.find(new Document("_id", new ObjectId(fileId))).first();
     }
 
-    /**
-     * Get all files uploaded by a specific user
-     */
+    //Get all files uploaded by a specific user
+
     public static FindIterable<Document> getUserFiles(String email) {
         return filesCollection.find(eq("email", email))
                 .sort(descending("upload_date"));
     }
 
-    /**
-     * Delete a file by ID
-     */
+    // Delete a file by ID
+
     public static void deleteFile(String fileId) throws Exception {
         filesCollection.deleteOne(new Document("_id", new ObjectId(fileId)));
     }
 
-    /**
-     * Delete all files uploaded by a user
-     */
+    //Delete all files uploaded by a user
+
     public static void deleteUserFiles(String email) throws Exception {
         filesCollection.deleteMany(eq("email", email));
     }
 
-    /**
-     * Update file metadata including title, description, and price
-     */
+    //Update file metadata including title, description, and price
+
     public static void updateFileMetadata(String fileId, String newFilename, String title, String description, double price) throws Exception {
         Document updateDoc = new Document("filename", newFilename)
                 .append("title", title)
@@ -108,9 +88,8 @@ public class FilesDatabaseConnection {
         );
     }
 
-    /**
-     * Update file metadata (backward compatibility - filename only)
-     */
+    //Update file metadata (backward compatibility - filename only)
+
     public static void updateFileMetadata(String fileId, String newFilename) throws Exception {
         filesCollection.updateOne(
                 new Document("_id", new ObjectId(fileId)),
@@ -118,9 +97,8 @@ public class FilesDatabaseConnection {
         );
     }
 
-    /**
-     * Update title only
-     */
+    //Update title only
+
     public static void updateFileTitle(String fileId, String title) throws Exception {
         filesCollection.updateOne(
                 new Document("_id", new ObjectId(fileId)),
@@ -128,9 +106,8 @@ public class FilesDatabaseConnection {
         );
     }
 
-    /**
-     * Update description only
-     */
+    // Update description only
+
     public static void updateFileDescription(String fileId, String description) throws Exception {
         filesCollection.updateOne(
                 new Document("_id", new ObjectId(fileId)),
@@ -138,9 +115,8 @@ public class FilesDatabaseConnection {
         );
     }
 
-    /**
-     * Update price only
-     */
+    // Update price only
+
     public static void updateFilePrice(String fileId, double price) throws Exception {
         filesCollection.updateOne(
                 new Document("_id", new ObjectId(fileId)),
@@ -148,16 +124,14 @@ public class FilesDatabaseConnection {
         );
     }
 
-    /**
-     * Get file count for a user
-     */
+    // Get file count for a user
+
     public static long getUserFileCount(String email) {
         return filesCollection.countDocuments(eq("email", email));
     }
 
-    /**
-     * Get total storage used by a user (in bytes)
-     */
+    // Get total storage used by a user (in bytes)
+
     public static long getUserStorageUsed(String email) {
         long totalSize = 0;
         FindIterable<Document> files = filesCollection.find(eq("email", email));
@@ -167,16 +141,14 @@ public class FilesDatabaseConnection {
         return totalSize;
     }
 
-    /**
-     * Check if a file exists
-     */
+    // Check if a file exists
+
     public static boolean fileExists(String fileId) {
         return filesCollection.find(new Document("_id", new ObjectId(fileId))).first() != null;
     }
 
-    /**
-     * Search files by filename
-     */
+    //Search files by filename
+
     public static FindIterable<Document> searchFilesByName(String email, String filename) {
         return filesCollection.find(
                 new Document("email", email)
@@ -184,9 +156,8 @@ public class FilesDatabaseConnection {
         );
     }
 
-    /**
-     * Search files by title
-     */
+    // Search files by title
+
     public static FindIterable<Document> searchFilesByTitle(String email, String title) {
         return filesCollection.find(
                 new Document("email", email)
@@ -194,9 +165,8 @@ public class FilesDatabaseConnection {
         );
     }
 
-    /**
-     * Get files within a price range
-     */
+    // Get files within a price range
+
     public static FindIterable<Document> getFilesByPriceRange(String email, double minPrice, double maxPrice) {
         return filesCollection.find(
                 new Document("email", email)
@@ -204,18 +174,16 @@ public class FilesDatabaseConnection {
         ).sort(descending("upload_date"));
     }
 
-    /**
-     * Get files of a specific type
-     */
+    //Get files of a specific type
+
     public static FindIterable<Document> getFilesByType(String email, String fileType) {
         return filesCollection.find(
                 new Document("email", email).append("file_type", fileType)
         );
     }
 
-    /**
-     * Get all files sorted by price (ascending)
-     */
+    //Get all files sorted by price (ascending)
+
     public static FindIterable<Document> getUserFilesSortedByPrice(String email, boolean ascending) {
         return filesCollection.find(eq("email", email))
                 .sort(ascending ? new Document("price", 1) : new Document("price", -1));

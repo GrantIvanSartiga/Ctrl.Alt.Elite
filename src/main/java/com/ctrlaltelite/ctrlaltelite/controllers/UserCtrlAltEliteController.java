@@ -798,10 +798,10 @@ public class UserCtrlAltEliteController {
 
         updateFileListDisplay();
 
-        // *** Added auto-scroll to show results! ***
+        // Added auto-scroll to show results
         if (!searchText.isEmpty() && scrollPane != null && contentSection != null) {
             Platform.runLater(() -> {
-                // ... (smooth scrolling logic from previous response) ...
+                // smooth scrolling logic from previous response
                 double contentHeight = scrollPane.getContent().getBoundsInLocal().getHeight();
                 double viewportHeight = scrollPane.getViewportBounds().getHeight();
                 double contentY = contentSection.getBoundsInParent().getMinY();
@@ -818,9 +818,7 @@ public class UserCtrlAltEliteController {
         }
     }
 
-    /**
-     * Update the file list display with current filtered files
-     */
+
     private void updateFileListDisplay() {
         Platform.runLater(() -> {
             fileListContainer.getChildren().clear();

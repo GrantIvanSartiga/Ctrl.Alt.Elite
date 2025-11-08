@@ -380,7 +380,7 @@ public class AdminCtrlAltEliteController {
                     System.out.println("Fetching ALL files from database...");
 
                     try {
-                        // 1. Fetch all files and store them in the master list
+                        // Fetch all files and store them in the master list
                         FindIterable<Document> files = FilesDatabaseConnection.getAllFiles();
 
                         // Clear and populate the master list (allFiles)
@@ -389,13 +389,13 @@ public class AdminCtrlAltEliteController {
                             allFiles.add(fileDoc);
                         }
 
-                        // 2. Initialize filteredFiles with all files
+                        // Initialize filteredFiles with all files
                         filteredFiles.clear();
                         filteredFiles.addAll(allFiles);
 
                         System.out.println("Total marketplace files loaded: " + allFiles.size());
 
-                        // 3. Update the UI using the shared display method
+                        // Update the UI using the shared display method
                         Platform.runLater(() -> updateFileListDisplay());
 
                     } catch (Exception e) {
@@ -411,7 +411,6 @@ public class AdminCtrlAltEliteController {
 
                 @Override
                 protected void failed() {
-                    // ... (existing failed logic) ...
                 }
             };
 
